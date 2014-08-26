@@ -13,3 +13,6 @@ ziggy_client.init({
 	// ui plugins, [0] is opened by default
 	tabs: [room_tab]
 })
+
+//debug
+console.log(ziggy_client)

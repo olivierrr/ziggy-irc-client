@@ -1,8 +1,6 @@
 var Ziggy = require('ziggy')
 
-var Tab_manager = require('./lib/tab-manager')
-
-module.exports = Ziggy_client
+var Tab_manager = require('./tab-manager')
 
 /*
 	Ziggy wrapper
@@ -16,9 +14,12 @@ var Ziggy_client = {}
 
 Ziggy_client.init = function(settings) {
 
-	this.tabs = settings.tabs || []
+	this.tabs = Object.create(Tab_manager)//.init(settings.tabs || [])
+	this.tabs.init(settings.tabs || [])
 
 	this.plugins = settings.plugins || []
+
+	this.channels = []
 }
 
 Ziggy_client.joinChannel = function(server, channel, nick) {
@@ -41,3 +42,5 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 Ziggy_client.leaveChannel = function() { 
 
 }
+
+module.exports = Ziggy_client

@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "window": {
-   "toolbar": false
-  },
+  // "window": {
+  //  "toolbar": false
+  // },
   "author": "olivierrr",
   "license": "MIT",
   "dependencies": {

@@ -6,13 +6,15 @@ var EE = require('events').EventEmitter
 
 	todo:
 	- add event emitters (focus / blur)
-	- constructor
 */
 
 tabManager = {}
 
-tabManager.tabs = {}
-tabManager.openTabs = []
+tabManager.init = function(tabs) {
+
+	this.tabs = {}
+	this.openTabs = []
+}
 
 tabManager.register = function(name, script) {
 
@@ -48,3 +50,5 @@ tabManager.setFocus = function(tab) {
 		else t.isFocus = false
 	})
 }
+
+module.exports = tabManager
