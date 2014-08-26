@@ -5,12 +5,14 @@ var EE = require('events').EventEmitter
 	simple view manager
 
 	todo:
-	- add event emitters (focus / blur)
+	- closing tab
 */
 
 tabManager = {}
 
 tabManager.init = function(tabs, ziggy) {
+
+	this.ee = Object.create(EE.prototype)
 
 	this.ziggy = ziggy
 	this.tabs = {}
@@ -36,7 +38,7 @@ tabManager.open = function(name) {
 
 	// assemble tab
 	var tab = {
-		src: new this.tabs[name](this.ziggy),
+		src: this.tabs[name].call(this),
 		focus: false,
 		id: Math.random()
 	}
@@ -64,8 +66,18 @@ tabManager.getById = function(id) {
 tabManager.setFocus = function(tab) {
 
 	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i] === tab) this.openTabs[i].focus = true
-		else this.openTabs[i].focus = false
+		if(this.openTabs[i] === tab) {
+
+			this.openTabs[i].focus = true
+			this.ee.emit('focus', this.openTabs[i].id)
+			this.ee.emit('focus#'+this.openTabs.id)
+		}
+		else {
+
+			this.openTabs[i].focus = false
+			this.ee.emit('blur', this.openTabs[i].id)
+			this.ee.emit('blur#'+this.openTabs.id)
+		}
 	}
 }
 

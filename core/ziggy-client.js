@@ -25,7 +25,6 @@ Ziggy_client.init = function(settings) {
 
 Ziggy_client.joinChannel = function(server, channel, nick) {
 
-	console.log(nick)
 	var chan = Ziggy({
 		server: server,
 		nickname: nick,

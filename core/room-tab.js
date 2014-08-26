@@ -1,13 +1,18 @@
 var handlebars = require('handlebars')
 
-module.exports = function(ziggy, dom) {
+module.exports = function() {
 
-	// on('focus')
-	// on('blur')
+	console.log(this)
 
-	console.log('awdawddwawd')
+	this.ee.on('focus', function(id) {
+		console.log('focus: ' + id)
+	})
 
-	ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
+	this.ee.on('blur', function(id) {
+		console.log('blur: ' + id)
+	})
+
+	this.ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
 
 	.on('message', function(user, channel, text) {
 		console.log('message')
