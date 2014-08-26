@@ -1,17 +1,16 @@
 var Handlebars = require('handlebars')
 
-module.exports = function() {
+module.exports = function(id) {
 
 	//var template = Handlebars.compile('<h1> HELLO </h1>')
+	var document = this.ziggy.dom
 
-	this.ziggy.dom.getElementById('TAB').innerHTML = '<h1> HELLO </h1>'
-
-	this.ee.on('focus', function(id) {
-		//console.log('focus: ' + id)
+	this.ee.on('focus#'+id, function() {
+		document.getElementById('TAB').innerHTML = '<h1>' + id + '</h1>'
 	})
 
-	this.ee.on('blur', function(id) {
-		//console.log('blur: ' + id)
+	this.ee.on('blur#'+id, function() {
+		
 	})
 
 

@@ -42,11 +42,13 @@ tabManager.open = function(name) {
 	// if tab doesn't exist
 	if(!this.tabs[name]) return
 
+	var id = Math.random()
+
 	// assemble tab
 	var tab = {
-		src: this.tabs[name].call(this),
+		src: this.tabs[name].call(this, id),
 		focus: false,
-		id: Math.random()
+		id: id
 	}
 
 	this.openTabs.push(tab)
@@ -77,13 +79,13 @@ tabManager.setFocus = function(id) {
 
 			this.openTabs[i].focus = true
 			this.ee.emit('focus', this.openTabs[i].id)
-			this.ee.emit('focus#'+this.openTabs.id)
+			this.ee.emit('focus#'+this.openTabs[i].id)
 		}
 		else {
 
 			this.openTabs[i].focus = false
 			this.ee.emit('blur', this.openTabs[i].id)
-			this.ee.emit('blur#'+this.openTabs.id)
+			this.ee.emit('blur#'+this.openTabs[i].id)
 		}
 	}
 
