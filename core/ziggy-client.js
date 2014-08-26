@@ -15,26 +15,26 @@ var Ziggy_client = {}
 Ziggy_client.init = function(settings) {
 
 	this.tabs = Object.create(Tab_manager)
-	this.tabs.init(settings.tabs || [])
+	this.tabs.init(settings.tabs || [], this)
 
 	this.plugins = settings.plugins || []
 
 	this.channels = []
 }
 
+
 Ziggy_client.joinChannel = function(server, channel, nick) {
 
-	this.channels = this.channels || {}
-
-	if(this.channels[server+channel]) return this.channels[server+channel]
-
-	var chan = this.channels[server+channel] = Ziggy({
+	console.log(nick)
+	var chan = Ziggy({
 		server: server,
 		nickname: nick,
 		channels: [channel]
 	})
 
 	chan.start()
+
+	this.channels.push(chan)
 
 	return chan
 }

@@ -10,8 +10,9 @@ var EE = require('events').EventEmitter
 
 tabManager = {}
 
-tabManager.init = function(tabs) {
+tabManager.init = function(tabs, ziggy) {
 
+	this.ziggy = ziggy
 	this.tabs = {}
 	this.openTabs = []
 
@@ -35,7 +36,7 @@ tabManager.open = function(name) {
 
 	// assemble tab
 	var tab = {
-		src: this.tabs[name],
+		src: new this.tabs[name](this.ziggy),
 		focus: false,
 		id: Math.random()
 	}

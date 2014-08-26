@@ -1,11 +1,13 @@
 var handlebars = require('handlebars')
 
-module.exports = function(ZiggyClient) {
+module.exports = function(ziggy, dom) {
 
 	// on('focus')
 	// on('blur')
 
-	ZiggyClient.joinChannel('irc.freenode.net', '#testingbot', 'ziggy')
+	console.log('awdawddwawd')
+
+	ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
 
 	.on('message', function(user, channel, text) {
 		console.log('message')
