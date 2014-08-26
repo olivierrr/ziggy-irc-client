@@ -75,9 +75,9 @@
 
 <script id="tab_room_template" type="text/x-handlebars-template">
 	<div id="TAB_ROOM"> </div>
-	<div><input id="main-input" type="text"></div>
+	<div><input id="chat-input" type="text"></div>
 	<style>
-		#main-input {
+		#chat-input {
 			position: absolute;
 			bottom: 0;
 			left:0;
@@ -92,6 +92,45 @@
 			overflow: auto;
 			height: calc(100% - 80px);
 			padding: 20px;
+		}
+	</style>
+</script>
+
+<script id="tab_room_template_q" type="text/x-handlebars-template">
+	<form id="roomForm">
+		<div> <input type="text" id="formNick" placeholder="nick">  </div>
+		<div> <input type="text" id="formServer" placeholder="server">  </div>
+		<div> <input type="text" id="formChannel" placeholder="channel">  </div>
+		<div> <span id="roomSubmit">submit</span>  </div>
+	</form>
+	<style>
+		#roomForm {
+			text-align: center;
+			padding-top: 3%;
+		}
+		#roomForm div {
+			margin: 20px;
+		}
+		input{
+			background-color: #EDEDED;
+			border: solid 1px #B1B1B1;
+			width: 400px;
+			height: 60px;
+			outline: none;
+			padding: 0 20px;
+			border: 0;
+		}
+		#roomSubmit {
+			color: #6B6B6B;
+			line-height: 60px;
+			display: inline-block;
+			width: 400px;
+			height: 60px;
+			background-color: #EDEDED;
+			cursor: pointer;
+		}
+		#roomSubmit:hover {
+			background-color: #A7A7A7;
 		}
 	</style>
 </script>
