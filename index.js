@@ -12,7 +12,10 @@ ziggy_client.init({
 
 	// ui plugins, [0] is opened by default
 	tabs: [{ src: room_tab,
-			 name: 'room_tab'}]
+			 name: 'room_tab'}],
+
+	dom: document
+
 })
 
 //debug

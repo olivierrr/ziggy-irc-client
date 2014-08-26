@@ -14,6 +14,8 @@ var Ziggy_client = {}
 
 Ziggy_client.init = function(settings) {
 
+	this.dom = settings.dom || {}
+
 	this.tabs = Object.create(Tab_manager)
 	this.tabs.init(settings.tabs || [], this)
 

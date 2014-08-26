@@ -1,8 +1,10 @@
-var handlebars = require('handlebars')
+var Handlebars = require('handlebars')
 
 module.exports = function() {
 
-	console.log(this)
+	//var template = Handlebars.compile('<h1> HELLO </h1>')
+
+	this.ziggy.dom.getElementById('TAB').innerHTML = '<h1> HELLO </h1>'
 
 	this.ee.on('focus', function(id) {
 		console.log('focus: ' + id)
@@ -11,6 +13,8 @@ module.exports = function() {
 	this.ee.on('blur', function(id) {
 		console.log('blur: ' + id)
 	})
+
+
 
 	this.ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
 
