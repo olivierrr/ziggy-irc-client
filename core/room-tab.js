@@ -5,6 +5,8 @@ var Handlebars = require('handlebars')
 
 	todo:
 	-rewrite
+	-rewrite
+	-rewrite
 */
 
 module.exports = function(tab) {
@@ -16,7 +18,11 @@ module.exports = function(tab) {
 	var form_template = Handlebars.compile(document.getElementById('tab_room_template_q').innerHTML)
 	var room_template = Handlebars.compile(document.getElementById('tab_room_template').innerHTML)
 
+	var nick, server, channel
+
 	var chatbox
+
+	var room
 
 	this.ee.on('focus#'+tab.id, function() {
 
@@ -39,10 +45,10 @@ module.exports = function(tab) {
 	// should validate, handle missing fields/errors
 	function roomSubmit(e) {
 
-		var nick = document.getElementById('formNick').value || 'ziggyClient'
-		var server = document.getElementById('formServer').value || 'irc.freenode.net'
-		var channel = document.getElementById('formChannel').value || '#testingbot'
-		
+		nick = document.getElementById('formNick').value || 'ziggyClient'
+		server = document.getElementById('formServer').value || 'irc.freenode.net'
+		channel = document.getElementById('formChannel').value || '#testingbot'
+
 		joinRoom(nick, server, channel)
 	}
 
@@ -51,7 +57,10 @@ module.exports = function(tab) {
 		document.getElementById('TAB').innerHTML = room_template()
 		chatbox = document.getElementById('TAB_ROOM')
 
-		ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
+		input = document.getElementById('chat_input')
+		input.addEventListener('keydown', chatInput, false)
+
+		room = ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
 
 		.on('message', function(user, channel, text) {
 			console.log('message')
@@ -86,6 +95,17 @@ module.exports = function(tab) {
 		.on('topic', function(channel, topic, nick) {
 			console.log('topic')
 		})
+	}
+
+	function chatInput(e) {
+
+		if(e.keyCode !== 13) return
+
+		appendToChat(nick, input.value)
+
+		room.say(room.settings.channels[0], input.value)
+
+		input.value = ''
 	}
 
 	// temp
