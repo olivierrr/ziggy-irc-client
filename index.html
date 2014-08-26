@@ -10,41 +10,42 @@
 <script id="menu_template" type="text/x-handlebars-template">
 	<div class="menu_template bar">
 	  	{{#each openTabs}}
-	  		<span class="menu_template button {{#if this.isFocus}} isFocus {{/if}}" tab="{{this._tabid}}">{{this._tabid}}</span>
+	  		<span class="menu_template button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">{{this.id}}</span>
 	  	{{/each}}
 
-	  	<span class="menu_template button add">+</span>
+	  	<span class="menu_template button add" add="" >+</span>
 	</div>
 	<style>
 		.menu_template.bar {
-			background-color: #ACBBBA;
+			background-color: #929292;
 			height: 40px;
 			color: white;
 			-webkit-user-select: none;
 		}
 		.menu_template.button {
 			float: left;
-			background-color: #283A48;
+			background-color: #D0D0D0;
 			line-height: 40px;
 			height: 100%;
 			padding: 0 10px;
 			cursor: pointer;
-			margin-left: 2px;
+			margin-left: 4px;
 		}
-		.menu_template.button.isFocus {
-			background-color: red;
+		.menu_template.button.focus {
+			color: #848484;
+			background-color: white;
 		}
 		.menu_template.button:hover {
-			background-color: #30688F;
+			color: white;
+			background-color: #4E4E4E;
 		}
 		.menu_template.button.add {
-			color: black;
 			margin-left: 5px;
 			padding: 0 16px;
-			background-color: #007666;
+			background-color: #7D7D7D;
 		}
 		.menu_template.button.add:hover {
-			background-color: #00713B;
+			background-color: #4E4E4E;
 		}
 	</style>
 </script>
@@ -91,5 +92,54 @@
 		</form>
 	</div>
 </script>
+
+<style>
+/* 
+	css reset
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+</style>
 
 <script src="index.js"></script>

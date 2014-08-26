@@ -10,21 +10,27 @@ var EE = require('events').EventEmitter
 
 tabManager = {}
 
-tabManager.init = function(tabs, ziggy) {
+tabManager.init = function(tabs, menu, ziggy) {
 
 	this.ee = Object.create(EE.prototype)
 
-	this.ziggy = ziggy
+	this.ziggy = ziggy || {}
 	this.tabs = {}
 	this.openTabs = []
+	this.menu = menu || {}
+
+	this.updateMenu()
 
 	for(var i=0; i<tabs.length; i++) {
 		this.register(tabs[i])
 	}
 }
 
-tabManager.register = function(tab) {
+tabManager.updateMenu = function() {
+	this.menu.call(this)
+}
 
+tabManager.register = function(tab) {
 	this.tabs[tab.name] = tab.src
 }
 
@@ -44,7 +50,7 @@ tabManager.open = function(name) {
 	}
 
 	this.openTabs.push(tab)
-	this.setFocus(tab)
+	this.setFocus(tab.id)
 
 	return tab
 }
@@ -55,18 +61,19 @@ tabManager.open = function(name) {
 tabManager.getById = function(id) {
 
 	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i].id === id) return tab
+		if(this.openTabs[i].id == id) return this.openTabs[i]
 	}
 }
 
 /*
 	set @tab focus to true
 	set all other tabs to false
+	emit focus/blur events
 */
-tabManager.setFocus = function(tab) {
+tabManager.setFocus = function(id) {
 
 	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i] === tab) {
+		if(this.openTabs[i].id == id) {
 
 			this.openTabs[i].focus = true
 			this.ee.emit('focus', this.openTabs[i].id)
@@ -79,6 +86,8 @@ tabManager.setFocus = function(tab) {
 			this.ee.emit('blur#'+this.openTabs.id)
 		}
 	}
+
+	this.updateMenu()
 }
 
 module.exports = tabManager

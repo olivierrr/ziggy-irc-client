@@ -7,11 +7,11 @@ module.exports = function() {
 	this.ziggy.dom.getElementById('TAB').innerHTML = '<h1> HELLO </h1>'
 
 	this.ee.on('focus', function(id) {
-		console.log('focus: ' + id)
+		//console.log('focus: ' + id)
 	})
 
 	this.ee.on('blur', function(id) {
-		console.log('blur: ' + id)
+		//console.log('blur: ' + id)
 	})
 
 
