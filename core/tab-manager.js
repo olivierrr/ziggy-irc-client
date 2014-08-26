@@ -46,10 +46,11 @@ tabManager.open = function(name) {
 
 	// assemble tab
 	var tab = {
-		src: this.tabs[name].call(this, id),
 		focus: false,
 		id: id
 	}
+
+	tab.src = this.tabs[name].call(this, tab)
 
 	this.openTabs.push(tab)
 	this.setFocus(tab.id)
