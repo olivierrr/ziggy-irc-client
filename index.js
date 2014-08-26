@@ -11,7 +11,9 @@ ziggy_client.init({
 	plugins: [],
 
 	// ui plugins, [0] is opened by default
-	tabs: [room_tab]
+	tabs: [{ src: room_tab,
+			 name: 'rom_tab',
+			 isFocus: true}]
 })
 
 //debug

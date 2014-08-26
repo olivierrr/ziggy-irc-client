@@ -14,11 +14,15 @@ tabManager.init = function(tabs) {
 
 	this.tabs = {}
 	this.openTabs = []
+
+	for(var i=0; i<tabs.length; i++) {
+		this.register(tabs[i])
+	}
 }
 
-tabManager.register = function(name, script) {
+tabManager.register = function(tab) {
 
-	this.tabs[name].script = script
+	this.tabs[tab.name] = tab.src
 }
 
 tabManager.open = function(name) {
