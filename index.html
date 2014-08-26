@@ -1,0 +1,96 @@
+
+<head>
+<title>ziggy-IRC-client</title>
+</head>
+
+
+<div id="MENU"></div>
+
+<div id="TAB"></div>
+
+<script id="menu_template" type="text/x-handlebars-template">
+	<div class="menu_template bar">
+	  	{{#each openTabs}}
+	  		<span class="menu_template button {{#if this.isFocus}} isFocus {{/if}}" tab="{{this._tabid}}">{{this._tabid}}</span>
+	  	{{/each}}
+
+	  	<span class="menu_template button add">+</span>
+	</div>
+	<style>
+		.menu_template.bar {
+			background-color: #ACBBBA;
+			height: 40px;
+			color: white;
+			-webkit-user-select: none;
+		}
+		.menu_template.button {
+			float: left;
+			background-color: #283A48;
+			line-height: 40px;
+			height: 100%;
+			padding: 0 10px;
+			cursor: pointer;
+			margin-left: 2px;
+		}
+		.menu_template.button.isFocus {
+			background-color: red;
+		}
+		.menu_template.button:hover {
+			background-color: #30688F;
+		}
+		.menu_template.button.add {
+			color: black;
+			margin-left: 5px;
+			padding: 0 16px;
+			background-color: #007666;
+		}
+		.menu_template.button.add:hover {
+			background-color: #00713B;
+		}
+	</style>
+</script>
+
+
+<script id="tab_room_template" type="text/x-handlebars-template">
+	<div><input id="main-input" type="text"></div>
+	<style>
+		#main-input {
+			position: absolute;
+			bottom: 0;
+			left:0;
+			width: 100%;
+			height: 40px;
+			padding: 0 20px;
+			border: 0;
+			border-top: solid 1px #D4D4D4;
+			outline: none;
+		}
+		#TAB_ROOM {
+			overflow: auto;
+			height: calc(100% - 80px);
+			padding: 20px;
+		}
+	</style>
+</script>
+
+
+<script id="tab_join_template" type="text/x-handlebars-template">
+	<div>
+		<form>
+			<div> 
+				nick: <input type="text">
+			</div>
+			<div>
+				server: <input type="text">
+			</div>
+			<div>
+				room: <input type="text">
+			</div>
+			<div>
+				<input type="submit">
+			</div>
+		</form>
+	</div>
+</script>
+
+<script src="index.js"></script>
