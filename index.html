@@ -1,11 +1,12 @@
 <head>
 <title>ziggy-IRC-client</title>
+<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
 </head>
 
-
+<body>
 <div id="MENU"></div>
-
 <div id="TAB"></div>
+</body>
 
 <script id="menu_template" type="text/x-handlebars-template">
 	<div class="menu_template bar">
@@ -86,7 +87,9 @@
 	<div><input id="chat_input_{{id}}" class="chat_input" type="text"></div>
 	<style>
 		.message {
-			padding: 5px;
+			padding: 5px 10px;
+			color: #505050;
+			font-weight: 400;
 		}
 		.message.userNickChange {
 			background-color: #E7E7E7;
@@ -210,6 +213,10 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+body {
+	font-family: 'Lato', sans-serif;
 }
 </style>
 
