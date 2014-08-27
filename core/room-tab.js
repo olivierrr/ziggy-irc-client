@@ -13,49 +13,50 @@ module.exports = function(tab) {
 
 	var document = this.ziggy.dom
 	var ziggy = this.ziggy
-	var messages = []
 
+	// templates
 	var form_template = Handlebars.compile(document.getElementById('tab_room_template_q').innerHTML)
 	var room_template = Handlebars.compile(document.getElementById('tab_room_template').innerHTML)
 
-	var nick, server, channel
+	// room misc
+	var nick, server, channel, messages = []
 
-	var chatbox
+	// dom nodes
+	var chatbox, room
 
-	var room
-
+	// mode0 = form // mode1 = chatroom
 	var mode = 0
 
-	this.ee.on('focus#'+tab.id, function() {
 
-		if(mode===0)document.getElementById('TAB').innerHTML = form_template()
+	this.ee.on('focus#'+tab.id, function() {
+		if(mode===0) {
+			document.getElementById('TAB').innerHTML = form_template()
+			document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
+		}
 		if(mode===1) {
 			document.getElementById('TAB').innerHTML = room_template({messages: messages})
 			chatbox = document.getElementById('TAB_ROOM')
 			input = document.getElementById('chat_input')
 			input.addEventListener('keydown', chatInput, false)
 		}
-
-		onClick('#roomSubmit', roomSubmit)
 	})
 
 	this.ee.on('blur#'+tab.id, function() {
 		//
 	})
 
-	function onClick(query, cb){
-		var elem = document.querySelectorAll(query)
-		for(var i=0; i<elem.length; i++){
-			elem[i].addEventListener('click', cb)
-		}
-	}
+	this.ee.on('close#'+tab.id, function() {
+		//
+	})
+
 
 	// should validate, handle missing fields/errors
 	function roomSubmit(e) {
-
 		nick = document.getElementById('formNick').value || 'ziggyClient'
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
 		channel = document.getElementById('formChannel').value || '#testingbot'
+
+		console.log(nick + ' ' + server + ' ' + channel)
 
 		joinRoom(nick, server, channel)
 	}
@@ -70,7 +71,7 @@ module.exports = function(tab) {
 		input = document.getElementById('chat_input')
 		input.addEventListener('keydown', chatInput, false)
 
-		room = ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
+		room = ziggy.joinChannel(server, channel, nick)
 
 		.on('message', function(user, channel, text) {
 
