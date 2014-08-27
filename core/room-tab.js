@@ -68,8 +68,11 @@ module.exports = function(tab) {
 
 	function joinRoom(nick, server, channel) {
 
-		mode = 1
-
+		if(mode===0) {
+			mode = 1
+			assembleMessage('', 'connecting...', 'messageConnecting')
+		}
+		
 		renderChatRoom()
 
 		room = ziggy.joinChannel(server, channel, nick)
@@ -95,7 +98,6 @@ module.exports = function(tab) {
 		})
 
 		.on('part', function(user, channel, reason) {
-			console.log(reason)
 			assembleMessage(channel, user.nick + ' has left', 'userLeft')
 		})
 
