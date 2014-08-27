@@ -63,16 +63,6 @@ tabManager.open = function(name) {
 	return tab
 }
 
-tabManager.rename = function(tab, name) {
-	tab.name = name
-	this.updateMenu()
-}
-
-tabManager.notifications = function(tab, count) {
-	tab.notifications = count
-	this.updateMenu()
-}
-
 /*
 	close tab instance
 	emit tab close events

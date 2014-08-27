@@ -14,7 +14,7 @@ var view2 = require('./view2')
 
 module.exports = function(tab) {
 
-	console.log(this)
+	var self = this
 
 	var document = this.dom
 	var ziggy = this.ziggy
@@ -35,7 +35,11 @@ module.exports = function(tab) {
 
 	this.ee.on('focus#'+tab.id, function() {
 		if(mode===0) renderForm()
-		if(mode===1) renderChatRoom()
+		if(mode===1) {
+			renderChatRoom()
+			tab.notifications = 0
+			self.updateMenu()
+		}
 	})
 
 	this.ee.on('blur#'+tab.id, function() {
@@ -51,6 +55,13 @@ module.exports = function(tab) {
 	function renderForm() {
 		document.getElementById('TAB').innerHTML = form_template()
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
+	}
+	function roomSubmit(e) {
+		nick = document.getElementById('formNick').value || 'ziggyClient'
+		server = document.getElementById('formServer').value || 'irc.freenode.net'
+		channel = document.getElementById('formChannel').value || '#testingbot'
+
+		joinRoom(nick, server, channel)
 	}
 
 	function renderChatRoom() {
@@ -71,20 +82,13 @@ module.exports = function(tab) {
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 
-	// should validate, handle missing fields/errors
-	function roomSubmit(e) {
-		nick = document.getElementById('formNick').value || 'ziggyClient'
-		server = document.getElementById('formServer').value || 'irc.freenode.net'
-		channel = document.getElementById('formChannel').value || '#testingbot'
-
-		joinRoom(nick, server, channel)
-	}
-
 	function joinRoom(nick, server, channel) {
 
 		if(mode===0) {
 			mode = 1
 			assembleMessage('', 'connecting...', 'messageConnecting')
+			tab.name = channel
+			self.updateMenu()
 		}
 		
 		renderChatRoom()
@@ -136,9 +140,13 @@ module.exports = function(tab) {
 			flag: flag
 		}
 		messages.push(message)
-		if(tab.focus === true) renderChatRoom()
-		else {
-			//todo
+
+		if(tab.focus === true) {
+			renderChatRoom()
+		}
+		if(tab.focus === false) {
+			tab.notifications += 1
+			self.updateMenu()
 		}
 	}
 
