@@ -1,4 +1,6 @@
-ziggy-irc-client
-================
+```
+npm install
+npm run launch
+```
 
-a ziggy based IRC client on node webkit
+
