@@ -39,6 +39,7 @@ module.exports = function(tab) {
 
 	this.ee.on('close#'+tab.id, function() {
 		if(room) ziggy.leaveChannel(room, channel)
+		document.getElementById('TAB').innerHTML = ''
 		//if(channel)room.part(channel)
 	})
 
@@ -74,7 +75,6 @@ module.exports = function(tab) {
 		room = ziggy.joinChannel(server, channel, nick)
 
 		.on('message', function(user, channel, text) {
-
 			assembleMessage(user.nick, text)
 		})
 
@@ -83,23 +83,28 @@ module.exports = function(tab) {
 		})
 
 		.on('nick', function(oldNick, user, channels) {
-			console.log('nick')
+			assembleMessage(channels, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
 		.on('join', function(channel, user) {
-			console.log('join')
+			assembleMessage(channel, user.nick + ' has joined', 'userJoined')
+		})
+
+		.on('ziggyjoin', function(channel, user) {
+			assembleMessage(channel, 'connected', 'ziggyJoined')
 		})
 
 		.on('part', function(user, channel, reason) {
-			console.log('part')
+			console.log(reason)
+			assembleMessage(channel, user.nick + ' has left', 'userLeft')
 		})
 
 		.on('quit', function(user, reason) {
-			console.log('quit')
+			assembleMessage(channel, user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
 		.on('kick', function(kicked, kickedBy, channel, reason) {
-			console.log('kick')
+			assembleMessage(channel, kicked + ' has been kicked by ' + kickedBy + 'for ' + reason, 'userKicked')
 		})
 
 		.on('topic', function(channel, topic, nick) {

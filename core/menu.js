@@ -24,6 +24,7 @@ module.exports = function() {
 	function tabClick(e) {
 		var id = e.target.getAttribute('tab')
 		this.setFocus(id)
+		this.updateMenu()
 	}
 
 	function addTab(e) {

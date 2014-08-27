@@ -46,7 +46,6 @@ Ziggy_client.leaveChannel = function(instance, room) {
 		if(this.channels[i] === instance) {
 			instance.part(room)
 			this.channels.splice(i,1)
-			console.log('removed')
 		}
 	}
 }

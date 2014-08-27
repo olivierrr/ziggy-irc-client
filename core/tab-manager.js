@@ -97,14 +97,12 @@ tabManager.setFocus = function(id) {
 			this.ee.emit('focus#'+this.openTabs[i].id)
 		}
 		else {
-
+			
 			this.openTabs[i].focus = false
 			this.ee.emit('blur', this.openTabs[i].id)
 			this.ee.emit('blur#'+this.openTabs[i].id)
 		}
 	}
-
-	this.updateMenu()
 }
 
 module.exports = tabManager
