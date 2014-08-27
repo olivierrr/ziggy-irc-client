@@ -12,8 +12,8 @@
 	  	{{#each openTabs}}
 	  		<span class="menu_template button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
 	  			{{this.id}} 
-	  			<span tab="{{this.id}}" class="menu_template subbutton close"> o </span>
-	  			<span tab="{{this.id}}" class="menu_template subbutton alert"> o </span>
+	  			<span closeTab="{{this.id}}" class="menu_template subbutton close"> x </span>
+	  			<span tab="{{this.id}}" class="menu_template subbutton alert"> {{this.alerts}} </span>
 	  		</span>
 	  	{{/each}}
 
@@ -21,14 +21,20 @@
 	</div>
 	<style>
 		.menu_template.subbutton {
+			color: white;
 			width: 15px;
 			height 15px;
 			position: absolute;
 			right: 2px;
 			line-height: 15px;
+			text-align: center;
 		}
 		.menu_template.subbutton.close {
+			background-color: #F1DCDC;
 			top: 2px;
+		}
+		.menu_template.subbutton.close:hover {
+			background-color: #E65B5B;
 		}
 		.menu_template.subbutton.alert {
 			top: 20px;

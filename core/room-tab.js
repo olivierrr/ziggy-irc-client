@@ -24,9 +24,17 @@ module.exports = function(tab) {
 
 	var room
 
+	var mode = 0
+
 	this.ee.on('focus#'+tab.id, function() {
 
-		document.getElementById('TAB').innerHTML = form_template()
+		if(mode===0)document.getElementById('TAB').innerHTML = form_template()
+		if(mode===1) {
+			document.getElementById('TAB').innerHTML = room_template()
+			chatbox = document.getElementById('TAB_ROOM')
+			input = document.getElementById('chat_input')
+			input.addEventListener('keydown', chatInput, false)
+		}
 
 		onClick('#roomSubmit', roomSubmit)
 	})
@@ -53,6 +61,8 @@ module.exports = function(tab) {
 	}
 
 	function joinRoom(nick, server, channel) {
+
+		mode = 1
 
 		document.getElementById('TAB').innerHTML = room_template()
 		chatbox = document.getElementById('TAB_ROOM')
@@ -119,8 +129,4 @@ module.exports = function(tab) {
 		// scroll
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
-
-
-	
-
 }

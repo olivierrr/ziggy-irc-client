@@ -10,7 +10,9 @@ module.exports = function() {
 
 	var template = Handlebars.compile(document.getElementById('menu_template').innerHTML)
 
-	document.getElementById('MENU').innerHTML = template({openTabs: this.openTabs})
+	var context = { openTabs: this.openTabs }
+
+	document.getElementById('MENU').innerHTML = template(context)
 
 	function onClick(query, cb){
 		var elem = document.querySelectorAll(query)
@@ -20,10 +22,8 @@ module.exports = function() {
 	}
 
 	function tabClick(e) {
-
 		var id = e.target.getAttribute('tab')
 		this.setFocus(id)
-
 	}
 
 	function addTab(e) {
@@ -31,6 +31,14 @@ module.exports = function() {
 		this.updateMenu()
 	}
 
+	function tabClose(e) {
+		console.log('eee')
+		var id = e.target.getAttribute('closeTab')
+		this.close(id)
+		this.updateMenu()
+	}
+
+	onClick('[closeTab]', tabClose.bind(this))
 	onClick('[tab]', tabClick.bind(this))
 	onClick('[add]', addTab.bind(this))
 

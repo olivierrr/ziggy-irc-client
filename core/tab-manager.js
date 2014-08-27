@@ -5,7 +5,7 @@ var EE = require('events').EventEmitter
 	simple view manager
 
 	todo:
-	- closing tab
+
 */
 
 tabManager = {}
@@ -56,6 +56,16 @@ tabManager.open = function(name) {
 	this.setFocus(tab.id)
 
 	return tab
+}
+
+tabManager.close = function(id) {
+
+	console.log('closing...' + id)
+
+	var tab = this.getById(id)
+	var index = this.openTabs.indexOf(tab)
+
+	this.openTabs.splice(index, 1)
 }
 
 /*
