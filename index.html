@@ -80,9 +80,14 @@
 
 
 <script id="tab_room_template" type="text/x-handlebars-template">
-	<div id="TAB_ROOM"> </div>
+	<div id="TAB_ROOM">
+		{{#each messages}} <div class="message">{{this.nick}}: {{this.text}}</div> {{/each}}
+	</div>
 	<div><input id="chat_input" type="text"></div>
 	<style>
+		.message {
+			padding: 5px 0;
+		}
 		#chat_input {
 			position: absolute;
 			bottom: 0;

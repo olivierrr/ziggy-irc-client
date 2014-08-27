@@ -13,7 +13,7 @@ module.exports = function(tab) {
 
 	var document = this.ziggy.dom
 	var ziggy = this.ziggy
-	tab.messages = []
+	var messages = []
 
 	var form_template = Handlebars.compile(document.getElementById('tab_room_template_q').innerHTML)
 	var room_template = Handlebars.compile(document.getElementById('tab_room_template').innerHTML)
@@ -30,7 +30,7 @@ module.exports = function(tab) {
 
 		if(mode===0)document.getElementById('TAB').innerHTML = form_template()
 		if(mode===1) {
-			document.getElementById('TAB').innerHTML = room_template()
+			document.getElementById('TAB').innerHTML = room_template({messages: messages})
 			chatbox = document.getElementById('TAB_ROOM')
 			input = document.getElementById('chat_input')
 			input.addEventListener('keydown', chatInput, false)
@@ -73,9 +73,8 @@ module.exports = function(tab) {
 		room = ziggy.joinChannel('irc.freenode.net', '#testingbot', 'ziggy-client')
 
 		.on('message', function(user, channel, text) {
-			console.log('message')
-			tab.messages.push(text)
-			appendToChat(user.nick, text)
+
+			assembleMessage(user.nick, text)
 		})
 
 		.on('pm', function(user, text) {
@@ -107,11 +106,22 @@ module.exports = function(tab) {
 		})
 	}
 
+	function assembleMessage(nick, text, flag) {
+
+		var message = {
+			nick: nick,
+			text: text,
+			flag: flag
+		}
+		messages.push(message)
+		appendToChat(nick, text)
+	}
+
 	function chatInput(e) {
 
 		if(e.keyCode !== 13) return
 
-		appendToChat(nick, input.value)
+		assembleMessage(nick, input.value)
 
 		room.say(room.settings.channels[0], input.value)
 
@@ -119,11 +129,11 @@ module.exports = function(tab) {
 	}
 
 	// temp
-	function appendToChat(from, msg){
+	function appendToChat(nick, text){
 		// create and append
 		var o = document.createElement('div')
 		o.className = 'message'
-		o.innerHTML = '<b>' + from + '</b>' + ': ' + msg
+		o.innerHTML = nick + ': ' + text
 		chatbox.appendChild(o)
 
 		// scroll

@@ -63,8 +63,6 @@ tabManager.open = function(name) {
 */
 tabManager.close = function(id) {
 
-	console.log('closing...' + id)
-
 	var tab = this.getById(id)
 	var index = this.openTabs.indexOf(tab)
 

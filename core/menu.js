@@ -32,7 +32,6 @@ module.exports = function() {
 	}
 
 	function tabClose(e) {
-		console.log('eee')
 		var id = e.target.getAttribute('closeTab')
 		this.close(id)
 		this.updateMenu()
