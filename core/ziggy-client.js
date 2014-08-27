@@ -40,9 +40,15 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 	return chan
 }
 
-Ziggy_client.leaveChannel = function() { 
+Ziggy_client.leaveChannel = function(instance, room) { 
 
-	//part()
+	for(var i=0; i<this.channels.length; i++) {
+		if(this.channels[i] === instance) {
+			instance.part(room)
+			this.channels.splice(i,1)
+			console.log('removed')
+		}
+	}
 }
 
 module.exports = Ziggy_client

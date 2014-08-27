@@ -38,8 +38,8 @@ module.exports = function(tab) {
 	})
 
 	this.ee.on('close#'+tab.id, function() {
-		console.log('awdawd')
-		room.part(channel)
+		if(room) ziggy.leaveChannel(room, channel)
+		//if(channel)room.part(channel)
 	})
 
 	function renderForm() {
