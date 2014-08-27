@@ -34,10 +34,7 @@ module.exports = function(tab) {
 			document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		}
 		if(mode===1) {
-			document.getElementById('TAB').innerHTML = room_template({messages: messages})
-			chatbox = document.getElementById('TAB_ROOM')
-			input = document.getElementById('chat_input')
-			input.addEventListener('keydown', chatInput, false)
+			renderChatRoom()
 		}
 	})
 
@@ -49,6 +46,15 @@ module.exports = function(tab) {
 		//
 	})
 
+
+	function renderChatRoom() {
+		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
+		chatbox = document.getElementById('TAB_ROOM')
+		input = document.getElementById('chat_input_' + tab.id)
+		input.focus()
+		input.addEventListener('keydown', chatInput, false)
+		chatbox.scrollTop = chatbox.scrollHeight
+	}
 
 	// should validate, handle missing fields/errors
 	function roomSubmit(e) {
@@ -65,11 +71,7 @@ module.exports = function(tab) {
 
 		mode = 1
 
-		document.getElementById('TAB').innerHTML = room_template()
-		chatbox = document.getElementById('TAB_ROOM')
-
-		input = document.getElementById('chat_input')
-		input.addEventListener('keydown', chatInput, false)
+		renderChatRoom()
 
 		room = ziggy.joinChannel(server, channel, nick)
 
@@ -115,29 +117,16 @@ module.exports = function(tab) {
 			flag: flag
 		}
 		messages.push(message)
-		appendToChat(nick, text)
+		if(tab.focus === true) renderChatRoom()
 	}
 
 	function chatInput(e) {
 
 		if(e.keyCode !== 13) return
 
+		room.say(room.settings.channels[0], input.value)
 		assembleMessage(nick, input.value)
 
-		room.say(room.settings.channels[0], input.value)
-
 		input.value = ''
-	}
-
-	// temp
-	function appendToChat(nick, text){
-		// create and append
-		var o = document.createElement('div')
-		o.className = 'message'
-		o.innerHTML = nick + ': ' + text
-		chatbox.appendChild(o)
-
-		// scroll
-		chatbox.scrollTop = chatbox.scrollHeight
 	}
 }

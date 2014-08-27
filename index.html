@@ -83,12 +83,12 @@
 	<div id="TAB_ROOM">
 		{{#each messages}} <div class="message">{{this.nick}}: {{this.text}}</div> {{/each}}
 	</div>
-	<div><input id="chat_input" type="text"></div>
+	<div><input id="chat_input_{{id}}" class="chat_input" type="text"></div>
 	<style>
 		.message {
 			padding: 5px 0;
 		}
-		#chat_input {
+		.chat_input {
 			box-sizing: border-box;
 			position: absolute;
 			bottom: 0;
@@ -104,7 +104,7 @@
 			box-sizing: border-box;
 			width: 100%;
 			top: 40px;
-			overflow: auto;
+			overflow-y: scroll;
 			height: calc(100% - 80px);
 			padding: 20px;
 		}
