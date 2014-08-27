@@ -1,25 +1,15 @@
-var Ziggy_client = require('./core/ziggy-client')
+// load plugins
+var room_tab = require('./plugins/room-tab/index')
 
-var room_tab = require('./core/room-tab')
-var menu = require('./core/menu')
+var tabManager = require('./core/tab-manager')
 
 // instance
-var ziggy_client = Object.create(Ziggy_client)
+var tabManager = Object.create(tabManager)
 
-ziggy_client.init({
+tabManager.init({
 
-	// regular ziggyplugins applied globablly (all rooms)
-	plugins: [],
-
-	// ui plugins, [0] is opened by default
-	tabs: [{ src: room_tab,
-			 name: 'room_tab'}],
-
-	menu: menu,
+	tabs: [{ src: room_tab, name: 'room_tab'}],
 
 	dom: document
 
 })
-
-//debug
-console.log(ziggy_client)

@@ -1,18 +1,19 @@
 var Handlebars = require('handlebars')
 
+var view = require('./tab-manager-view')
+
 /*
 	tab handler 'UI'
 */
 
-module.exports = function() {
+module.exports = function(tabHandler, document) {
 
-	var document = this.ziggy.dom
+	var template = view
 
-	var template = Handlebars.compile(document.getElementById('menu_template').innerHTML)
-
-	var context = { openTabs: this.openTabs }
+	var context = { openTabs: tabHandler.openTabs }
 
 	document.getElementById('MENU').innerHTML = template(context)
+
 
 	function onClick(query, cb){
 		var elem = document.querySelectorAll(query)
@@ -23,23 +24,23 @@ module.exports = function() {
 
 	function tabClick(e) {
 		var id = e.target.getAttribute('tab')
-		this.setFocus(id)
-		this.updateMenu()
+		tabHandler.setFocus(id)
+		tabHandler.updateMenu()
 	}
 
 	function addTab(e) {
-		this.open('room_tab')
-		this.updateMenu()
+		tabHandler.open('room_tab')
+		tabHandler.updateMenu()
 	}
 
 	function tabClose(e) {
 		var id = e.target.getAttribute('closeTab')
-		this.close(id)
-		this.updateMenu()
+		tabHandler.close(id)
+		tabHandler.updateMenu()
 	}
 
-	onClick('[closeTab]', tabClose.bind(this))
-	onClick('[tab]', tabClick.bind(this))
-	onClick('[add]', addTab.bind(this))
+	onClick('[closeTab]', tabClose)
+	onClick('[tab]', tabClick)
+	onClick('[add]', addTab)
 
 }

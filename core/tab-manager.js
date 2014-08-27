@@ -1,4 +1,6 @@
 var EE = require('events').EventEmitter
+var Ziggy_client = require('./ziggy-client')
+var menu = require('./menu')
 
 /*
 	tab manager
@@ -8,24 +10,27 @@ var EE = require('events').EventEmitter
 */
 tabManager = {}
 
-tabManager.init = function(tabs, menu, ziggy) {
+tabManager.init = function(settings) {
 
 	this.ee = Object.create(EE.prototype)
+	this.dom = settings.dom
 
-	this.ziggy = ziggy || {}
-	this.tabs = {}
+	this.ziggy = Object.create(Ziggy_client)
+	this.ziggy.init()
+	
+	this.tabs = settings.tabs || {}
 	this.openTabs = []
-	this.menu = menu || {}
+	this.menu = menu
 
 	this.updateMenu()
 
-	for(var i=0; i<tabs.length; i++) {
-		this.register(tabs[i])
+	for(var i=0; i<this.tabs.length; i++) {
+		this.register(this.tabs[i])
 	}
 }
 
 tabManager.updateMenu = function() {
-	this.menu.call(this)
+	this.menu(this, this.dom)
 }
 
 tabManager.register = function(tab) {

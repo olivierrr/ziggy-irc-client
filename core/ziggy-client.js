@@ -1,7 +1,5 @@
 var Ziggy = require('ziggy')
 
-var Tab_manager = require('./tab-manager')
-
 /*
 	Ziggy wrapper
 	channel centered approach
@@ -13,13 +11,6 @@ var Tab_manager = require('./tab-manager')
 var Ziggy_client = {}
 
 Ziggy_client.init = function(settings) {
-
-	this.dom = settings.dom || {}
-
-	this.tabs = Object.create(Tab_manager)
-	this.tabs.init(settings.tabs || [], settings.menu || {}, this)
-
-	this.plugins = settings.plugins || []
 
 	this.channels = []
 }
