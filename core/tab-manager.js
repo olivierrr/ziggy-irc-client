@@ -7,7 +7,6 @@ var EE = require('events').EventEmitter
 	todo:
 
 */
-
 tabManager = {}
 
 tabManager.init = function(tabs, menu, ziggy) {
@@ -58,12 +57,19 @@ tabManager.open = function(name) {
 	return tab
 }
 
+/*
+	close tab instance
+	emit tab close events
+*/
 tabManager.close = function(id) {
 
 	console.log('closing...' + id)
 
 	var tab = this.getById(id)
 	var index = this.openTabs.indexOf(tab)
+
+	this.ee.emit('close', id)
+	this.ee.emit('close#'+id)
 
 	this.openTabs.splice(index, 1)
 }
