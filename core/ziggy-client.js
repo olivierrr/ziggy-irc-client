@@ -36,12 +36,13 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 	chan.start()
 
 	this.channels.push(chan)
-
+	console.log(this.channels)
 	return chan
 }
 
 Ziggy_client.leaveChannel = function() { 
 
+	//part()
 }
 
 module.exports = Ziggy_client

@@ -29,13 +29,8 @@ module.exports = function(tab) {
 
 
 	this.ee.on('focus#'+tab.id, function() {
-		if(mode===0) {
-			document.getElementById('TAB').innerHTML = form_template()
-			document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
-		}
-		if(mode===1) {
-			renderChatRoom()
-		}
+		if(mode===0) renderForm()
+		if(mode===1) renderChatRoom()
 	})
 
 	this.ee.on('blur#'+tab.id, function() {
@@ -43,9 +38,14 @@ module.exports = function(tab) {
 	})
 
 	this.ee.on('close#'+tab.id, function() {
-		//
+		console.log('awdawd')
+		room.part(channel)
 	})
 
+	function renderForm() {
+		document.getElementById('TAB').innerHTML = form_template()
+		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
+	}
 
 	function renderChatRoom() {
 		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
@@ -61,8 +61,6 @@ module.exports = function(tab) {
 		nick = document.getElementById('formNick').value || 'ziggyClient'
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
 		channel = document.getElementById('formChannel').value || '#testingbot'
-
-		console.log(nick + ' ' + server + ' ' + channel)
 
 		joinRoom(nick, server, channel)
 	}
