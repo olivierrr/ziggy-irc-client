@@ -1,9 +1,9 @@
 	<div class="menu_template bar">
 	  	{{#each openTabs}}
 	  		<span class="menu_template button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
-	  			{{this.id}} 
+	  			{{this.name}} 
 	  			<span closeTab="{{this.id}}" class="menu_template subbutton close"> x </span>
-	  			<span tab="{{this.id}}" class="menu_template subbutton alert"> {{this.alerts}} </span>
+	  			<span tab="{{this.id}}" class="menu_template subbutton alert"> {{this.notifications}} </span>
 	  		</span>
 	  	{{/each}}
 

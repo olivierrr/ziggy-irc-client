@@ -1,6 +1,6 @@
 var EE = require('events').EventEmitter
 var Ziggy_client = require('./ziggy-client')
-var menu = require('./menu')
+var menu = require('./gui/menu')
 
 /*
 	tab manager
@@ -17,7 +17,7 @@ tabManager.init = function(settings) {
 
 	this.ziggy = Object.create(Ziggy_client)
 	this.ziggy.init()
-	
+
 	this.tabs = settings.tabs || {}
 	this.openTabs = []
 	this.menu = menu
@@ -49,8 +49,10 @@ tabManager.open = function(name) {
 
 	// assemble tab
 	var tab = {
+		name: name,
 		focus: false,
-		id: id
+		id: id,
+		notifications: 0
 	}
 
 	tab.src = this.tabs[name].call(this, tab)
@@ -59,6 +61,16 @@ tabManager.open = function(name) {
 	this.setFocus(tab.id)
 
 	return tab
+}
+
+tabManager.rename = function(tab, name) {
+	tab.name = name
+	this.updateMenu()
+}
+
+tabManager.notifications = function(tab, count) {
+	tab.notifications = count
+	this.updateMenu()
 }
 
 /*

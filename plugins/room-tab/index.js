@@ -24,7 +24,7 @@ module.exports = function(tab) {
 	var room_template = view1
 
 	// room misc
-	var nick, server, channel, messages = []
+	var nick, server, channel, messages = [], inputVal, input
 
 	// dom nodes
 	var chatbox, room
@@ -54,11 +54,20 @@ module.exports = function(tab) {
 	}
 
 	function renderChatRoom() {
+
+		if(input) inputVal = input.value
+
 		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
-		chatbox = document.getElementById('TAB_ROOM')
-		input = document.getElementById('chat_input_' + tab.id)
+
+		input = document.createElement('input')
+		input.className = 'chat_input'
+		if(inputVal) input.value = inputVal
+		document.getElementById('partial_input').appendChild(input)
+
 		input.focus()
 		input.addEventListener('keydown', chatInput, false)
+
+		chatbox = document.getElementById('TAB_ROOM')
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 
@@ -128,6 +137,9 @@ module.exports = function(tab) {
 		}
 		messages.push(message)
 		if(tab.focus === true) renderChatRoom()
+		else {
+			//todo
+		}
 	}
 
 	function chatInput(e) {

@@ -1,7 +1,7 @@
 <div id="TAB_ROOM">
 		{{#each messages}} <div class="message {{this.flag}}">{{this.nick}}: {{this.text}}</div> {{/each}}
 	</div>
-	<div><input id="chat_input_{{id}}" class="chat_input" type="text"></div>
+	<div id="partial_input"></div>
 	<style>
 		.message {
 			padding: 5px 10px;
@@ -42,7 +42,7 @@
 			box-sizing: border-box;
 			width: 100%;
 			top: 40px;
-			overflow-y: scroll;
+			overflow-y: auto;
 			height: calc(100% - 80px);
 		}
 	</style>

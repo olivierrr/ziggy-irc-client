@@ -5,7 +5,8 @@ var Ziggy = require('ziggy')
 	channel centered approach
 
 	todo:
-	- leaveChannel
+	- should be a 'plugin'
+	- join should check if already connected to server
 */
 
 var Ziggy_client = {}
