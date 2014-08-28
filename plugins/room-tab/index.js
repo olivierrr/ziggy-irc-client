@@ -55,8 +55,9 @@ module.exports = function(tab) {
 	function renderForm() {
 		document.getElementById('TAB').innerHTML = form_template()
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
+		//document.addEventListener('keydown', formKeyDown, false)
 	}
-	function roomSubmit(e) {
+	function roomSubmit() {
 		nick = document.getElementById('formNick').value || 'ziggyClient'
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
 		channel = document.getElementById('formChannel').value || '#testingbot'
@@ -158,5 +159,11 @@ module.exports = function(tab) {
 		assembleMessage(nick, input.value)
 
 		input.value = ''
+	}
+
+	function formKeyDown(e) {
+
+		if(e.keyCode !== 13) return
+		roomSubmit()
 	}
 }

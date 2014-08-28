@@ -1,41 +1,42 @@
 	<div class="menu_template bar">
 	  	{{#each openTabs}}
-	  		<span class="menu_template button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
+	  		<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
 	  			{{this.name}} 
-	  			<span closeTab="{{this.id}}" class="menu_template subbutton close"> x </span>
-	  			<span tab="{{this.id}}" class="menu_template subbutton alert"> {{this.notifications}} </span>
+	  			<span closeTab="{{this.id}}" class="subbutton close"> x </span>
+	  			<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>
 	  		</span>
 	  	{{/each}}
 
-	  	<span class="menu_template button add" add="" >+</span>
+	  	<span class="button add" add="" >+</span>
 	</div>
 	<style>
-		.menu_template.subbutton {
+		.subbutton {
 			color: white;
 			width: 15px;
 			height 15px;
 			position: absolute;
-			right: 2px;
+			right: 0px;
+			padding-bottom: 5px;
 			line-height: 15px;
 			text-align: center;
 		}
-		.menu_template.subbutton.close {
-			background-color: #F1DCDC;
-			top: 2px;
-		}
-		.menu_template.subbutton.close:hover {
+		.subbutton.close {
 			background-color: #E65B5B;
+			top: 0px;
 		}
-		.menu_template.subbutton.alert {
+		.subbutton.close:hover {
+			background-color: #E43A13;
+		}
+		.subbutton.alert {
 			top: 20px;
 		}
-		.menu_template.bar {
+		.bar {
 			background-color: #929292;
 			height: 40px;
 			color: white;
 			-webkit-user-select: none;
 		}
-		.menu_template.button {
+		.button {
 			position: relative;
 			display: inline-block;
 			background-color: #D0D0D0;
@@ -45,24 +46,24 @@
 			padding-right: 20px;
 			cursor: pointer;
 		}
-		.menu_template.button.focus {
+		.button.focus {
 			color: #848484;
 			background-color: white;
 		}
-		.menu_template.button.focus:hover {
+		.button.focus:hover {
 			color: #848484;
 			background-color: white;
 		}
-		.menu_template.button:hover {
+		.button:hover {
 			color: white;
 			background-color: #4E4E4E;
 		}
-		.menu_template.button.add {
+		.button.add {
 			margin-left: 5px;
 			padding: 0 16px;
 			background-color: #7D7D7D;
 		}
-		.menu_template.button.add:hover {
+		.button.add:hover {
 			background-color: #4E4E4E;
 		}
 	</style>
