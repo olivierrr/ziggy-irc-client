@@ -7,9 +7,8 @@ var view2 = require('./view2')
 	room ui plugin
 
 	todo:
-	-rewrite
-	-rewrite
-	-rewrite
+	-refactor
+
 */
 
 module.exports = function(tabHandler, tab) {
@@ -30,7 +29,9 @@ module.exports = function(tabHandler, tab) {
 	// mode0 = form // mode1 = chatroom
 	var mode = 0
 
-
+	/*
+		tab events
+	*/
 	tabHandler.ee.on('focus#'+tab.id, function() {
 		if(mode===0) renderForm()
 		if(mode===1) {
@@ -39,29 +40,23 @@ module.exports = function(tabHandler, tab) {
 			tabHandler.updateMenu()
 		}
 	})
-
 	tabHandler.ee.on('blur#'+tab.id, function() {
 		//
 	})
-
 	tabHandler.ee.on('close#'+tab.id, function() {
 		if(room) ziggy.leaveChannel(room, channel)
 		document.getElementById('TAB').innerHTML = ''
 	})
 
+	/*
+		render templates
+	*/
 	function renderForm() {
+
 		document.getElementById('TAB').innerHTML = form_template()
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
-		//document.addEventListener('keydown', formKeyDown, false)
+		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
 	}
-	function roomSubmit() {
-		nick = document.getElementById('formNick').value || 'ziggyClient'
-		server = document.getElementById('formServer').value || 'irc.freenode.net'
-		channel = document.getElementById('formChannel').value || '#testingbot'
-
-		joinRoom(nick, server, channel)
-	}
-
 	function renderChatRoom() {
 
 		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
@@ -75,6 +70,14 @@ module.exports = function(tabHandler, tab) {
 
 		chatbox = document.getElementById('TAB_ROOM')
 		chatbox.scrollTop = chatbox.scrollHeight
+	}
+
+	function roomSubmit() {
+		nick = document.getElementById('formNick').value || 'ziggyClient'
+		server = document.getElementById('formServer').value || 'irc.freenode.net'
+		channel = document.getElementById('formChannel').value || '#testingbot'
+
+		joinRoom(nick, server, channel)
 	}
 
 	function joinRoom(nick, server, channel) {
