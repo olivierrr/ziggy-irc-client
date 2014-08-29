@@ -64,14 +64,11 @@ module.exports = function(tabHandler, tab) {
 
 	function renderChatRoom() {
 
-		if(input) inputVal = input.value
-
 		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
 
-		input = document.createElement('input')
-		input.className = 'chat_input'
+		if(input) inputVal = input.value
+		input = document.querySelector('.chat_input')
 		if(inputVal) input.value = inputVal
-		document.getElementById('partial_input').appendChild(input)
 
 		input.focus()
 		input.addEventListener('keydown', chatInput, false)
