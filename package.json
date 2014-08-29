@@ -19,5 +19,16 @@
   },
   "devDependencies": {
     "node-webkit-builder": "^0.1.2"
+  },
+  "window": {
+    "title": "ziggy-IRC-client",
+    "icon": "icon.png",
+    "toolbar": false,
+    "frame": true,
+    "width": 1000,
+    "height": 700,
+    "position": "mouse",
+    "min_width": 500,
+    "min_height": 600
   }
 }

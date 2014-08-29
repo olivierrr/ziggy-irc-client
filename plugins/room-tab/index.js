@@ -93,7 +93,7 @@ module.exports = function(tabHandler, tab) {
 		if(e.keyCode !== 13) return
 
 		room.say(room.settings.channels[room.settings.channels.indexOf(channel)], input.value)
-		assembleMessage(nick, input.value)
+		assembleMessage(nick, input.value, 'isUser')
 
 		input.value = ''
 	}

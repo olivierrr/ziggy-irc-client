@@ -54,12 +54,15 @@ Ziggy_client.isConnectedToChannel = function(server, channel, nick) {
 	return false
 }
 
-Ziggy_client.leaveChannel = function(instance, room) { 
+Ziggy_client.leaveChannel = function(ziggy, room) {
 
 	for(var i=0; i<this.channels.length; i++) {
-		if(this.channels[i] === instance) {
-			instance.part(room)
-			this.channels.splice(i,1)
+		if(this.channels[i] == ziggy) {
+
+			this.channels[i].part(room)
+			if(this.channels[i].settings.channels.length === 0) {
+				this.channels.splice(i,1)
+			}
 		}
 	}
 }
