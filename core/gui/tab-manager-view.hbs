@@ -1,69 +1,69 @@
-	<div class="menu_template bar">
-	  	{{#each openTabs}}
-	  		<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
-	  			{{this.name}} 
-	  			<span closeTab="{{this.id}}" class="subbutton close"> x </span>
-	  			<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>
-	  		</span>
-	  	{{/each}}
-
-	  	<span class="button add" add="" >+</span>
-	</div>
-	<style>
-		.subbutton {
-			color: white;
-			width: 15px;
-			height 15px;
-			position: absolute;
-			right: 0px;
-			padding-bottom: 5px;
-			line-height: 15px;
-			text-align: center;
-		}
-		.subbutton.close {
-			background-color: #E65B5B;
-			top: 0px;
-		}
-		.subbutton.close:hover {
-			background-color: #E43A13;
-		}
-		.subbutton.alert {
-			top: 20px;
-		}
-		.bar {
-			background-color: #929292;
-			height: 40px;
-			color: white;
-			-webkit-user-select: none;
-		}
-		.button {
-			position: relative;
-			display: inline-block;
-			background-color: #D0D0D0;
-			line-height: 40px;
-			height: 100%;
-			padding: 0 5px;
-			padding-right: 20px;
-			cursor: pointer;
-		}
-		.button.focus {
-			color: #848484;
-			background-color: white;
-		}
-		.button.focus:hover {
-			color: #848484;
-			background-color: white;
-		}
-		.button:hover {
-			color: white;
-			background-color: #4E4E4E;
-		}
-		.button.add {
-			margin-left: 5px;
-			padding: 0 16px;
-			background-color: #7D7D7D;
-		}
-		.button.add:hover {
-			background-color: #4E4E4E;
-		}
-	</style>
+<div class="menu_template bar">
+	{{#each openTabs}}
+	<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
+	{{this.name}}
+	<span closeTab="{{this.id}}" class="subbutton close"> x </span>
+	<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>
+	</span>
+	{{/each}}
+	<span class="button add" add="" >+</span>
+</div>
+<style>
+	.subbutton {
+		color: white;
+		width: 15px;
+		height 15px;
+		position: absolute;
+		right: 0px;
+		padding-bottom: 5px;
+		line-height: 15px;
+		text-align: center;
+	}
+	.subbutton.close {
+		background-color: #E65B5B;
+		top: 0px;
+	}
+	.subbutton.close:hover {
+		background-color: #E43A13;
+	}
+	.subbutton.alert {
+		top: 20px;
+	}
+	.bar {
+		background-color: #929292;
+		height: 40px;
+		color: white;
+		-webkit-user-select: none;
+	}
+	.button {
+		position: relative;
+		display: inline-block;
+		background-color: #D0D0D0;
+		line-height: 40px;
+		height: 100%;
+		padding: 0 5px;
+		padding-right: 20px;
+		cursor: pointer;
+	}
+	.button.focus {
+		color: #464646;
+		font-weight: 500;
+		background-color: white;
+	}
+	.button.focus:hover {
+		color: #373737;
+		background-color: white;
+	}
+	.button:hover {
+		color: white;
+		background-color: #4E4E4E;
+	}
+	.button.add {
+		margin-left: 5px;
+		padding: 0 16px;
+		background-color: #7D7D7D;
+	}
+	.button.add:hover {
+		background-color: #4E4E4E;
+	}
+</style>

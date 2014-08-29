@@ -78,6 +78,9 @@ module.exports = function(tabHandler, tab) {
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 
+	/*
+		template events
+	*/
 	function roomSubmit() {
 		nick = document.getElementById('formNick').value || 'ziggyClient'
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
@@ -85,7 +88,24 @@ module.exports = function(tabHandler, tab) {
 
 		joinRoom(nick, server, channel)
 	}
+	function chatInput(e) {
 
+		if(e.keyCode !== 13) return
+
+		room.say(room.settings.channels[room.settings.channels.indexOf(channel)], input.value)
+		assembleMessage(nick, input.value)
+
+		input.value = ''
+	}
+	function formKeyDown(e) {
+
+		if(e.keyCode !== 13) return
+		roomSubmit()
+	}
+
+	/*
+		actions
+	*/
 	function joinRoom(nick, server, channel) {
 
 		if(ziggy.isConnectedToChannel(server, channel)) {
@@ -169,21 +189,5 @@ module.exports = function(tabHandler, tab) {
 			tab.notifications += 1
 			tabHandler.updateMenu()
 		}
-	}
-
-	function chatInput(e) {
-
-		if(e.keyCode !== 13) return
-
-		room.say(room.settings.channels[room.settings.channels.indexOf(channel)], input.value)
-		assembleMessage(nick, input.value)
-
-		input.value = ''
-	}
-
-	function formKeyDown(e) {
-
-		if(e.keyCode !== 13) return
-		roomSubmit()
 	}
 }
