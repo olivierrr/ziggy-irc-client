@@ -87,7 +87,7 @@ module.exports = function(tab) {
 
 		if(mode===0) {
 			mode = 1
-			assembleMessage('', 'connecting...', 'messageConnecting')
+			assembleMessage(channel, 'connecting...', 'messageConnecting')
 			tab.name = channel
 			self.updateMenu()
 		}

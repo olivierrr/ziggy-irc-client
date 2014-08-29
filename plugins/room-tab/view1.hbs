@@ -1,10 +1,36 @@
 <div id="TAB_ROOM">
-	{{#each messages}} <div class="message {{this.flag}}">{{this.nick}}: {{this.text}}</div> {{/each}}
+	
+	<span class="leftColumn">
+		{{#each messages}}<span class="username message {{this.flag}}">{{this.nick}}</span>{{/each}}
+	</span>
+	<span class="rightColumn">
+		{{#each messages}}<span class="text message {{this.flag}}">{{this.text}}</span>{{/each}}
+	</span>
+
 </div>
 
 <div id="partial_input"></div>
 
 <style>
+
+.leftColumn {
+	float: left;
+    width: 150px;
+    height: 100%;
+}
+.rightColumn {
+	float: right;
+    width: calc(100% - 150px);
+    height: 100%;
+}
+.message.username {
+	float: right;
+	clear: both;
+}
+.message.text {
+	float: left;
+	clear: both;
+}
 .message {
 	padding: 6px 10px;
 	color: #505050;
@@ -12,24 +38,19 @@
 	font-size: 16px;
 	word-wrap: break-word;
 }
-.message.userNickChange {
-	background-color: #E7E7E7;
+
+#TAB_ROOM {
+	box-sizing: border-box;
+	width: 100%;
+	top: 40px;
+	overflow-y: auto;
+	height: calc(100% - 80px);
+	padding-top: 50px;
 }
-.message.userQuit {
-	background-color: #FFC7C7;
-}
-.message.userLeft {
-	background-color: #FFC7C7;
-}
-.message.ziggyJoined {
-	background-color: #B7EEC4;
-}
-.message.userJoined {
-	background-color: #B7EEC4;
-}
-.message.messageConnecting {
-	background-color: #F8F0BD;
-}
+
+/*
+	main input
+*/
 .chat_input {
 	box-sizing: border-box;
 	position: absolute;
@@ -42,11 +63,27 @@
 	border-top: solid 1px #D4D4D4;
 	outline: none;
 }
-#TAB_ROOM {
-	box-sizing: border-box;
-	width: 100%;
-	top: 40px;
-	overflow-y: auto;
-	height: calc(100% - 80px);
+
+/* 
+	flags 
+*/
+.message.userNickChange {
+	color: #349ACF;
 }
+.message.userQuit {
+	color: #FF4646;
+}
+.message.userLeft {
+	color: #FF4646;
+}
+.message.ziggyJoined {
+	color: #1ECA49;
+}
+.message.userJoined {
+	color: #1ECA49;
+}
+.message.messageConnecting {
+	color: #EC9351;
+}
+
 </style>
