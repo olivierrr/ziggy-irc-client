@@ -55,7 +55,7 @@ tabManager.open = function(name) {
 		notifications: 0
 	}
 
-	tab.src = this.tabs[name].call(this, tab)
+	tab.src = this.tabs[name].call(null, this, tab)
 
 	this.openTabs.push(tab)
 	this.setFocus(tab.id)

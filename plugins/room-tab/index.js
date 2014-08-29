@@ -12,12 +12,10 @@ var view2 = require('./view2')
 	-rewrite
 */
 
-module.exports = function(tab) {
+module.exports = function(tabHandler, tab) {
 
-	var self = this
-
-	var document = this.dom
-	var ziggy = this.ziggy
+	var document = tabHandler.dom
+	var ziggy = tabHandler.ziggy
 
 	// templates
 	var form_template = view2
@@ -33,20 +31,20 @@ module.exports = function(tab) {
 	var mode = 0
 
 
-	this.ee.on('focus#'+tab.id, function() {
+	tabHandler.ee.on('focus#'+tab.id, function() {
 		if(mode===0) renderForm()
 		if(mode===1) {
 			renderChatRoom()
 			tab.notifications = 0
-			self.updateMenu()
+			tabHandler.updateMenu()
 		}
 	})
 
-	this.ee.on('blur#'+tab.id, function() {
+	tabHandler.ee.on('blur#'+tab.id, function() {
 		//
 	})
 
-	this.ee.on('close#'+tab.id, function() {
+	tabHandler.ee.on('close#'+tab.id, function() {
 		if(room) ziggy.leaveChannel(room, channel)
 		document.getElementById('TAB').innerHTML = ''
 		//if(channel)room.part(channel)
@@ -89,7 +87,7 @@ module.exports = function(tab) {
 			mode = 1
 			assembleMessage(channel, 'connecting...', 'messageConnecting')
 			tab.name = channel
-			self.updateMenu()
+			tabHandler.updateMenu()
 		}
 		
 		renderChatRoom()
@@ -147,7 +145,7 @@ module.exports = function(tab) {
 		}
 		if(tab.focus === false) {
 			tab.notifications += 1
-			self.updateMenu()
+			tabHandler.updateMenu()
 		}
 	}
 
