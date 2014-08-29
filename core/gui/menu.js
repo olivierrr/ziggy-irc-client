@@ -14,7 +14,6 @@ module.exports = function(tabHandler, document) {
 
 	document.getElementById('MENU').innerHTML = template(context)
 
-
 	function onClick(query, cb){
 		var elem = document.querySelectorAll(query)
 		for(var i=0; i<elem.length; i++){

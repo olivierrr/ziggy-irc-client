@@ -52,8 +52,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			else joinPM()
 		}
 
-		tab.notifications = 0
-		tabHandler.updateMenu()
+		tab.setNotifications(0)
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
 
@@ -127,7 +126,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 	*/
 	function joinPM() {
 
-		tab.name = channel = arg.nick
+		channel = arg.nick
+		tab.setName(arg.nick)
 
 		nick = arg.myNick
 
@@ -157,8 +157,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		mode = 1
 		assembleMessage(channel, 'connecting...', 'messageConnecting')
-		tab.name = channel
-		tabHandler.updateMenu()
+		tab.setName(channel)
 
 		renderChatRoom()
 
@@ -178,7 +177,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 				message: text,
 				myNick: nick
 			})
-			tabHandler.updateMenu()
 		})
 
 		.on('nick', function(oldNick, user, channels) {
@@ -230,8 +228,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			renderChatRoom()
 		}
 		if(tab.focus === false) {
-			tab.notifications += 1
-			tabHandler.updateMenu()
+			tab.setNotifications(this.notifications+1)
 		}
 	}
 }

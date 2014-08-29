@@ -47,12 +47,22 @@ tabManager.open = function(name, arg) {
 
 	var id = Math.random()
 
+	var tabHandler = this
+
 	// assemble tab
 	var tab = {
 		name: name,
 		focus: false,
 		id: id,
-		notifications: 0
+		notifications: 0,
+		setName: function(name) {
+			this.name = name
+			tabHandler.updateMenu()
+		},
+		setNotifications: function(number) {
+			this.notifications = number
+			tabHandler.updateMenu()
+		}
 	}
 
 	tab.src = this.tabs[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
