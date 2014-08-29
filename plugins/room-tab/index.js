@@ -60,6 +60,8 @@ module.exports = function(tabHandler, tab) {
 
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
+
+		document.getElementById('formNick').focus()
 	}
 	function renderChatRoom() {
 
