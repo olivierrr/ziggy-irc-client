@@ -43,7 +43,6 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 
 Ziggy_client.isConnectedToChannel = function(server, channel, nick) {
 
-	// check if already connected to server
 	for(var i=0; i<this.channels.length; i++) {
 		if(this.channels[i].settings.server === server) {
 			if(this.channels[i].settings.channels.indexOf(channel) !== -1) {

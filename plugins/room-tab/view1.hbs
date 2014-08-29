@@ -1,27 +1,34 @@
 <div id="TAB_ROOM">
-	
-	<span class="leftColumn">
-		{{#each messages}}<span class="username message {{this.flag}}">{{this.nick}}</span>{{/each}}
-	</span>
-	<span class="rightColumn">
-		{{#each messages}}<span class="text message {{this.flag}}">{{this.text}}</span>{{/each}}
-	</span>
+
+	{{#each messages}}
+		<div class="msg">
+			<span class="leftColumn">
+				<span class="username message {{this.flag}}">{{this.nick}}</span>
+			</span> 
+			<span class="rightColumn">
+				<span class="text message {{this.flag}}">{{this.text}}</span>
+			</span>
+		</div>
+	{{/each}}
 
 </div>
 
 <div id="partial_input"></div>
 
 <style>
-
+.msg {
+	word-wrap: break-word;
+	max-width: 100%;
+	float: left;
+	clear: both;
+}
 .leftColumn {
 	float: left;
     width: 150px;
-    height: 100%;
 }
 .rightColumn {
 	float: right;
     width: calc(100% - 150px);
-    height: 100%;
 }
 .message.username {
 	float: right;
@@ -30,13 +37,13 @@
 .message.text {
 	float: left;
 	clear: both;
+	width: calc(100% - 20px);
 }
 .message {
 	padding: 6px 10px;
 	color: #505050;
 	font-weight: 400;
 	font-size: 16px;
-	word-wrap: break-word;
 }
 
 #TAB_ROOM {
