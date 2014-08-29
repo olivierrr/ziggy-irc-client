@@ -29,7 +29,7 @@ module.exports = function(tabHandler, document) {
 	}
 
 	function addTab(e) {
-		tabHandler.open('room_tab')
+		tabHandler.open('room_tab', {mode:0})
 		tabHandler.updateMenu()
 	}
 

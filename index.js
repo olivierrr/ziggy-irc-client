@@ -8,7 +8,7 @@ var tabManager = Object.create(require('./core/tab-manager'))
 tabManager.init({
 
 	// plugins
-	tabs: [{ src: room_tab, name: 'room_tab'}],
+	tabs: [room_tab],
 
 	// dom handle
 	dom: document

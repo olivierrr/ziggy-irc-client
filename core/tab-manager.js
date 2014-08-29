@@ -40,7 +40,7 @@ tabManager.register = function(tab) {
 /*
 	creates tab instance
 */
-tabManager.open = function(name) {
+tabManager.open = function(name, arg) {
 
 	// if tab doesn't exist
 	if(!this.tabs[name]) return
@@ -55,7 +55,7 @@ tabManager.open = function(name) {
 		notifications: 0
 	}
 
-	tab.src = this.tabs[name].call(null, this, tab)
+	tab.src = this.tabs[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	this.openTabs.push(tab)
 	this.setFocus(tab.id)

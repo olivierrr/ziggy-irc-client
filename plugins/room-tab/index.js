@@ -11,7 +11,9 @@ var view2 = require('./view2')
 
 */
 
-module.exports = function(tabHandler, tab) {
+module.exports.name = 'room_tab'
+
+module.exports.src = function(tabHandler, tab, arg) {
 
 	var document = tabHandler.dom
 	var ziggy = tabHandler.ziggy
@@ -24,10 +26,10 @@ module.exports = function(tabHandler, tab) {
 	var nick, server, channel, messages = [], inputVal, input
 
 	// dom nodes
-	var chatbox, room
+	var chatbox, room, target
 
-	// mode0 = form // mode1 = chatroom
-	var mode = 0
+	// mode0 = form // mode1 = chatroom // mode 2 = pm
+	var mode = arg.mode || 0
 
 	var renderForm_context = {}
 
@@ -41,12 +43,20 @@ module.exports = function(tabHandler, tab) {
 			tab.notifications = 0
 			tabHandler.updateMenu()
 		}
+		if(mode===2) {
+			renderChatRoom()
+			if(room) return
+			else joinPM()
+		}
 	})
 	tabHandler.ee.on('blur#'+tab.id, function() {
 		//
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
-		if(room) ziggy.leaveChannel(room, channel)
+
+		if(mode===1 && room) ziggy.leaveChannel(room, channel)
+		if(mode===2 && room) ziggy.leavePm(arg.nick)
+
 		document.getElementById('TAB').innerHTML = ''
 	})
 
@@ -92,7 +102,7 @@ module.exports = function(tabHandler, tab) {
 
 		if(e.keyCode !== 13) return
 
-		room.say(room.settings.channels[room.settings.channels.indexOf(channel)], input.value)
+		room.say(target, input.value)
 		assembleMessage(nick, input.value, 'isUser')
 
 		input.value = ''
@@ -101,6 +111,23 @@ module.exports = function(tabHandler, tab) {
 
 		if(e.keyCode !== 13) return
 		roomSubmit()
+	}
+
+	function joinPM() {
+
+		tab.name = arg.nick
+		target = arg.nick
+		nick = arg.myNick
+
+		room = arg.room
+		
+		assembleMessage(arg.nick, arg.message)
+
+		room.on('pm', function(user, text) {
+			if(user.nick === arg.nick) {
+				assembleMessage(user.nick, text)
+			}
+		})
 	}
 
 	/*
@@ -136,10 +163,19 @@ module.exports = function(tabHandler, tab) {
 		})
 
 		.on('pm', function(user, text) {
-			console.log('pm')
+			if(ziggy.isPm(user.nick)) return
+			tabHandler.open('room_tab', {
+				mode: 2,
+				room: room,
+				nick: user.nick,
+				message: text,
+				myNick: nick
+			})
+			tabHandler.updateMenu()
 		})
 
 		.on('nick', function(oldNick, user, channels) {
+			if(channels.indexOf(channel) === -1) return
 			assembleMessage(channels, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
@@ -158,7 +194,8 @@ module.exports = function(tabHandler, tab) {
 			assembleMessage(channel, user.nick + ' has left', 'userLeft')
 		})
 
-		.on('quit', function(user, reason) {
+		.on('quit', function(user, reason, channels) {
+			if(channels.indexOf(channel) === -1) return
 			assembleMessage(channel, user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
@@ -171,6 +208,8 @@ module.exports = function(tabHandler, tab) {
 			if(chan !== channel) return
 			console.log('topic')
 		})
+
+		target = room.settings.channels[room.settings.channels.indexOf(channel)] //
 	}
 
 	function assembleMessage(nick, text, flag) {

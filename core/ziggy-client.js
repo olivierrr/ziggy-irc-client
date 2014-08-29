@@ -6,14 +6,15 @@ var Ziggy = require('ziggy')
 
 	todo:
 	- should be a 'plugin'
-	- join should check if already connected to server
 */
 
 var Ziggy_client = {}
 
-Ziggy_client.init = function(settings) {
+Ziggy_client.init = function(tabManager) {
 
+	this.tabManager = tabManager
 	this.channels = []
+	this.pm = {}
 }
 
 
@@ -52,6 +53,21 @@ Ziggy_client.isConnectedToChannel = function(server, channel, nick) {
 	}
 
 	return false
+}
+
+Ziggy_client.isPm = function(name) {
+	if(this.pm[name]) return true
+
+	else {
+		this.pm[name] = {}
+		return false
+	}
+}
+
+Ziggy_client.leavePm = function(name) {
+
+	if(!this.pm[name]) return
+	delete this.pm[name]
 }
 
 Ziggy_client.leaveChannel = function(ziggy, room) {

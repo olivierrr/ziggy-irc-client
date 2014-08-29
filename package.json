@@ -4,12 +4,7 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build-osx" : "nwbuild -p osx ./",
-    "build-win" : "nwbuild -p win ./",
-    "build-linux32" : "nwbuild -p linux32 ./",
-    "build-linux64" : "nwbuild -p linux64 ./",
-    "launch" : "nwbuild -r ./"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "olivierrr",
   "license": "MIT",
@@ -23,7 +18,7 @@
   "window": {
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
-    "toolbar": false,
+    "toolbar": true,
     "frame": true,
     "width": 1000,
     "height": 700,
