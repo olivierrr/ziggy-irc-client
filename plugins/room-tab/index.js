@@ -47,7 +47,6 @@ module.exports = function(tabHandler, tab) {
 	tabHandler.ee.on('close#'+tab.id, function() {
 		if(room) ziggy.leaveChannel(room, channel)
 		document.getElementById('TAB').innerHTML = ''
-		//if(channel)room.part(channel)
 	})
 
 	function renderForm() {
@@ -83,6 +82,11 @@ module.exports = function(tabHandler, tab) {
 
 	function joinRoom(nick, server, channel) {
 
+		if(ziggy.isConnectedToChannel(server, channel)) {
+			console.log('already connected to this channel')
+			return
+		}
+
 		if(mode===0) {
 			mode = 1
 			assembleMessage(channel, 'connecting...', 'messageConnecting')
@@ -94,7 +98,8 @@ module.exports = function(tabHandler, tab) {
 
 		room = ziggy.joinChannel(server, channel, nick)
 
-		.on('message', function(user, channel, text) {
+		.on('message', function(user, chan, text) {
+			if(chan !== channel) return
 			assembleMessage(user.nick, text)
 		})
 
@@ -106,15 +111,18 @@ module.exports = function(tabHandler, tab) {
 			assembleMessage(channels, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
-		.on('join', function(channel, user) {
+		.on('join', function(chan, user) {
+			if(chan !== channel) return
 			assembleMessage(channel, user.nick + ' has joined', 'userJoined')
 		})
 
-		.on('ziggyjoin', function(channel, user) {
-			assembleMessage(channel, 'connected', 'ziggyJoined')
+		.on('ziggyjoin', function(chan, user) {
+			if(chan !== channel) return
+			assembleMessage(chan, 'connected', 'ziggyJoined')
 		})
 
-		.on('part', function(user, channel, reason) {
+		.on('part', function(user, chan, reason) {
+			if(chan !== channel) return
 			assembleMessage(channel, user.nick + ' has left', 'userLeft')
 		})
 
@@ -122,11 +130,13 @@ module.exports = function(tabHandler, tab) {
 			assembleMessage(channel, user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
-		.on('kick', function(kicked, kickedBy, channel, reason) {
+		.on('kick', function(kicked, kickedBy, chan, reason) {
+			if(chan !== channel) return
 			assembleMessage(channel, kicked + ' has been kicked by ' + kickedBy + 'for ' + reason, 'userKicked')
 		})
 
-		.on('topic', function(channel, topic, nick) {
+		.on('topic', function(chan, topic, nick) {
+			if(chan !== channel) return
 			console.log('topic')
 		})
 	}
@@ -153,7 +163,7 @@ module.exports = function(tabHandler, tab) {
 
 		if(e.keyCode !== 13) return
 
-		room.say(room.settings.channels[0], input.value)
+		room.say(room.settings.channels[room.settings.channels.indexOf(channel)], input.value)
 		assembleMessage(nick, input.value)
 
 		input.value = ''

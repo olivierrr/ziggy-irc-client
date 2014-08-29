@@ -19,6 +19,15 @@ Ziggy_client.init = function(settings) {
 
 Ziggy_client.joinChannel = function(server, channel, nick) {
 
+	// check if already connected to server
+	for(var i=0; i<this.channels.length; i++) {
+		if(this.channels[i].settings.server === server) {
+			this.channels[i].join([channel])
+			return this.channels[i]
+		}
+	}
+
+	// new ziggy instance
 	var chan = Ziggy({
 		server: server,
 		nickname: nick,
@@ -28,8 +37,22 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 	chan.start()
 
 	this.channels.push(chan)
-	console.log(this.channels)
+
 	return chan
+}
+
+Ziggy_client.isConnectedToChannel = function(server, channel, nick) {
+
+	// check if already connected to server
+	for(var i=0; i<this.channels.length; i++) {
+		if(this.channels[i].settings.server === server) {
+			if(this.channels[i].settings.channels.indexOf(channel) !== -1) {
+				return true
+			}
+		}
+	}
+
+	return false
 }
 
 Ziggy_client.leaveChannel = function(instance, room) { 
