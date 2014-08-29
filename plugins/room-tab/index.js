@@ -63,7 +63,7 @@ module.exports = function(tabHandler, tab) {
 	}
 	function renderChatRoom() {
 
-		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id})
+		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id, nick: nick})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')

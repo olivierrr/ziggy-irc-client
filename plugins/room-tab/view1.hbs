@@ -13,6 +13,7 @@
 
 </div>
 
+<span class="userID">{{nick}}</span>
 <input class="chat_input"></input>
 
 <style>
@@ -55,6 +56,19 @@
 	padding-top: 50px;
 }
 
+.userID {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 140px;
+	height: 40px;
+	line-height: 40px;
+	text-align: right;
+	color: #4A4A4A;
+	border-top: solid 1px #D4D4D4;
+	border-right: solid 1px #E3E3E3;
+}
+
 /*
 	main input
 */
@@ -62,8 +76,8 @@
 	box-sizing: border-box;
 	position: absolute;
 	bottom: 0;
-	left:0;
-	width: 100%;
+	right:0;
+	width: calc(100% - 140px);
 	height: 40px;
 	padding: 0 20px;
 	border: 0;
