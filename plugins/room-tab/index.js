@@ -22,11 +22,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var form_template = view2
 	var room_template = view1
 
-	// room misc
-	var nick, server, channel, messages = [], inputVal, input
+	// connection info
+	var nick, server, channel
+
+	var messages = [], inputVal, input, room
 
 	// dom nodes
-	var chatbox, room, target
+	var chatbox
 
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
@@ -37,25 +39,32 @@ module.exports.src = function(tabHandler, tab, arg) {
 		tab events
 	*/
 	tabHandler.ee.on('focus#'+tab.id, function() {
-		if(mode===0) renderForm()
+
+		if(mode===0) {
+			renderForm()
+		}
 		if(mode===1) {
 			renderChatRoom()
-			tab.notifications = 0
-			tabHandler.updateMenu()
 		}
 		if(mode===2) {
 			renderChatRoom()
 			if(room) return
 			else joinPM()
 		}
-	})
-	tabHandler.ee.on('blur#'+tab.id, function() {
-		//
+
+		tab.notifications = 0
+		tabHandler.updateMenu()
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
 
-		if(mode===1 && room) ziggy.leaveChannel(room, channel)
-		if(mode===2 && room) ziggy.leavePm(arg.nick)
+		if(mode===1 && room) {
+			ziggy.leaveChannel(room, channel)
+			messages = []
+		}
+		if(mode===2 && room) {
+			ziggy.leavePm(arg.nick)
+			messages = []
+		}
 
 		document.getElementById('TAB').innerHTML = ''
 	})
@@ -102,7 +111,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		if(e.keyCode !== 13) return
 
-		room.say(target, input.value)
+		room.say(channel, input.value)
 		assembleMessage(nick, input.value, 'isUser')
 
 		input.value = ''
@@ -113,12 +122,16 @@ module.exports.src = function(tabHandler, tab, arg) {
 		roomSubmit()
 	}
 
+	/*
+		actions
+	*/
 	function joinPM() {
 
-		tab.name = arg.nick
-		target = arg.nick
+		tab.name = channel = arg.nick
+
 		nick = arg.myNick
 
+		// ziggy instance
 		room = arg.room
 		
 		assembleMessage(arg.nick, arg.message)
@@ -130,9 +143,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		})
 	}
 
-	/*
-		actions
-	*/
 	function joinRoom(nick, server, channel) {
 
 		if(ziggy.isConnectedToChannel(server, channel)) {
@@ -141,18 +151,15 @@ module.exports.src = function(tabHandler, tab, arg) {
 				message: 'already connected to ' + channel + ' on ' + server,
 				flag: 'error'
 			}
-
 			renderForm()
 			return
 		}
 
-		if(mode===0) {
-			mode = 1
-			assembleMessage(channel, 'connecting...', 'messageConnecting')
-			tab.name = channel
-			tabHandler.updateMenu()
-		}
-		
+		mode = 1
+		assembleMessage(channel, 'connecting...', 'messageConnecting')
+		tab.name = channel
+		tabHandler.updateMenu()
+
 		renderChatRoom()
 
 		room = ziggy.joinChannel(server, channel, nick)
@@ -208,8 +215,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if(chan !== channel) return
 			console.log('topic')
 		})
-
-		target = room.settings.channels[room.settings.channels.indexOf(channel)] //
 	}
 
 	function assembleMessage(nick, text, flag) {

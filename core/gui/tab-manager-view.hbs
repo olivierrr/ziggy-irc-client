@@ -1,54 +1,70 @@
 <div class="menu_template bar">
 	{{#each openTabs}}
-	<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
-	{{this.name}}
-	<span closeTab="{{this.id}}" class="subbutton close"> x </span>
-	<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>
+	<span class="tab">
+		<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
+		{{this.name}}
+		<span closeTab="{{this.id}}" class="subbutton {{#if this.focus}} focus {{/if}} close"> x </span>
+		{{#if this.notifications}}<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>{{/if}}
+		</span>
 	</span>
 	{{/each}}
 	<span class="button add" add="" >+</span>
 </div>
 <style>
+	.tab {
+		-webkit-app-region: no-drag;
+	}
 	.subbutton {
 		color: white;
 		width: 15px;
-		height 15px;
+		height 10px;
 		position: absolute;
 		right: 0px;
 		padding-bottom: 5px;
-		line-height: 15px;
+		line-height: 10px;
 		text-align: center;
+		-webkit-app-region: no-drag;
 	}
 	.subbutton.close {
-		background-color: #E65B5B;
+		color: #BBBBBB;
 		top: 0px;
 	}
+	.subbutton.close.focus {
+		color: #929292;
+	}
 	.subbutton.close:hover {
+		color: white;
 		background-color: #E43A13;
 	}
 	.subbutton.alert {
-		top: 20px;
+		color: black;
+		top: 25px;
 	}
 	.bar {
-		background-color: #929292;
+		background-color: #B3B3B3;
 		height: 40px;
 		color: white;
 		-webkit-user-select: none;
+		-webkit-app-region: drag;
 	}
 	.button {
 		position: relative;
-		display: inline-block;
-		background-color: #D0D0D0;
+		float: left;
+		margin-left: 1px;
+		background: white;
+		color: #ABABAB;
 		line-height: 40px;
-		height: 100%;
-		padding: 0 5px;
-		padding-right: 20px;
+		margin-top: 1px;
+		height: 38px;
+		padding: 0 10px;
 		cursor: pointer;
+		-webkit-app-region: no-drag;
 	}
 	.button.focus {
-		color: #464646;
-		font-weight: 500;
+		color: #525252;
+		font-weight: 400;
 		background-color: white;
+		border-bottom: solid 1px #929292;
 	}
 	.button.focus:hover {
 		color: #373737;
@@ -59,9 +75,9 @@
 		background-color: #4E4E4E;
 	}
 	.button.add {
-		margin-left: 5px;
-		padding: 0 16px;
-		background-color: #7D7D7D;
+		margin-left: 3px;
+		padding: 0 15px;
+		background-color: white;
 	}
 	.button.add:hover {
 		background-color: #4E4E4E;
