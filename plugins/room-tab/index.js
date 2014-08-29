@@ -29,6 +29,8 @@ module.exports = function(tabHandler, tab) {
 	// mode0 = form // mode1 = chatroom
 	var mode = 0
 
+	var renderForm_context = {}
+
 	/*
 		tab events
 	*/
@@ -53,7 +55,9 @@ module.exports = function(tabHandler, tab) {
 	*/
 	function renderForm() {
 
-		document.getElementById('TAB').innerHTML = form_template()
+		document.getElementById('TAB').innerHTML = form_template(renderForm_context)
+		renderForm_context = {}
+
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
 	}
@@ -83,7 +87,13 @@ module.exports = function(tabHandler, tab) {
 	function joinRoom(nick, server, channel) {
 
 		if(ziggy.isConnectedToChannel(server, channel)) {
-			console.log('already connected to this channel')
+
+			renderForm_context.alert = {
+				message: 'already connected to ' + channel + ' on ' + server,
+				flag: 'error'
+			}
+
+			renderForm()
 			return
 		}
 
