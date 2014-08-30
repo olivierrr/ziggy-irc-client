@@ -190,6 +190,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function joinRoom(nick, server, channel) {
 
+		/*
+			returns if channel is already open on another tab
+		*/
 		if(ziggy.isConnectedToChannel(server, channel)) {
 
 			renderForm_context.alert = {

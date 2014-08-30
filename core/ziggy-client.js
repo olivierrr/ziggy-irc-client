@@ -59,11 +59,11 @@ Ziggy_client.joinChannel = function(server, channel) {
 
 Ziggy_client.isConnectedToChannel = function(server, channel) {
 
-	for(var i=0; i<this.servers.length; i++) {
-		if(this.servers[i].settings.server === server) {
-			if(this.servers[i].settings.server.indexOf(channel) !== -1) {
-				return true
-			}
+	var _servers = this.servers
+
+	for(var i=0; i<_servers.length; i++) {
+		if(_servers[i].settings.server === server && _servers[i].settings.channels.indexOf(channel) !== -1) {
+			return true
 		}
 	}
 	return false

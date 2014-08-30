@@ -19,7 +19,7 @@
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
     "toolbar": false,
-    "frame": true,
+    "frame": false,
     "width": 1000,
     "height": 700,
     "position": "mouse",

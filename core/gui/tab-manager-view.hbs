@@ -1,103 +1,104 @@
-<div class="bar">
+<div class="menu">
 
 	{{#each openTabs}}
-		<span class=" button {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
-		{{this.name}}
+		<span class=" tab {{#if this.focus}} focus {{/if}}" tab="{{this.id}}">
 
-		{{#if this.focus}}
-		<span closeTab="{{this.id}}" class="subbutton close"> x </span>
-		{{/if}}
+			{{this.name}}
 
-		{{#if this.notifications}}<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>{{/if}}
+			{{#if this.focus}}
+			<span closeTab="{{this.id}}" class="subbutton close"> x </span>
+			{{/if}}
+
+			{{#if this.notifications}}
+				<span class="subbutton alert" tab="{{this.id}}"> {{this.notifications}} </span>
+			{{/if}}
 
 		</span>
 	{{/each}}
 
-	<span class="button add" add="" >+</span>
+	<span class="tab add" add="" >+</span>
+
 </div>
+
 <style>
 
 /*
 	container
 */
-.bar {
-	background-color: #BDBDBD;
-	height: 40px;
+.menu {
+	height: 39px;
 	-webkit-user-select: none;
 	-webkit-app-region: drag;
+	border-bottom: solid 1px #BDBDBD;
 }
 
 /*
-	button = each clickable tab
+	tabs
 */
-.button {
+.menu .tab {
 	position: relative;
 	float: left;
-	background: white;
+	background-color: white;
 	color: #ABABAB;
-	height: 38px;
+	height: 39px;
 	padding: 0 10px;
-	margin-top: 1px;
-	margin-right: 1px;
 	line-height: 40px;
 	cursor: pointer;
-	font-size: 18px;
-	-webkit-app-region: no-drag;
-}
-.button.focus {
-	color: #525252;
+	font-size: 20px;
 	font-weight: 400;
-	background-color: white;
+	-webkit-app-region: no-drag;
+	border-bottom: solid 1px #BDBDBD;
+	border-right: solid 1px #BDBDBD;
+}
+.menu .tab:hover {
+	color: #969696;
+}
+
+.menu .tab.focus {
+	color: #525252;
 	border-bottom: solid 1px white;
 }
-.button.focus:hover {
+.menu .tab.focus:hover {
 	color: #373737;
-	background-color: white;
 }
-.button:hover {
-	color: white;
-	background-color: #4E4E4E;
-}
-.button.add {
+
+.menu .tab.add {
 	padding: 0 15px;
-	background-color: white;
+	border-bottom: solid 1px #BDBDBD;
 }
-.button.add:hover {
+.menu .tab.add:hover {
 	background-color: #4E4E4E;
 }
 
 /*
-	buttons inside buttons, yo
+	buttons inside tab
 */
-.subbutton {
+.menu .subbutton {
 	font-size: 12px;
-	width: 15px;
-	height 10px;
-	position: absolute;
-	right: 0px;
-	padding-bottom: 5px;
-	line-height: 10px;
-	text-align: center;
 	font-weight: 500;
+	line-height: 15px;
+	text-align: center;
+	width: 15px;
+	height: 15px;
+	position: absolute;
 	-webkit-app-region: no-drag;
 }
-.subbutton.close {
-	color: #929292;
+.menu .subbutton.close {
+	left: 0;
 	top: 0px;
+	color: #929292;
 }
-.subbutton.close:hover {
+.menu .subbutton.close:hover {
 	color: white;
 	background-color: #E43A13;
 }
-.subbutton.alert {
-	padding-top: 5px;
-	padding-left: 3px;
-	padding-right: 3px;
+.menu .subbutton.alert {
 	right: 10px;
-	background-color: #FF4545;
+	background-color: white;
 	border-radius: 50%;
-	color: white;
-	top: 30px;
+	color: #ABABAB;
+	top: 31px;
+	border: solid 1px #BDBDBD;
 }
 
 </style>

@@ -8,12 +8,9 @@ var view = require('./tab-manager-view')
 
 module.exports = function(tabHandler, document) {
 
-	var template = view
+	document.getElementById('MENU').innerHTML = view({ openTabs: tabHandler.openTabs })
 
-	var context = { openTabs: tabHandler.openTabs }
-
-	document.getElementById('MENU').innerHTML = template(context)
-
+	// binds function to elems click event
 	function onClick(query, cb){
 		var elem = document.querySelectorAll(query)
 		for(var i=0; i<elem.length; i++){
@@ -21,25 +18,24 @@ module.exports = function(tabHandler, document) {
 		}
 	}
 
-	function tabClick(e) {
+	function focusTab(e) {
 		var id = e.target.getAttribute('tab')
 		tabHandler.setFocus(id)
 		tabHandler.updateMenu()
 	}
 
-	function addTab(e) {
+	function newTab(e) {
 		tabHandler.open('room_tab', {mode:0})
 		tabHandler.updateMenu()
 	}
 
-	function tabClose(e) {
+	function closeTab(e) {
 		var id = e.target.getAttribute('closeTab')
 		tabHandler.close(id)
 		tabHandler.updateMenu()
 	}
 
-	onClick('[closeTab]', tabClose)
-	onClick('[tab]', tabClick)
-	onClick('[add]', addTab)
-
+	onClick('[closeTab]', closeTab)
+	onClick('[tab]', focusTab)
+	onClick('[add]', newTab)
 }
