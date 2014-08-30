@@ -35,16 +35,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
 
-	var renderForm_context = {}
-	renderForm_context.nick = nick
-
 	/*
 		tab events
 	*/
 	tabHandler.ee.on('focus#'+tab.id, function() {
 
-		// clear notifications
-		tab.setNotifications(0)
+		tab.clearNotifications()
 
 		if(mode===0) {
 			renderForm()
@@ -59,9 +55,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
-
-		// clear notifications
-		tab.setNotifications(0)
 
 		if(mode===1 && room) {
 			ziggy.leaveChannel(room, channel)
@@ -78,10 +71,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 	/*
 		render templates
 	*/
-	function renderForm() {
+	function renderForm(alert) {
 
-		document.getElementById('TAB').innerHTML = form_template(renderForm_context)
-		renderForm_context.alert = {}
+		var context = {
+			nick: ziggy.getNick(),
+			alert: alert
+		}
+
+		document.getElementById('TAB').innerHTML = form_template(context)
 
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
@@ -198,11 +195,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 		*/
 		if(ziggy.isConnectedToChannel(server, channel)) {
 
-			renderForm_context.alert = {
+			var alert = {
 				message: 'already connected to ' + channel + ' on ' + server,
 				flag: 'error'
 			}
-			renderForm()
+			renderForm(alert)
 			return
 		}
 
@@ -222,6 +219,10 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage(user.nick, text)
 		})
 
+		/*
+			if is new PM
+			open new room and pass object
+		*/
 		.on('pm', function(user, text) {
 			if(ziggy.isPm(user.nick)) return
 			tabHandler.open('room_tab', {
@@ -299,8 +300,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			renderChatRoom()
 		}
 		if(tab.focus === false) {
-			var count = tab.notifications + 1
-			tab.setNotifications(count)
+			tab.setNotification()
 		}
 	}
 }

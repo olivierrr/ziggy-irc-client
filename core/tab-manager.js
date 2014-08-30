@@ -75,8 +75,12 @@ tabManager.open = function(name, arg) {
 			this.name = name
 			tabHandler.updateMenu()
 		},
-		setNotifications: function(number) {
-			this.notifications = number
+		setNotification: function(number) {
+			this.notifications += number || 1
+			tabHandler.updateMenu()
+		},
+		clearNotifications: function() {
+			this.notifications = 0
 			tabHandler.updateMenu()
 		}
 	}
