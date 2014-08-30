@@ -33,7 +33,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
 
-	var renderForm_context = {}
+	var renderForm_context = { nick: ziggy.nick}
 
 	/*
 		tab events
@@ -74,7 +74,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	function renderForm() {
 
 		document.getElementById('TAB').innerHTML = form_template(renderForm_context)
-		renderForm_context = {}
+		renderForm_context.alert = {}
 
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
@@ -83,7 +83,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	}
 	function renderChatRoom() {
 
-		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id, nick: nick})
+		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id, nick: ziggy.nick})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')
@@ -159,6 +159,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 		assembleMessage(channel, 'connecting...', 'messageConnecting')
 		tab.setName(channel)
 
+		ziggy.setNick(nick)
+		nick = ziggy.getNick()
+
 		renderChatRoom()
 
 		room = ziggy.joinChannel(server, channel, nick)
@@ -181,7 +184,15 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		.on('nick', function(oldNick, user, channels) {
 			if(channels.indexOf(channel) === -1) return
-			assembleMessage(channels, oldNick + ' is now ' + user.nick, 'userNickChange')
+
+			// if we change nick
+			if(oldNick === nick) {
+				room.on('ziggyjoin', function() {
+					nick = user.nick
+				})
+			}
+
+			assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
 		.on('join', function(chan, user) {

@@ -10,15 +10,27 @@ var Ziggy = require('ziggy')
 
 var Ziggy_client = {}
 
-Ziggy_client.init = function(tabManager) {
+Ziggy_client.init = function() {
 
-	this.tabManager = tabManager
+	this.nick = "ziggy_client"
 	this.channels = []
 	this.pm = {}
 }
 
+// todo: validate
+Ziggy_client.setNick = function(nick) {
+	this.nick = nick
 
-Ziggy_client.joinChannel = function(server, channel, nick) {
+	for(var i=0; i<this.channels.length; i++) {
+		this.channels[i].nick(nick)
+	}
+}
+
+Ziggy_client.getNick = function() {
+	return this.nick
+}
+
+Ziggy_client.joinChannel = function(server, channel) {
 
 	// check if already connected to server
 	for(var i=0; i<this.channels.length; i++) {
@@ -31,7 +43,7 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 	// new ziggy instance
 	var chan = Ziggy({
 		server: server,
-		nickname: nick,
+		nickname: this.nick,
 		channels: [channel]
 	})
 
@@ -42,7 +54,7 @@ Ziggy_client.joinChannel = function(server, channel, nick) {
 	return chan
 }
 
-Ziggy_client.isConnectedToChannel = function(server, channel, nick) {
+Ziggy_client.isConnectedToChannel = function(server, channel) {
 
 	for(var i=0; i<this.channels.length; i++) {
 		if(this.channels[i].settings.server === server) {
