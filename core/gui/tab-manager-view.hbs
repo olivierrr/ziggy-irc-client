@@ -9,6 +9,7 @@
 		{{/if}}
 
 		{{#if this.notifications}}<span tab="{{this.id}}" class="subbutton alert"> {{this.notifications}} </span>{{/if}}
+
 		</span>
 	{{/each}}
 
@@ -69,7 +70,7 @@
 	buttons inside buttons, yo
 */
 .subbutton {
-	color: white;
+	font-size: 12px;
 	width: 15px;
 	height 10px;
 	position: absolute;
@@ -77,6 +78,7 @@
 	padding-bottom: 5px;
 	line-height: 10px;
 	text-align: center;
+	font-weight: 500;
 	-webkit-app-region: no-drag;
 }
 .subbutton.close {
@@ -88,8 +90,14 @@
 	background-color: #E43A13;
 }
 .subbutton.alert {
-	color: #333333;
-	top: 25px;
+	padding-top: 5px;
+	padding-left: 3px;
+	padding-right: 3px;
+	right: 10px;
+	background-color: #FF4545;
+	border-radius: 50%;
+	color: white;
+	top: 30px;
 }
 
 </style>

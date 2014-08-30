@@ -33,7 +33,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
 
-	var renderForm_context = { nick: ziggy.nick}
+	var renderForm_context = {}
+	renderForm_context.nick = ziggy.nick
 
 	/*
 		tab events
@@ -78,8 +79,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
-
-		document.getElementById('formNick').focus()
 	}
 	function renderChatRoom() {
 
@@ -295,7 +294,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 			renderChatRoom()
 		}
 		if(tab.focus === false) {
-			tab.setNotifications(this.notifications+1)
+			var count = tab.notifications + 1
+			tab.setNotifications(count)
 		}
 	}
 }
