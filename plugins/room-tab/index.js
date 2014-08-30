@@ -23,7 +23,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var room_template = view1
 
 	// connection info
-	var nick, server, channel
+	var nick, server, channel, isConnected = false
 
 	var messages = [], inputVal, input, room
 
@@ -127,7 +127,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	function joinPM() {
 
 		channel = arg.nick
-		tab.setName(arg.nick)
+		tab.setName('@' + arg.nick)
 
 		nick = arg.myNick
 
@@ -137,8 +137,54 @@ module.exports.src = function(tabHandler, tab, arg) {
 		assembleMessage(arg.nick, arg.message)
 
 		room.on('pm', function(user, text) {
-			if(user.nick === arg.nick) {
+			if(user.nick === channel) {
 				assembleMessage(user.nick, text)
+			}
+		})
+
+		room.on('ziggyjoin', function(chan, user) {
+			if(chan !== channel) return
+			isConnected = true
+			assembleMessage(chan, 'connected', 'ziggyJoined')
+
+		})
+
+		/*
+			when PM session changes nick
+			update ziggy.pm so we don't open a new room
+		*/
+		room.on('nick', function(oldNick, user) {
+
+			// if we change nick
+			if(oldNick === nick) {
+				if(isConnected) {
+					nick = user.nick
+					assembleMessage('', 'you are now' + user.nick, 'userNickChange')
+				}
+				else {
+					room.on('ziggyjoin', function() {
+						nick = user.nick
+						assembleMessage('', 'you are now' + user.nick, 'userNickChange')
+					})
+				}
+			}
+
+			if(oldNick === channel) {
+
+				if(isConnected) nick = user.nick
+				else {
+					room.on('ziggyjoin', function() {
+						nick = user.nick
+					})
+				}
+
+				delete ziggy.pm[channel]
+
+				channel = user.nick
+
+				ziggy.pm[channel] = {}
+
+				assembleMessage(oldNick, ' is now ' + user.nick, 'userNickChange')
 			}
 		})
 	}
@@ -187,12 +233,21 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			// if we change nick
 			if(oldNick === nick) {
-				room.on('ziggyjoin', function() {
-					nick = user.nick
-				})
-			}
 
-			assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
+				if(isConnected) {
+					nick = user.nick
+					assembleMessage('channel', oldNick + ' is now ' + user.nick, 'userNickChange')
+				}
+				else {
+					room.on('ziggyjoin', function() {
+						nick = user.nick
+						assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
+					})
+				}
+				
+			}
+			else assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
+			
 		})
 
 		.on('join', function(chan, user) {
@@ -202,6 +257,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
+			isConnected = true
 			assembleMessage(chan, 'connected', 'ziggyJoined')
 		})
 
