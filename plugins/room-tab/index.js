@@ -34,6 +34,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
+	setMode(mode)
 
 	/*
 		tab events
@@ -50,8 +51,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 		if(mode===2) {
 			renderChatRoom()
-			if(room) return
-			else joinPM()
 		}
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
@@ -106,7 +105,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
 		channel = document.getElementById('formChannel').value || '#testingbot'
 
-		joinRoom(nick, server, channel)
+		setMode(1)
 	}
 	function chatInput(e) {
 
@@ -124,17 +123,60 @@ module.exports.src = function(tabHandler, tab, arg) {
 	}
 
 	/*
+		mode 'initializer'
+	*/
+	function setMode(newMode) {
+
+		if(newMode===0) {
+			mode = 0
+		}
+		if(newMode===1) {
+
+			/*
+				returns if channel is already open on another tab
+			*/
+			if(ziggy.isConnectedToChannel(server, channel)) {
+
+				var alert = {
+					message: 'already connected to ' + channel + ' on ' + server,
+					flag: 'error'
+				}
+				renderForm(alert)
+				return
+			}
+
+			mode = 1
+
+			assembleMessage(channel, 'connecting...', 'messageConnecting')
+			tab.setName(channel)
+
+			ziggy.setNick(nick)
+			nick = ziggy.getNick()
+
+			renderChatRoom()
+			joinChannel(nick, server, channel)
+		}
+		if(newMode===2) {
+
+			mode = 2
+
+			channel = arg.nick
+			tab.setName('@' + arg.nick)
+
+			// ziggy instance
+			room = arg.room
+
+			assembleMessage(arg.nick, arg.message)
+
+			joinPM()
+		}
+	}
+
+
+	/*
 		actions
 	*/
 	function joinPM() {
-
-		channel = arg.nick
-		tab.setName('@' + arg.nick)
-
-		// ziggy instance
-		room = arg.room
-		
-		assembleMessage(arg.nick, arg.message)
 
 		room.on('pm', function(user, text) {
 			if(user.nick === channel) {
@@ -188,29 +230,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		})
 	}
 
-	function joinRoom(nick, server, channel) {
-
-		/*
-			returns if channel is already open on another tab
-		*/
-		if(ziggy.isConnectedToChannel(server, channel)) {
-
-			var alert = {
-				message: 'already connected to ' + channel + ' on ' + server,
-				flag: 'error'
-			}
-			renderForm(alert)
-			return
-		}
-
-		mode = 1
-		assembleMessage(channel, 'connecting...', 'messageConnecting')
-		tab.setName(channel)
-
-		ziggy.setNick(nick)
-		nick = ziggy.getNick()
-
-		renderChatRoom()
+	function joinChannel(nick, server, channel) {
 
 		room = ziggy.joinChannel(server, channel, nick)
 
