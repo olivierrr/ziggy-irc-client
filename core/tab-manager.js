@@ -85,6 +85,11 @@ tabManager.open = function(name, arg) {
 		}
 	}
 
+	// clear notifications on focus
+	this.ee.on('focus#'+tab.id, function() {
+		tab.clearNotifications()
+	})
+
 	tab.src = this.plugins[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	this.openTabs.push(tab)

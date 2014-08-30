@@ -18,19 +18,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var document = tabHandler.dom
 	var ziggy = tabHandler.ziggy
 
-	// templates
-	var form_template = view2
-	var room_template = view1
-
 	// connection info
-	var nick, server, channel, isConnected = false
-
-	nick = ziggy.getNick()
+	var server, channel
 
 	var messages = [], inputVal, room
 
 	// dom nodes
-	var chatbox, input
+	var input
 
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
@@ -40,8 +34,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		tab events
 	*/
 	tabHandler.ee.on('focus#'+tab.id, function() {
-
-		tab.clearNotifications()
 
 		if(mode===0) {
 			renderForm()
@@ -77,14 +69,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 			alert: alert
 		}
 
-		document.getElementById('TAB').innerHTML = form_template(context)
+		document.getElementById('TAB').innerHTML = view2(context)
 
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
 	}
 	function renderChatRoom() {
 
-		document.getElementById('TAB').innerHTML = room_template({messages: messages, id: tab.id, nick: ziggy.nick})
+		document.getElementById('TAB').innerHTML = view1({messages: messages, id: tab.id, nick: ziggy.getNick()})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')
@@ -93,7 +85,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		input.focus()
 		input.addEventListener('keydown', chatInput, false)
 
-		chatbox = document.getElementById('TAB_ROOM')
+		var chatbox = document.getElementById('TAB_ROOM')
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 
@@ -101,9 +93,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 		template events
 	*/
 	function roomSubmit() {
-		nick = document.getElementById('formNick').value || 'ziggyClient'
+		var nick = document.getElementById('formNick').value || 'ziggyClient'
 		server = document.getElementById('formServer').value || 'irc.freenode.net'
 		channel = document.getElementById('formChannel').value || '#testingbot'
+
+		ziggy.setNick(nick)
 
 		setMode(1)
 	}
@@ -112,7 +106,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		if(e.keyCode !== 13) return
 
 		room.say(channel, input.value)
-		assembleMessage(nick, input.value, 'isUser')
+		assembleMessage(ziggy.getNick(), input.value, 'isUser')
 
 		input.value = ''
 	}
@@ -150,11 +144,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage(channel, 'connecting...', 'messageConnecting')
 			tab.setName(channel)
 
-			ziggy.setNick(nick)
-			nick = ziggy.getNick()
-
 			renderChatRoom()
-			joinChannel(nick, server, channel)
+			joinChannel(ziggy.getNick(), server, channel)
 		}
 		if(newMode===2) {
 
@@ -186,7 +177,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
-			isConnected = true
 			assembleMessage(chan, 'connected', 'ziggyJoined')
 		})
 
@@ -194,30 +184,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 			when PM session changes nick
 			update ziggy.pm so we don't open a new room
 		*/
+
 		room.on('nick', function(oldNick, user) {
 
-			// if we change nick
-			if(oldNick === nick) {
-				if(isConnected) {
-					nick = user.nick
-					assembleMessage('', 'you are now' + user.nick, 'userNickChange')
-				}
-				else {
-					room.on('ziggyjoin', function() {
-						nick = user.nick
-						assembleMessage('', 'you are now' + user.nick, 'userNickChange')
-					})
-				}
-			}
 
+			// channel = user you are in pm session with
 			if(oldNick === channel) {
-
-				if(isConnected) nick = user.nick
-				else {
-					room.on('ziggyjoin', function() {
-						nick = user.nick
-					})
-				}
 
 				delete ziggy.pm[channel]
 
@@ -227,6 +199,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				assembleMessage(oldNick, ' is now ' + user.nick, 'userNickChange')
 			}
+
+			else assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 	}
 
@@ -256,23 +230,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		.on('nick', function(oldNick, user, channels) {
 			if(channels.indexOf(channel) === -1) return
 
-			// if we change nick
-			if(oldNick === nick) {
-
-				if(isConnected) {
-					nick = user.nick
-					assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
-				}
-				else {
-					room.on('ziggyjoin', function() {
-						nick = user.nick
-						assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
-					})
-				}
-				
-			}
-			else assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
-			
+			assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
 		.on('join', function(chan, user) {
@@ -282,7 +240,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
-			isConnected = true
 			assembleMessage(chan, 'connected', 'ziggyJoined')
 		})
 
