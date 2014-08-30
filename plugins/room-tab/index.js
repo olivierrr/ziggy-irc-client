@@ -57,6 +57,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
 
+		tab.setNotifications(0)
+
 		if(mode===1 && room) {
 			ziggy.leaveChannel(room, channel)
 			messages = []
@@ -238,7 +240,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				if(isConnected) {
 					nick = user.nick
-					assembleMessage('channel', oldNick + ' is now ' + user.nick, 'userNickChange')
+					assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
 				}
 				else {
 					room.on('ziggyjoin', function() {
