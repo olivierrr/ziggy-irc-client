@@ -25,21 +25,26 @@ module.exports.src = function(tabHandler, tab, arg) {
 	// connection info
 	var nick, server, channel, isConnected = false
 
-	var messages = [], inputVal, input, room
+	nick = ziggy.getNick()
+
+	var messages = [], inputVal, room
 
 	// dom nodes
-	var chatbox
+	var chatbox, input
 
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
 
 	var renderForm_context = {}
-	renderForm_context.nick = ziggy.nick
+	renderForm_context.nick = nick
 
 	/*
 		tab events
 	*/
 	tabHandler.ee.on('focus#'+tab.id, function() {
+
+		// clear notifications
+		tab.setNotifications(0)
 
 		if(mode===0) {
 			renderForm()
@@ -52,11 +57,10 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if(room) return
 			else joinPM()
 		}
-
-		tab.setNotifications(0)
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
 
+		// clear notifications
 		tab.setNotifications(0)
 
 		if(mode===1 && room) {
@@ -130,8 +134,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		channel = arg.nick
 		tab.setName('@' + arg.nick)
 
-		nick = arg.myNick
-
 		// ziggy instance
 		room = arg.room
 		
@@ -147,7 +149,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if(chan !== channel) return
 			isConnected = true
 			assembleMessage(chan, 'connected', 'ziggyJoined')
-
 		})
 
 		/*
@@ -227,8 +228,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				mode: 2,
 				room: room,
 				nick: user.nick,
-				message: text,
-				myNick: nick
+				message: text
 			})
 		})
 
