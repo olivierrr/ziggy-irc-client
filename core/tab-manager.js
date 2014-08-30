@@ -6,35 +6,51 @@ var menu = require('./gui/menu')
 	tab manager
 	simple view manager
 
-	todo:
+	tabs are created from registered plugins
 */
 tabManager = {}
 
 tabManager.init = function(settings) {
 
+	// events
 	this.ee = Object.create(EE.prototype)
+
+	// dom handle
 	this.dom = settings.dom
 
 	this.ziggy = Object.create(Ziggy_client)
 	this.ziggy.init()
 
-	this.tabs = settings.tabs || {}
-	this.openTabs = []
-	this.menu = menu
+	this.plugins = settings.plugins || {}
 
+	// instantiated tabs
+	this.openTabs = []
+
+	// menu is tabManagers 'view'
+	this.menu = menu
 	this.updateMenu()
 
-	for(var i=0; i<this.tabs.length; i++) {
-		this.register(this.tabs[i])
-	}
+	this.registerPlugins()
 }
 
+/*
+	updateMenu
+	renders view
+*/
 tabManager.updateMenu = function() {
 	this.menu(this, this.dom)
 }
 
-tabManager.register = function(tab) {
-	this.tabs[tab.name] = tab.src
+/*
+	registerPlugins
+*/
+tabManager.registerPlugins = function() {
+
+	var plugins = this.plugins
+
+	this.plugins.forEach(function(plugin) {
+		plugins[plugin.name] = plugin.src
+	})
 }
 
 /*
@@ -43,7 +59,7 @@ tabManager.register = function(tab) {
 tabManager.open = function(name, arg) {
 
 	// if tab doesn't exist
-	if(!this.tabs[name]) return
+	if(!this.plugins[name]) return
 
 	var id = Math.random()
 
@@ -65,7 +81,7 @@ tabManager.open = function(name, arg) {
 		}
 	}
 
-	tab.src = this.tabs[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
+	tab.src = this.plugins[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	this.openTabs.push(tab)
 	this.setFocus(tab.id)
