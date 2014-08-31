@@ -31,35 +31,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 	setMode(mode)
 
 	/*
-		tab events
-	*/
-	tabHandler.ee.on('focus#'+tab.id, function() {
-
-		if(mode===0) {
-			renderForm()
-		}
-		if(mode===1) {
-			renderChatRoom()
-		}
-		if(mode===2) {
-			renderChatRoom()
-		}
-	})
-	tabHandler.ee.on('close#'+tab.id, function() {
-
-		if(mode===1 && room) {
-			ziggy.leaveChannel(room, channel)
-			messages = []
-		}
-		if(mode===2 && room) {
-			ziggy.leavePm(arg.nick, server)
-			messages = []
-		}
-
-		document.getElementById('TAB').innerHTML = ''
-	})
-
-	/*
 		render templates
 	*/
 	function renderForm(alert) {
@@ -122,8 +93,18 @@ module.exports.src = function(tabHandler, tab, arg) {
 	function setMode(newMode) {
 
 		if(newMode===0) {
+
 			mode = 0
+
+			tabHandler.ee.on('focus#'+tab.id, function() {
+				if(mode===0) renderForm()
+			})
+
+			tabHandler.ee.on('close#'+tab.id, function() {
+				document.getElementById('TAB').innerHTML = ''
+			})
 		}
+
 		if(newMode===1) {
 
 			/*
@@ -141,15 +122,40 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			mode = 1
 
+			tabHandler.ee.on('focus#'+tab.id, function() {
+				if(mode===1) renderChatRoom()
+			})
+
+			tabHandler.ee.on('close#'+tab.id, function() {
+				if(mode===1 && room) {
+					ziggy.leaveChannel(room, channel)
+					messages = []
+					document.getElementById('TAB').innerHTML = ''
+				}
+			})
+
 			assembleMessage(channel, 'connecting...', 'messageConnecting')
 			tab.setName(channel)
 
 			renderChatRoom()
 			joinChannel(ziggy.getNick(), server, channel)
 		}
+
 		if(newMode===2) {
 
 			mode = 2
+
+			tabHandler.ee.on('focus#'+tab.id, function() {
+				if(mode===2) renderChatRoom()
+			})
+
+			tabHandler.ee.on('close#'+tab.id, function() {
+				if(mode===2 && room) {
+					ziggy.leavePm(arg.nick, server)
+					messages = []
+					document.getElementById('TAB').innerHTML = ''
+				}
+			})
 
 			channel = arg.nick
 			server = arg.server
@@ -163,7 +169,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 			joinPM()
 		}
 	}
-
 
 	/*
 		actions
@@ -185,7 +190,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 			when PM session changes nick
 			update ziggy.pm so we don't open a new room
 		*/
-
 		room.on('nick', function(oldNick, user) {
 
 			// channel = user you are in pm session with
