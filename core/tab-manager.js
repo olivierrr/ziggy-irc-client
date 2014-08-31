@@ -58,23 +58,10 @@ tabManager.registerPlugins = function() {
 */
 tabManager.open = function(name, arg) {
 
-	// if tab doesn't exist
+	// if plugin doesn't exist
 	if(!this.plugins[name]) return
 
-	//
-	function makeId() {
-		var text = ''
-	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-	    for( var i=0; i < 20; i++ ) {
-	        text += possible.charAt(Math.floor(Math.random() * possible.length))
-	    }
-
-	    return text;
-	}
-	//
-
-	var id = makeId()
+	var id = getRandomString()
 
 	var tabHandler = this
 
@@ -95,6 +82,19 @@ tabManager.open = function(name, arg) {
 		clearNotifications: function() {
 			this.notifications = 0
 			tabHandler.updateMenu()
+		},
+		switchPlugin: function(pluginName, arg) {
+
+			// should probably close tab if plugin requested doesn't exist
+			if(tabHandler.plugins[pluginName]) return
+
+			// emit close events
+			tabHandler.ee.emit('close', id)
+			tabHandler.ee.emit('close#'+id)
+
+			// start up new plugin
+			this.name = pluginName
+			this.src = tabHandler.plugins[pluginName].call(null, tabHandler, this, arg)
 		}
 	}
 
@@ -105,7 +105,9 @@ tabManager.open = function(name, arg) {
 
 	tab.src = this.plugins[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
 
+	// add instance to openTabs array
 	this.openTabs.push(tab)
+
 	this.setFocus(tab.id)
 
 	return tab
@@ -157,6 +159,16 @@ tabManager.setFocus = function(id) {
 			this.ee.emit('blur#'+this.openTabs[i].id)
 		}
 	}
+}
+
+function getRandomString() {
+	var text = ''
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+    for( var i=0; i < 20; i++ ) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return text;
 }
 
 module.exports = tabManager
