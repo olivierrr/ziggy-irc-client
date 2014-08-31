@@ -52,7 +52,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			messages = []
 		}
 		if(mode===2 && room) {
-			ziggy.leavePm(arg.nick)
+			ziggy.leavePm(arg.nick, server)
 			messages = []
 		}
 
@@ -152,6 +152,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			mode = 2
 
 			channel = arg.nick
+			server = arg.server
 			tab.setName('@' + arg.nick)
 
 			// ziggy instance
@@ -187,15 +188,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room.on('nick', function(oldNick, user) {
 
-
 			// channel = user you are in pm session with
 			if(oldNick === channel) {
 
-				delete ziggy.pm[channel]
+				ziggy.updatePm(oldNick, server, user.nick)
 
-				channel = user.nick
-
-				ziggy.pm[channel] = {}
+				channel = user.nick // nope
 
 				assembleMessage(oldNick, ' is now ' + user.nick, 'userNickChange')
 			}
@@ -218,11 +216,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 			open new room and pass object
 		*/
 		.on('pm', function(user, text) {
-			if(ziggy.isPm(user.nick)) return
+			if(ziggy.isPm(user.nick, server)) return
 			tabHandler.open('room_tab', {
 				mode: 2,
 				room: room,
 				nick: user.nick,
+				server: server,
 				message: text
 			})
 		})
