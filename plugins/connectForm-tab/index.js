@@ -8,6 +8,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var document = tabHandler.dom
 	var ziggy = tabHandler.ziggy
 
+	tab.setName("new session")
+
 	/*
 		tabHandler events
 	*/
@@ -17,7 +19,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 	tabHandler.ee.on('close#'+tab.id, function() {
 		document.getElementById('TAB').innerHTML = ''
 	})
-
 	
 	function renderForm(alert) {
 

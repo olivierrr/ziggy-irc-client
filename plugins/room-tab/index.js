@@ -1,7 +1,6 @@
 var Handlebars = require('handlebars')
 
-var view1 = require('./view1')
-var view2 = require('./view2')
+var view = require('./view')
 
 /*
 	room ui plugin
@@ -19,27 +18,36 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var ziggy = tabHandler.ziggy
 
 	// connection info
-	var server, channel
+	var server = arg.server,
+		channel = arg.channel
 
-	var messages = [], room
+	var messages = [], 
+		room = arg.room || {}
 
-	// mode1 = chatroom // mode 2 = pm
-	var mode = arg.mode || 1
-	setMode(mode)
-
+	if(arg.mode===1) {
+		tab.setName(channel)
+		assembleMessage('', 'connecting...', 'messageConnecting')
+		joinChannel(ziggy.getNick(), server, channel)
+	}
+	else if(arg.mode===2) {
+		tab.setName('@' + channel)
+		assembleMessage(channel, arg.message)
+		joinPM()
+	}
+	else return //error
 
 	function renderChatRoom() {
 
 		var inputVal, input
 
-		document.getElementById('TAB').innerHTML = view1({messages: messages, id: tab.id, nick: ziggy.getNick()})
+		document.getElementById('TAB').innerHTML = view({messages: messages, id: tab.id, nick: ziggy.getNick()})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')
 		if(inputVal) input.value = inputVal
 
 		input.focus()
-		input.addEventListener('keydown', chatInput, false)
+		input.addEventListener('keydown', onKeyDown, false)
 
 		var chatbox = document.querySelector('.messageContainer')
 		chatbox.scrollTop = chatbox.scrollHeight
@@ -48,79 +56,23 @@ module.exports.src = function(tabHandler, tab, arg) {
 			get input value
 			e.keyCode 13 = 'ENTER'
 		*/
-		function chatInput(e) {
+		function onKeyDown(e) {
 			if(e.keyCode !== 13) return
+			if(input.value.length === 0) return
 			room.say(channel, input.value)
 			assembleMessage(ziggy.getNick(), input.value, 'isUser')
 			input.value = ''
 		}
 	}
 
-	/*
-		mode 'initializer'
-	*/
-	function setMode(newMode) {
+	tabHandler.ee.on('focus#'+tab.id, function() {
+		renderChatRoom()
+	})
+	tabHandler.ee.on('close#'+tab.id, function() {
+		messages = []
+		document.getElementById('TAB').innerHTML = ''
+	})
 
-		if(newMode===1) {
-
-			mode = 1
-
-			channel = arg.channel
-			server = arg.server
-
-			tabHandler.ee.on('focus#'+tab.id, function() {
-				if(mode===1) renderChatRoom()
-			})
-
-			tabHandler.ee.on('close#'+tab.id, function() {
-				if(mode===1 && room) {
-					ziggy.leaveChannel(room, channel)
-					messages = []
-					document.getElementById('TAB').innerHTML = ''
-				}
-			})
-
-			assembleMessage('', 'connecting...', 'messageConnecting')
-			tab.setName(channel)
-
-			renderChatRoom()
-			joinChannel(ziggy.getNick(), server, channel)
-		}
-
-		if(newMode===2) {
-
-			mode = 2
-
-			channel = arg.channel //channel = user pm with
-			server = arg.server
-
-			tabHandler.ee.on('focus#'+tab.id, function() {
-				if(mode===2) renderChatRoom()
-			})
-
-			tabHandler.ee.on('close#'+tab.id, function() {
-				if(mode===2 && room) {
-					ziggy.leavePm(channel, server)
-					messages = []
-					document.getElementById('TAB').innerHTML = ''
-				}
-			})
-
-
-			tab.setName('@' + channel)
-
-			// ziggy instance
-			room = arg.room
-
-			assembleMessage(channel, arg.message)
-
-			joinPM()
-		}
-	}
-
-	/*
-		actions
-	*/
 	function joinPM() {
 
 		room.on('pm', function(user, text) {
@@ -151,6 +103,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 			}
 
 			else assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
+		})
+
+		// disconnect from PM session on close event
+		tabHandler.ee.on('close#'+tab.id, function() {
+			ziggy.leavePm(channel, server)
 		})
 	}
 
@@ -212,6 +169,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 		.on('topic', function(chan, topic, nick) {
 			if(chan !== channel) return
 			assembleMessage(channel, topic)
+		})
+
+		// disconnect from channel on close event
+		tabHandler.ee.on('close#'+tab.id, function() {
+			ziggy.leaveChannel(room, channel)
 		})
 	}
 
