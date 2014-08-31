@@ -1,0 +1,69 @@
+<form id="{{id}}">
+
+	{{#if alert}}<div class="alert {{alert.flag}}">{{alert.message}}</div>{{/if}}
+
+	<div> 
+		<input type="text" id="formNick" placeholder="nick" value ={{nick}}>  
+	</div>
+
+	<div> 
+		<input type="text" id="formServer" placeholder="server" value="irc.freenode.net">  
+	</div>
+
+	<div> 
+		<input type="text" id="formChannel" placeholder="channel" value="#learnjavascript">  
+	</div>
+
+	<div> 
+		<span id="roomSubmit">submit</span> 
+	</div>
+
+</form>
+	
+<style>
+
+#{{id}} .alert {
+	padding: 10px;
+}
+#{{id}} .alert.warning {
+	background: #FFEFA2;
+}
+#{{id}} .alert.error {
+	background: #EEB0B6;
+}
+
+#{{id}} {
+	text-align: center;
+	padding-top: 3%;
+}
+#{{id}} div {
+	margin: 20px;
+}
+#{{id}} input{
+	font-size: 14px;
+	color: #7D7D7D;
+	background-color: white;
+	border: solid 1px #DCDCDC;
+	width: 400px;
+	height: 60px;
+	outline: none;
+	padding: 0 20px;
+}
+#{{id}} input:focus{
+	color: #6B6B6B;
+}
+#{{id}} #roomSubmit {
+	font-size: 20px;
+	color: white;
+	line-height: 60px;
+	display: inline-block;
+	width: 400px;
+	height: 60px;
+	background-color: #B7B7B7;
+	cursor: pointer;
+}
+#{{id}} #roomSubmit:hover {
+	background-color: #A7A7A7;
+}
+
+</style>

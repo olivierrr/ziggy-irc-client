@@ -43,6 +43,8 @@ tabManager.updateMenu = function() {
 
 /*
 	registerPlugins
+
+	bug: double objects?
 */
 tabManager.registerPlugins = function() {
 
@@ -86,11 +88,11 @@ tabManager.open = function(name, arg) {
 		switchPlugin: function(pluginName, arg) {
 
 			// should probably close tab if plugin requested doesn't exist
-			if(tabHandler.plugins[pluginName]) return
+			if(!tabHandler.plugins[pluginName]) return
 
 			// emit close events
-			tabHandler.ee.emit('close', id)
-			tabHandler.ee.emit('close#'+id)
+			tabHandler.ee.emit('close', this.id)
+			tabHandler.ee.emit('close#'+this.id)
 
 			// start up new plugin
 			this.name = pluginName

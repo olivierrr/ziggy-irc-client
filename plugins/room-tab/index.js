@@ -23,57 +23,10 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	var messages = [], room
 
-	// mode0 = form // mode1 = chatroom // mode 2 = pm
-	var mode = arg.mode || 0
+	// mode1 = chatroom // mode 2 = pm
+	var mode = arg.mode || 1
 	setMode(mode)
 
-
-	function renderForm(alert) {
-
-		var context = {
-			nick: ziggy.getNick(),
-			id: tab.id,
-			alert: alert
-		}
-
-		document.getElementById('TAB').innerHTML = view2(context)
-		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
-		document.getElementById(tab.id).addEventListener('keydown', formKeyDown, false)
-
-		function formKeyDown(e) {
-			if(e.keyCode !== 13) return
-			roomSubmit()
-		}
-
-		/*	
-			roomSubmit
-
-			get form values
-			update global nick
-			initiate chatroom
-		*/
-		function roomSubmit() {
-
-			var nick = document.getElementById('formNick').value || 'ziggyClient'
-			server = document.getElementById('formServer').value || 'irc.freenode.net'
-			channel = document.getElementById('formChannel').value || '#testingbot'
-
-			/*
-				go back if channel is already open on another tab + send 'alert'
-			*/
-			if(ziggy.isConnectedToChannel(server, channel)) {
-				var alert = {
-					message: 'already connected to ' + channel + ' on ' + server,
-					flag: 'error'
-				}
-				renderForm(alert)
-				return
-			}
-
-			ziggy.setNick(nick)
-			setMode(1)
-		}
-	}
 
 	function renderChatRoom() {
 
@@ -108,22 +61,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 	*/
 	function setMode(newMode) {
 
-		if(newMode===0) {
-
-			mode = 0
-
-			tabHandler.ee.on('focus#'+tab.id, function() {
-				if(mode===0) renderForm()
-			})
-
-			tabHandler.ee.on('close#'+tab.id, function() {
-				document.getElementById('TAB').innerHTML = ''
-			})
-		}
-
 		if(newMode===1) {
 
 			mode = 1
+
+			channel = arg.channel
+			server = arg.server
 
 			tabHandler.ee.on('focus#'+tab.id, function() {
 				if(mode===1) renderChatRoom()
@@ -148,26 +91,28 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			mode = 2
 
+			channel = arg.channel //channel = user pm with
+			server = arg.server
+
 			tabHandler.ee.on('focus#'+tab.id, function() {
 				if(mode===2) renderChatRoom()
 			})
 
 			tabHandler.ee.on('close#'+tab.id, function() {
 				if(mode===2 && room) {
-					ziggy.leavePm(arg.nick, server)
+					ziggy.leavePm(channel, server)
 					messages = []
 					document.getElementById('TAB').innerHTML = ''
 				}
 			})
 
-			channel = arg.nick
-			server = arg.server
-			tab.setName('@' + arg.nick)
+
+			tab.setName('@' + channel)
 
 			// ziggy instance
 			room = arg.room
 
-			assembleMessage(arg.nick, arg.message)
+			assembleMessage(channel, arg.message)
 
 			joinPM()
 		}
@@ -227,7 +172,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			tabHandler.open('room_tab', {
 				mode: 2,
 				room: room,
-				nick: user.nick,
+				channel: user.nick, // other users nick
 				server: server,
 				message: text
 			})
