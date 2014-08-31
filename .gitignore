@@ -7,4 +7,5 @@ icudtl.dat
 libffmpegsumo.so
 nwsnapshot
 nw
-
+.idea
+.sass-cache
