@@ -37,13 +37,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		var context = {
 			nick: ziggy.getNick(),
+			id: tab.id,
 			alert: alert
 		}
 
 		document.getElementById('TAB').innerHTML = view2(context)
-
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
-		document.getElementById('roomForm').addEventListener('keydown', formKeyDown, false)
+		document.getElementById(tab.id).addEventListener('keydown', formKeyDown, false)
 	}
 	function renderChatRoom() {
 
@@ -56,7 +56,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		input.focus()
 		input.addEventListener('keydown', chatInput, false)
 
-		var chatbox = document.getElementById('TAB_ROOM')
+		var chatbox = document.getElementById(tab.id)
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 

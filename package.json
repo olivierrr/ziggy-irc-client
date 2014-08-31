@@ -1,5 +1,5 @@
 {
-  "name": "ziggy-IRC-client",
+  "name": "irc",
   "main": "index.html",
   "version": "0.1.0",
   "description": "",
@@ -19,8 +19,8 @@
   "window": {
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
-    "toolbar": false,
-    "frame": false,
+    "toolbar": true,
+    "frame": true,
     "width": 1000,
     "height": 700,
     "position": "mouse",

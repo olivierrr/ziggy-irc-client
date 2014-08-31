@@ -1,4 +1,4 @@
-<form id="roomForm">
+<form id="{{id}}">
 
 	{{#if alert}}<div class="alert {{alert.flag}}">{{alert.message}}</div>{{/if}}
 
@@ -22,24 +22,24 @@
 	
 <style>
 
-#roomForm .alert {
+#{{id}} .alert {
 	padding: 10px;
 }
-#roomForm .alert.warning {
+#{{id}} .alert.warning {
 	background: #FFEFA2;
 }
-#roomForm .alert.error {
+#{{id}} .alert.error {
 	background: #EEB0B6;
 }
 
-#roomForm {
+#{{id}} {
 	text-align: center;
 	padding-top: 3%;
 }
-#roomForm div {
+#{{id}} div {
 	margin: 20px;
 }
-#roomForm input{
+#{{id}} input{
 	color:#696969;
 	background-color: #EDEDED;
 	border: solid 1px #B1B1B1;
@@ -49,7 +49,7 @@
 	padding: 0 20px;
 	border: 0;
 }
-#roomSubmit {
+#{{id}} #roomSubmit {
 	color: #6B6B6B;
 	line-height: 60px;
 	display: inline-block;
@@ -58,7 +58,7 @@
 	background-color: #EDEDED;
 	cursor: pointer;
 }
-#roomSubmit:hover {
+#{{id}} #roomSubmit:hover {
 	background-color: #A7A7A7;
 }
 

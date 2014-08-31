@@ -61,7 +61,20 @@ tabManager.open = function(name, arg) {
 	// if tab doesn't exist
 	if(!this.plugins[name]) return
 
-	var id = Math.random()
+	//
+	function makeId() {
+		var text = ''
+	    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+	    for( var i=0; i < 20; i++ ) {
+	        text += possible.charAt(Math.floor(Math.random() * possible.length))
+	    }
+
+	    return text;
+	}
+	//
+
+	var id = makeId()
 
 	var tabHandler = this
 

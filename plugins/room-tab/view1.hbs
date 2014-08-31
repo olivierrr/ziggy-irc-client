@@ -1,54 +1,57 @@
-<div id="TAB_ROOM">
+<div id="{{id}}">
+	
+	<div class="messageContainer">
+		{{#each messages}}
+			<div class="msg">
+				<span class="leftColumn">
+					<span class="username message {{this.flag}}">{{this.nick}}</span>
+				</span> 
+				<span class="rightColumn">
+					<span class="text message {{this.flag}}">{{this.text}}</span>
+				</span>
+			</div>
+		{{/each}}
+	</div>
 
-	{{#each messages}}
-		<div class="msg">
-			<span class="leftColumn">
-				<span class="username message {{this.flag}}">{{this.nick}}</span>
-			</span> 
-			<span class="rightColumn">
-				<span class="text message {{this.flag}}">{{this.text}}</span>
-			</span>
-		</div>
-	{{/each}}
+	<div class="footer">
+		<span user={{nick}} class="userID">{{nick}}</span>
+		<input class="chat_input"></input>
+	</div>
 
 </div>
 
-<span class="userID">{{nick}}</span>
-<input class="chat_input"></input>
-
 <style>
-.msg {
-	word-wrap: break-word;
-	max-width: 100%;
-	float: left;
-	clear: both;
+
+/*
+	footer
+*/
+#{{id}} .footer {
+	height: 39px;
+	border-top: solid 1px #D4D4D4;
 }
-.leftColumn {
-	float: left;
-    width: 150px;
-}
-.rightColumn {
+#{{id}} .chat_input {
+	box-sizing: border-box;
 	float: right;
-    width: calc(100% - 150px);
+	width: calc(100% - 141px);
+	height: 39px;
+	padding: 0 20px;
+	border: 0;
+	outline: none;
 }
-.message.username {
-	float: right;
-	clear: both;
-	color: #9A9A9A;
-}
-.message.text {
+#{{id}} .userID {
 	float: left;
-	clear: both;
-	width: calc(100% - 20px);
-}
-.message {
-	padding: 6px 10px;
-	color: #505050;
-	font-weight: 400;
-	font-size: 16px;
+	width: 138px;
+	height: 39px;
+	line-height: 39px;
+	text-align: right;
+	color: #4A4A4A;
+	cursor: pointer;
 }
 
-#TAB_ROOM {
+/*
+	container
+*/
+#{{id}} .messageContainer {
 	box-sizing: border-box;
 	width: 100%;
 	top: 40px;
@@ -57,57 +60,62 @@
 	padding-top: 50px;
 }
 
-.userID {
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 140px;
-	height: 39px;
-	line-height: 40px;
-	text-align: right;
-	color: #4A4A4A;
-	border-top: solid 1px #D4D4D4;
-	border-right: solid 1px #E3E3E3;
-}
-
 /*
-	main input
+	messages
 */
-.chat_input {
-	box-sizing: border-box;
-	position: absolute;
-	bottom: 0;
-	right:0;
-	width: calc(100% - 140px);
-	height: 40px;
-	padding: 0 20px;
-	border: 0;
-	border-top: solid 1px #D4D4D4;
-	outline: none;
+#{{id}} .msg {
+	word-wrap: break-word;
+	max-width: 100%;
+	float: left;
+	clear: both;
+}
+#{{id}} .leftColumn {
+	float: left;
+    width: 150px;
+}
+#{{id}} .rightColumn {
+	float: right;
+    width: calc(100% - 150px);
+}
+#{{id}} .message.username {
+	float: right;
+	clear: both;
+	color: #9A9A9A;
+}
+#{{id}} .message.text {
+	float: left;
+	clear: both;
+	width: calc(100% - 20px);
+}
+#{{id}} .message {
+	padding: 6px 10px;
+	color: #505050;
+	font-weight: 400;
+	font-size: 16px;
 }
 
 /* 
-	flags 
+	messages flags 
 */
-.username.isUser {
+#{{id}} .username.isUser {
 	/*todo*/
 }
-.message.userNickChange {
+#{{id}} .message.userNickChange {
 	color: #349ACF;
 }
-.message.userQuit {
+#{{id}} .message.userQuit {
 	color: #FF4646;
 }
-.message.userLeft {
+#{{id}} .message.userLeft {
 	color: #FF4646;
 }
-.message.ziggyJoined {
+#{{id}} .message.ziggyJoined {
 	color: #1ECA49;
 }
-.message.userJoined {
+#{{id}} .message.userJoined {
 	color: #1ECA49;
 }
-.message.messageConnecting {
+#{{id}} .message.messageConnecting {
 	color: #EC9351;
 }
 
