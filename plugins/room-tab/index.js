@@ -53,9 +53,23 @@ module.exports.src = function(tabHandler, tab, arg) {
 			initiate chatroom
 		*/
 		function roomSubmit() {
+
 			var nick = document.getElementById('formNick').value || 'ziggyClient'
 			server = document.getElementById('formServer').value || 'irc.freenode.net'
 			channel = document.getElementById('formChannel').value || '#testingbot'
+
+			/*
+				go back if channel is already open on another tab + send 'alert'
+			*/
+			if(ziggy.isConnectedToChannel(server, channel)) {
+				var alert = {
+					message: 'already connected to ' + channel + ' on ' + server,
+					flag: 'error'
+				}
+				renderForm(alert)
+				return
+			}
+
 			ziggy.setNick(nick)
 			setMode(1)
 		}
@@ -108,19 +122,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 
 		if(newMode===1) {
-
-			/*
-				returns if channel is already open on another tab
-			*/
-			if(ziggy.isConnectedToChannel(server, channel)) {
-
-				var alert = {
-					message: 'already connected to ' + channel + ' on ' + server,
-					flag: 'error'
-				}
-				renderForm(alert)
-				return
-			}
 
 			mode = 1
 
