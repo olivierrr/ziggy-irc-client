@@ -5,7 +5,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "launch": "sudo nodewebkit"
+    "launch": "sudo nwbuild -r ./"
   },
   "author": "olivierrr",
   "license": "MIT",
@@ -15,12 +15,15 @@
     "nodewebkit": "^0.10.2"
   },
   "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-rimraf": "^0.1.0",
+    "gulp-ruby-sass": "^0.7.1",
+    "node-bourbon": "^1.2.3"
   },
   "window": {
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
-    "toolbar": false,
-    "frame": true,
+    "toolbar": true,
     "width": 900,
     "height": 700,
     "position": "mouse",
