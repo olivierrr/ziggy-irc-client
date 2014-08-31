@@ -8,7 +8,7 @@ sudo npm install
 sudo npm run launch
 ```
 
-![alt tag](http://i.imgur.com/wdZMfLe.png)
+![alt tag](http://i.imgur.com/N9LOqjX.png)
 
 ## license
 

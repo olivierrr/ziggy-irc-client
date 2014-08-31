@@ -1,7 +1,7 @@
 {
   "name": "irc",
   "main": "index.html",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,8 +20,8 @@
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
     "toolbar": false,
-    "frame": false,
-    "width": 1000,
+    "frame": true,
+    "width": 900,
     "height": 700,
     "position": "mouse",
     "min_width": 500,

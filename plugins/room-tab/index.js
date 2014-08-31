@@ -134,7 +134,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				}
 			})
 
-			assembleMessage(channel, 'connecting...', 'messageConnecting')
+			assembleMessage('', 'connecting...', 'messageConnecting')
 			tab.setName(channel)
 
 			renderChatRoom()
@@ -183,7 +183,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
-			assembleMessage(chan, 'connected', 'ziggyJoined')
+			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
 		/*
@@ -199,10 +199,10 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				channel = user.nick // nope
 
-				assembleMessage(oldNick, ' is now ' + user.nick, 'userNickChange')
+				assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 			}
 
-			else assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
+			else assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 	}
 
@@ -233,37 +233,37 @@ module.exports.src = function(tabHandler, tab, arg) {
 		.on('nick', function(oldNick, user, channels) {
 			if(channels.indexOf(channel) === -1) return
 
-			assembleMessage(channel, oldNick + ' is now ' + user.nick, 'userNickChange')
+			assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
 		.on('join', function(chan, user) {
 			if(chan !== channel) return
-			assembleMessage(channel, user.nick + ' has joined', 'userJoined')
+			assembleMessage('', user.nick + ' has joined', 'userJoined')
 		})
 
 		.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
-			assembleMessage(chan, 'connected', 'ziggyJoined')
+			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
 		.on('part', function(user, chan, reason) {
 			if(chan !== channel) return
-			assembleMessage(channel, user.nick + ' has left', 'userLeft')
+			assembleMessage('', user.nick + ' has left', 'userLeft')
 		})
 
 		.on('quit', function(user, reason, channels) {
 			if(channels.indexOf(channel) === -1) return
-			assembleMessage(channel, user.nick + ' has disconnected ' + reason, 'userQuit')
+			assembleMessage('', user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
 		.on('kick', function(kicked, kickedBy, chan, reason) {
 			if(chan !== channel) return
-			assembleMessage(channel, kicked + ' has been kicked by ' + kickedBy + 'for ' + reason, 'userKicked')
+			assembleMessage('', kicked.nick + ' has been kicked by ' + kickedBy.nick + 'for ' + reason, 'userKicked')
 		})
 
 		.on('topic', function(chan, topic, nick) {
 			if(chan !== channel) return
-			console.log('topic')
+			assembleMessage(channel, topic)
 		})
 	}
 
