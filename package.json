@@ -19,8 +19,8 @@
   "window": {
     "title": "ziggy-IRC-client",
     "icon": "icon.png",
-    "toolbar": true,
-    "frame": true,
+    "toolbar": false,
+    "frame": false,
     "width": 1000,
     "height": 700,
     "position": "mouse",

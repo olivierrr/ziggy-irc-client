@@ -56,7 +56,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		input.focus()
 		input.addEventListener('keydown', chatInput, false)
 
-		var chatbox = document.getElementById(tab.id)
+		var chatbox = document.querySelector('.messageContainer')
 		chatbox.scrollTop = chatbox.scrollHeight
 	}
 
