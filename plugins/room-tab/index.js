@@ -21,18 +21,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 	// connection info
 	var server, channel
 
-	var messages = [], inputVal, room
-
-	// dom nodes
-	var input
+	var messages = [], room
 
 	// mode0 = form // mode1 = chatroom // mode 2 = pm
 	var mode = arg.mode || 0
 	setMode(mode)
 
-	/*
-		render templates
-	*/
+
 	function renderForm(alert) {
 
 		var context = {
@@ -44,8 +39,31 @@ module.exports.src = function(tabHandler, tab, arg) {
 		document.getElementById('TAB').innerHTML = view2(context)
 		document.getElementById('roomSubmit').addEventListener('click', roomSubmit, false)
 		document.getElementById(tab.id).addEventListener('keydown', formKeyDown, false)
+
+		function formKeyDown(e) {
+			if(e.keyCode !== 13) return
+			roomSubmit()
+		}
+
+		/*	
+			roomSubmit
+
+			get form values
+			update global nick
+			initiate chatroom
+		*/
+		function roomSubmit() {
+			var nick = document.getElementById('formNick').value || 'ziggyClient'
+			server = document.getElementById('formServer').value || 'irc.freenode.net'
+			channel = document.getElementById('formChannel').value || '#testingbot'
+			ziggy.setNick(nick)
+			setMode(1)
+		}
 	}
+
 	function renderChatRoom() {
+
+		var inputVal, input
 
 		document.getElementById('TAB').innerHTML = view1({messages: messages, id: tab.id, nick: ziggy.getNick()})
 
@@ -58,33 +76,17 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		var chatbox = document.querySelector('.messageContainer')
 		chatbox.scrollTop = chatbox.scrollHeight
-	}
 
-	/*
-		template events
-	*/
-	function roomSubmit() {
-		var nick = document.getElementById('formNick').value || 'ziggyClient'
-		server = document.getElementById('formServer').value || 'irc.freenode.net'
-		channel = document.getElementById('formChannel').value || '#testingbot'
-
-		ziggy.setNick(nick)
-
-		setMode(1)
-	}
-	function chatInput(e) {
-
-		if(e.keyCode !== 13) return
-
-		room.say(channel, input.value)
-		assembleMessage(ziggy.getNick(), input.value, 'isUser')
-
-		input.value = ''
-	}
-	function formKeyDown(e) {
-
-		if(e.keyCode !== 13) return
-		roomSubmit()
+		/*
+			get input value
+			e.keyCode 13 = 'ENTER'
+		*/
+		function chatInput(e) {
+			if(e.keyCode !== 13) return
+			room.say(channel, input.value)
+			assembleMessage(ziggy.getNick(), input.value, 'isUser')
+			input.value = ''
+		}
 	}
 
 	/*
