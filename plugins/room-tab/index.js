@@ -53,13 +53,37 @@ module.exports.src = function(tabHandler, tab, arg) {
 		chatbox.scrollTop = chatbox.scrollHeight
 
 		/*
-			get input value
-			e.keyCode 13 = 'ENTER'
+			keyCode 13 = 'ENTER'
+			keyCode 40 = 'up arrow'
+			keyCode 38 = 'down arrow'
 		*/
 		function onKeyDown(e) {
-			if(e.keyCode !== 13) return
-			parseInput(input.value)
-			input.value = ''
+
+			if(e.keyCode === 13) {
+				parseInput(input.value)
+
+				this.lastUser = null
+				this.lastMessage = null
+				input.value = ''
+			}
+
+			// input.value = last user to talks name
+			else if(e.keyCode === 40) {
+				this.lastUser = this.lastUser-1 || messages.length-1
+				input.value = (messages[this.lastUser] ? messages[this.lastUser].nick : ziggy.getNick()) + ' '
+				setTimeout(function(){
+					input.setSelectionRange(input.value.length, input.value.length)
+				}, 0)
+			}
+
+			// input.value = last message
+			else if(e.keyCode === 38) {
+				this.lastMessage = this.lastMessage-1 || messages.length-1
+				input.value = (messages[this.lastMessage] ? messages[this.lastMessage].text : '') + ' '
+				setTimeout(function(){
+					input.setSelectionRange(input.value.length, input.value.length)
+				}, 0)
+			}
 		}
 	}
 
