@@ -65,11 +65,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	}
 
-	tabHandler.ee.on('focus#'+tab.id, function() {
-		renderChatRoom()
-	})
+	tabHandler.ee.on('focus#'+tab.id, renderChatRoom)
 	tabHandler.ee.on('close#'+tab.id, function() {
 		messages = []
+		document.getElementById('TAB').innerHTML = ''
+	})
+	tabHandler.ee.on('blur#'+tab.id, function() {
 		document.getElementById('TAB').innerHTML = ''
 	})
 

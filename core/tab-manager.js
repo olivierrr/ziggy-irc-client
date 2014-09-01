@@ -105,7 +105,7 @@ tabManager.open = function(name, arg) {
 		tab.clearNotifications()
 	})
 
-	tab.src = this.plugins[name].call(null, this, tab, arg) /*tabHandler, tabInstante, argument*/
+	tab.src = this.plugins[name].call(null, tabHandler, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	// add instance to openTabs array
 	this.openTabs.push(tab)
@@ -131,7 +131,7 @@ tabManager.close = function(id) {
 }
 
 /*
-	get openTab by @id
+	get tab by @id
 */
 tabManager.getById = function(id) {
 
@@ -141,24 +141,26 @@ tabManager.getById = function(id) {
 }
 
 /*
-	set @tab focus to true
-	set all other tabs to false
-	emit focus/blur events
+	blur tabs
+	focus tab @id
 */
 tabManager.setFocus = function(id) {
 
 	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i].id == id) {
+		if(this.openTabs[i].focus === true && this.openTabs[i].id !== id) {
+			
+			this.openTabs[i].focus = false
+			this.ee.emit('blur', this.openTabs[i].id)
+			this.ee.emit('blur#'+this.openTabs[i].id)
+		}
+	}
+
+	for(var i=0; i<this.openTabs.length; i++) {
+		if(this.openTabs[i].id === id && this.openTabs[i].focus !== true) {
 
 			this.openTabs[i].focus = true
 			this.ee.emit('focus', this.openTabs[i].id)
 			this.ee.emit('focus#'+this.openTabs[i].id)
-		}
-		else {
-
-			this.openTabs[i].focus = false
-			this.ee.emit('blur', this.openTabs[i].id)
-			this.ee.emit('blur#'+this.openTabs[i].id)
 		}
 	}
 }

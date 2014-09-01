@@ -13,8 +13,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 	/*
 		tabHandler events
 	*/
-	tabHandler.ee.on('focus#'+tab.id, function() {
-		renderForm()
+	tabHandler.ee.on('focus#'+tab.id, renderForm)
+	tabHandler.ee.on('blur#'+tab.id, function() {
+		document.getElementById('TAB').innerHTML = ''
 	})
 	tabHandler.ee.on('close#'+tab.id, function() {
 		document.getElementById('TAB').innerHTML = ''
