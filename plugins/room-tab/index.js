@@ -21,6 +21,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var server = arg.server,
 		channel = arg.channel
 
+	var inputVal, input
+
 	var messages = [], 
 		room = arg.room || {}
 
@@ -37,8 +39,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 	else return //error
 
 	function renderChatRoom() {
-
-		var inputVal, input
 
 		document.getElementById('TAB').innerHTML = view({messages: messages, id: tab.id, nick: ziggy.getNick()})
 
@@ -58,11 +58,44 @@ module.exports.src = function(tabHandler, tab, arg) {
 		*/
 		function onKeyDown(e) {
 			if(e.keyCode !== 13) return
-			if(input.value.length === 0) return
-			room.say(channel, input.value)
-			assembleMessage(ziggy.getNick(), input.value, 'isUser')
+			parseInput(input.value)
 			input.value = ''
 		}
+	}
+
+	function parseInput(string) {
+
+		if(string.length === 0) return
+
+		if(string[0] === '/') {
+
+			var words = string.split(' ')
+
+			// '/nick [newNick]'
+			if(words[0] === '/nick' && words[1]) {
+				ziggy.setNick(words[1])
+				return
+			}
+
+			// '/join [channel]'
+			if(words[0] === '/join' && words[1]) {
+				if(ziggy.isConnectedToChannel(server, words[1])) {
+					assembleMessage('', 'you are already connected to ' + words[1])
+					return
+				}
+				else {
+					tabHandler.open('room_tab', {
+						mode: 1,
+						channel: words[1],
+						server: server,
+					})
+				}
+				return
+			}
+		}
+
+		room.say(channel, string)
+		assembleMessage(ziggy.getNick(), string, 'isUser')
 	}
 
 	tabHandler.ee.on('focus#'+tab.id, renderChatRoom)
@@ -138,7 +171,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		.on('nick', function(oldNick, user, channels) {
 			if(channels.indexOf(channel) === -1) return
-
 			assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
