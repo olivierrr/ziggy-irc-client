@@ -65,7 +65,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			ziggy.setNick(nick)
 
-			tab.switchPlugin('room_tab', {
+			tab.switchPlugin('chatroom', {
 				mode: 1,
 				server: server,
 				channel: channel

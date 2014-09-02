@@ -3,14 +3,10 @@ var Handlebars = require('handlebars')
 var view = require('./view')
 
 /*
-	room ui plugin
-
-	todo:
-	-refactor
-
+	chatroom plugin
 */
 
-module.exports.name = 'room_tab'
+module.exports.name = 'chatroom'
 
 module.exports.src = function(tabHandler, tab, arg) {
 
@@ -108,7 +104,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 					return
 				}
 				else {
-					tabHandler.open('room_tab', {
+					tabHandler.open('chatroom', {
 						mode: 1,
 						channel: words[1],
 						server: server,
@@ -184,7 +180,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		*/
 		.on('pm', function(user, text) {
 			if(ziggy.isPm(user.nick, server)) return
-			tabHandler.open('room_tab', {
+			tabHandler.open('chatroom', {
 				mode: 2,
 				room: room,
 				channel: user.nick, // other users nick
