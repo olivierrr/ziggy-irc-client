@@ -3,7 +3,7 @@ var Handlebars = require('handlebars')
 var view = require('./view')
 
 /*
-	tab handler 'UI'
+	tab handler view
 */
 
 module.exports = function(tabHandler, document) {
