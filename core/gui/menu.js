@@ -1,6 +1,6 @@
 var Handlebars = require('handlebars')
 
-var view = require('./tab-manager-view')
+var view = require('./view')
 
 /*
 	tab handler 'UI'

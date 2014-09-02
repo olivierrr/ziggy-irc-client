@@ -1,9 +1,9 @@
 var Handlebars = require('handlebars')
 
-var view = require('./tab-manager-view')
+var view = require('./view')
 
 /*
-	tab handler 'UI'
+	tab handler view
 */
 
 module.exports = function(tabHandler, document) {
@@ -13,7 +13,6 @@ module.exports = function(tabHandler, document) {
 	var context = { openTabs: tabHandler.openTabs }
 
 	document.getElementById('MENU').innerHTML = template(context)
-
 
 	function onClick(query, cb){
 		var elem = document.querySelectorAll(query)
@@ -42,5 +41,4 @@ module.exports = function(tabHandler, document) {
 	onClick('[closeTab]', tabClose)
 	onClick('[tab]', tabClick)
 	onClick('[add]', addTab)
-
 }
