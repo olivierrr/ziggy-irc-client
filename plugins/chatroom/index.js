@@ -1,5 +1,4 @@
 var Handlebars = require('handlebars')
-
 var view = require('./view')
 
 /*

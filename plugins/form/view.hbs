@@ -2,26 +2,29 @@
 
 	{{#if alert}}<div class="alert {{alert.flag}}">{{alert.message}}</div>{{/if}}
 
-	<div> 
+	<div class="row"> 
 		<input type="text" id="formNick" placeholder="nick" value ={{nick}}>  
 	</div>
 
-	<div> 
+	<div class="row"> 
 		<input type="text" id="formServer" placeholder="server" value="irc.freenode.net">  
 	</div>
 
-	<div> 
+	<div class="row"> 
 		<input type="text" id="formChannel" placeholder="channel" value="#learnjavascript">  
 	</div>
 
-	<div> 
-		<span id="roomSubmit">submit</span> 
+	<div class="row"> 
+		<span id="formSubmit">submit</span> 
 	</div>
 
 </form>
 	
 <style>
 
+/*
+	alert and flags
+*/
 #{{id}} .alert {
 	padding: 10px;
 }
@@ -32,14 +35,21 @@
 	background: #EEB0B6;
 }
 
+/*
+	containers
+*/
 #{{id}} {
 	text-align: center;
 	padding-top: 3%;
 }
-#{{id}} div {
+#{{id}} .row {
 	margin: 20px;
 }
-#{{id}} input{
+
+/*
+	form inputs
+*/
+#{{id}} input {
 	font-size: 14px;
 	color: #7D7D7D;
 	background-color: white;
@@ -52,7 +62,11 @@
 #{{id}} input:focus{
 	color: #6B6B6B;
 }
-#{{id}} #roomSubmit {
+
+/*
+	submit form buttom
+*/
+#{{id}} #formSubmit {
 	font-size: 20px;
 	color: white;
 	line-height: 60px;
@@ -62,7 +76,7 @@
 	background-color: #B7B7B7;
 	cursor: pointer;
 }
-#{{id}} #roomSubmit:hover {
+#{{id}} #formSubmit:hover {
 	background-color: #A7A7A7;
 }
 

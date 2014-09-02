@@ -25,7 +25,7 @@ module.exports = function(tabHandler, document) {
 	}
 
 	function newTab(e) {
-		tabHandler.open('connection_form', {mode:0})
+		tabHandler.open('form', {mode:0})
 		tabHandler.updateMenu()
 	}
 

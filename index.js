@@ -1,6 +1,6 @@
 // plugins
 var chatroom = require('./plugins/chatroom/index')
-var connectForm_tab = require('./plugins/connectForm-tab/index')
+var form = require('./plugins/form/index')
 
 // instance
 var tabManager = Object.create(require('./core/tab-manager'))
@@ -9,7 +9,7 @@ var tabManager = Object.create(require('./core/tab-manager'))
 tabManager.init({
 
 	// plugins
-	plugins: [chatroom, connectForm_tab],
+	plugins: [chatroom, form],
 
 	// dom handle
 	dom: document
