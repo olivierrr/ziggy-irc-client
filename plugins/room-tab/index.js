@@ -93,7 +93,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		if(string[0] === '/') {
 
-			var words = string.split(' ')
+			var words = string.split(/\s+/)
 
 			// '/nick [newNick]'
 			if(words[0] === '/nick' && words[1]) {
