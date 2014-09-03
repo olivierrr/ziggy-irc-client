@@ -140,6 +140,18 @@ module.exports.src = function(tabHandler, tab, arg) {
 				}
 				return
 			}
+
+			// '/topic'
+			if(words[0] === '/topic') {
+				if(room.client.chans[channel] && room.client.chans[channel].topic) {
+					var topic = room.client.chans[channel].topic
+					assembleMessage('topic', topic, 'topic')
+				}
+				else {
+					assembleMessage('', 'no topic set', 'topic')
+				}
+				return
+			}
 		}
 
 		room.say(channel, string)
@@ -168,9 +180,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage('', user.nick + ' ' + text, 'action')
 		})
 
-		room.on('ziggyjoin', function(chan, user) {
+		room.on('part', function(user, chan, reason) {
 			if(chan !== channel) return
-			assembleMessage('', 'connected', 'ziggyJoined')
+			assembleMessage('', user.nick + ' has left', 'userLeft')
 		})
 
 		/*
@@ -202,12 +214,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room = ziggy.joinChannel(server, channel, nick)
 
-		.on('message', function(user, chan, text) {
+		room.on('message', function(user, chan, text) {
 			if(chan !== channel) return
 			assembleMessage(user.nick, text)
 		})
 
-		.on('action', function(user, chan, text){
+		room.on('action', function(user, chan, text){
 			if(chan !== channel) return
 			assembleMessage('', user.nick + ' ' + text, 'action')
 		})
@@ -216,7 +228,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if is new PM
 			open new room and pass object
 		*/
-		.on('pm', function(user, text) {
+		room.on('pm', function(user, text) {
 			if(ziggy.isPm(user.nick, server)) return
 			tabHandler.open('chatroom', {
 				mode: 2,
@@ -227,39 +239,39 @@ module.exports.src = function(tabHandler, tab, arg) {
 			})
 		})
 
-		.on('nick', function(oldNick, user, channels) {
+		room.on('nick', function(oldNick, user, channels) {
 			if(channels.indexOf(channel) === -1) return
 			assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
-		.on('join', function(chan, user) {
+		room.on('join', function(chan, user) {
 			if(chan !== channel) return
 			assembleMessage('', user.nick + ' has joined', 'userJoined')
 		})
 
-		.on('ziggyjoin', function(chan, user) {
+		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
 			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
-		.on('part', function(user, chan, reason) {
+		room.on('part', function(user, chan, reason) {
 			if(chan !== channel) return
 			assembleMessage('', user.nick + ' has left', 'userLeft')
 		})
 
-		.on('quit', function(user, reason, channels) {
+		room.on('quit', function(user, reason, channels) {
 			if(channels.indexOf(channel) === -1) return
 			assembleMessage('', user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
-		.on('kick', function(kicked, kickedBy, chan, reason) {
+		room.on('kick', function(kicked, kickedBy, chan, reason) {
 			if(chan !== channel) return
 			assembleMessage('', kicked.nick + ' has been kicked by ' + kickedBy.nick + 'for ' + reason, 'userKicked')
 		})
 
-		.on('topic', function(chan, topic, nick) {
+		room.on('topic', function(chan, topic, nick) {
 			if(chan !== channel) return
-			assembleMessage(channel, topic)
+			assembleMessage('topic', topic, 'topic')
 		})
 
 		// disconnect from channel on close event
