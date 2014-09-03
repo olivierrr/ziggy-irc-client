@@ -28,7 +28,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 	}
 	else if(arg.mode===2) {
 		tab.setName('@' + channel)
-		assembleMessage(channel, arg.message)
+		if(arg.message) assembleMessage(channel, arg.message)
 		joinPM()
 	}
 	else return //error
@@ -90,6 +90,26 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			var words = string.split(/\s+/)
 
+			// '/pm [recipient]'
+			if(words[0] === '/pm' && words[1]) {
+
+				if(ziggy.isPm(words[1], server)) {
+					assembleMessage('', 'you are already in session with ' + words[1], 'warning')
+					return
+				}
+
+				var message = words[2] ? words.splice(2, words.length).join(' ') : null
+
+				tabHandler.open('chatroom', {
+					mode: 2,
+					channel: words[1],
+					room: room,
+					server: server,
+					message: message
+				})
+				return
+			}
+
 			// '/nick [newNick]'
 			if(words[0] === '/nick' && words[1]) {
 				ziggy.setNick(words[1])
@@ -99,7 +119,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			// '/join [channel]'
 			if(words[0] === '/join' && words[1]) {
 				if(ziggy.isConnectedToChannel(server, words[1])) {
-					assembleMessage('', 'you are already connected to ' + words[1])
+					assembleMessage('', 'you are already connected to ' + words[1], 'warning')
 					return
 				}
 				else {
