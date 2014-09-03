@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "launch": "sudo ./node_modules/nodewebkit/bin/nodewebkit"
+    "linux_launch": "sudo ./node_modules/nodewebkit/bin/nodewebkit",
+    "osx_launch": "./node_modules/nodewebkit/bin/nodewebkit",
+    "win_launch": "node ./node_modules/nodewebkit/bin/nodewebkit"
   },
   "author": "olivierrr",
   "license": "MIT",

@@ -7,8 +7,16 @@ a (soon to be) themeable and extendible irc client
 note: consider any version bellow 1.0.0 unstable
 ##launch
 ```
-sudo npm install
-sudo npm run launch
+npm install
+npm run osx_launch
+```
+for linux
+```
+npm run linux_launch
+```
+for windows
+```
+npm run win_launch
 ```
 
 ![alt tag](http://i.imgur.com/N9LOqjX.png)
