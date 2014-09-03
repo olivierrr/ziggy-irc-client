@@ -90,6 +90,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			var words = string.split(/\s+/)
 
+			// '/me [string(s)]'
 			if(words[0] === '/me' && words[1]) {
 
 				var message = words.splice(1, words.length).join(' ')
