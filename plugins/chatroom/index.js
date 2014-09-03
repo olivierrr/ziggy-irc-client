@@ -90,6 +90,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			var words = string.split(/\s+/)
 
+			if(words[0] === '/me' && words[1]) {
+
+				var message = words.splice(1, words.length).join(' ')
+				room.action(channel, message)
+				assembleMessage(ziggy.getNick(), message, 'action')
+				return
+			}
+
 			// '/pm [recipient]'
 			if(words[0] === '/pm' && words[1]) {
 
