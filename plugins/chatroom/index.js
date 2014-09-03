@@ -95,7 +95,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				var message = words.splice(1, words.length).join(' ')
 				room.action(channel, message)
-				assembleMessage(ziggy.getNick(), message, 'action')
+				assembleMessage('', ziggy.getNick() + ' ' + message, 'action')
 				return
 			}
 
@@ -163,6 +163,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 			}
 		})
 
+		room.on('action', function(user, chan, text){
+			if(user.nick !== channel) return
+			assembleMessage('', user.nick + ' ' + text, 'action')
+		})
+
 		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
 			assembleMessage('', 'connected', 'ziggyJoined')
@@ -200,6 +205,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 		.on('message', function(user, chan, text) {
 			if(chan !== channel) return
 			assembleMessage(user.nick, text)
+		})
+
+		.on('action', function(user, chan, text){
+			if(chan !== channel) return
+			assembleMessage('', user.nick + ' ' + text, 'action')
 		})
 
 		/*
