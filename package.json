@@ -3,11 +3,13 @@
   "main": "index.html",
   "version": "0.2.0",
   "description": "",
+  "preferGlobal": true,
+  "bin": {
+    "zirc": "./scripts/launch.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "linux_launch": "sudo ./node_modules/nodewebkit/bin/nodewebkit",
-    "osx_launch": "./node_modules/nodewebkit/bin/nodewebkit",
-    "win_launch": "node ./node_modules/nodewebkit/bin/nodewebkit"
+    "launch": "node scripts/launch.js"
   },
   "author": "olivierrr",
   "license": "MIT",

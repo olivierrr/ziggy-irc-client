@@ -5,19 +5,12 @@ ziggy-IRC-client
 a (soon to be) themeable and extendible irc client
 
 note: consider any version bellow 1.0.0 unstable
+
+##install
+`npm install -g ziggy-irc-client`
+
 ##launch
-```
-npm install
-npm run osx_launch
-```
-for linux
-```
-npm run linux_launch
-```
-for windows
-```
-npm run win_launch
-```
+`zirc`
 
 ![alt tag](http://i.imgur.com/N9LOqjX.png)
 
