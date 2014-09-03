@@ -33,6 +33,16 @@ Ziggy_client.getNick = function() {
 	return this.nick
 }
 
+Ziggy_client.getRealNick = function(server) {
+	for(var i=0; i<this.servers.length; i++) {
+		if(this.servers[i].settings.server === server) {
+			return this.servers[i].client.nick
+		} 
+	}
+	//fallback
+	return this.nick
+}
+
 Ziggy_client.joinChannel = function(server, channel) {
 
 	// check if already connected to server

@@ -35,7 +35,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function renderChatRoom() {
 
-		document.getElementById('TAB').innerHTML = view({messages: messages, id: tab.id, nick: ziggy.getNick()})
+		document.getElementById('TAB').innerHTML = view({messages: messages, id: tab.id, nick: ziggy.getRealNick(server)})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')
@@ -95,7 +95,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				var message = words.splice(1, words.length).join(' ')
 				room.action(channel, message)
-				assembleMessage('', ziggy.getNick() + ' ' + message, 'action')
+				assembleMessage('', ziggy.getRealNick(server) + ' ' + message, 'action')
 				return
 			}
 
@@ -155,7 +155,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 
 		room.say(channel, string)
-		assembleMessage(ziggy.getNick(), string, 'isUser')
+		assembleMessage(ziggy.getRealNick(server), string, 'isUser')
 	}
 
 	tabHandler.ee.on('focus#'+tab.id, renderChatRoom)
@@ -202,6 +202,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 			}
 
 			else assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
+		})
+
+		room.client.addListener('error', function(message) {
+			assembleMessage('ERROR', JSON.stringify(message), 'error')
+			console.log(JSON.stringify(message))
 		})
 
 		// disconnect from PM session on close event
@@ -272,6 +277,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 		room.on('topic', function(chan, topic, nick) {
 			if(chan !== channel) return
 			assembleMessage('topic', topic, 'topic')
+		})
+
+		room.client.addListener('error', function(message) {
+			assembleMessage('ERROR', JSON.stringify(message), 'error')
+			console.log(JSON.stringify(message))
 		})
 
 		// disconnect from channel on close event
