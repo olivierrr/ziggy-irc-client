@@ -4,7 +4,14 @@ var child_process = require('child_process')
   , path = require('path')
   , os = require('os')
 
-var BIN = path.resolve(__dirname, '..', 'node_modules', '.bin', 'nodewebkit')
+var BIN = path.resolve(
+    __dirname
+  , '..'
+  , 'node_modules'
+  , 'nodewebkit'
+  , 'bin'
+  , 'nodewebkit'
+)
 
 var lookup = {
     'darwin': osx_launch
