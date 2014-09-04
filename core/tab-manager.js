@@ -77,14 +77,23 @@ tabManager.open = function(pluginName, arg) {
 		name: pluginName,
 		pluginName: pluginName,
 		focus: false,
+		storage: null,
 		id: id,
 		notifications: 0,
 		setStorage: function(data) {
 			tabHandler.storage.setItem(pluginName, JSON.stringify(data))
 		},
 		getStorage: function() {
-			var storage = JSON.parse(tabHandler.storage.getItem(pluginName)) || {}
+			var storage
+			if(tabHandler.storage.getItem(pluginName) == 'undefined') storage = {}
+			else storage = JSON.parse(tabHandler.storage.getItem(pluginName)) || {}
 			return storage
+		},
+		updateStorage: function(cb){
+			var storage = this.getStorage()
+			var updatedStorage = cb(storage)
+			this.setStorage(updatedStorage)
+			this.storage = this.getStorage()
 		},
 		setName: function(name) {
 			this.name = name
@@ -119,6 +128,7 @@ tabManager.open = function(pluginName, arg) {
 		tab.clearNotifications()
 	})
 
+	tab.storage = tab.getStorage()
 	tab.src = this.plugins[pluginName].call(null, tabHandler, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	// add instance to openTabs array
