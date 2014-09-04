@@ -30,8 +30,10 @@ module.exports.src = function(tabHandler, tab) {
 	*/
 	function render(alert) {
 
+		var storage = tab.getStorage()
+
 		var renderContext = {
-			nick: ziggy.getNick(),
+			nick: storage.nick || ziggy.getNick(),
 			id: tab.id,
 			alert: alert
 		}
@@ -67,6 +69,10 @@ module.exports.src = function(tabHandler, tab) {
 
 		// set global nick
 		ziggy.setNick(nick)
+
+		var storage = tab.getStorage()
+		storage.nick = nick
+		tab.setStorage(storage)
 
 		// start chatroom
 		tab.switchPlugin('chatroom', {

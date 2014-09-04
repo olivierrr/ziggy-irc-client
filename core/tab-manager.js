@@ -83,7 +83,8 @@ tabManager.open = function(pluginName, arg) {
 			tabHandler.storage.setItem(pluginName, JSON.stringify(data))
 		},
 		getStorage: function() {
-			return JSON.parse(tabHandler.storage.getItem(this.pluginName))
+			var storage = JSON.parse(tabHandler.storage.getItem(pluginName)) || {}
+			return storage
 		},
 		setName: function(name) {
 			this.name = name
