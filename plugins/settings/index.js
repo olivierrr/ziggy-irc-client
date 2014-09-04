@@ -28,14 +28,19 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	}
 
+	var focus = tabHandler.pluginNames[0] || null
+
 	function handleClick(e) {
-		var pluginName = e.target.getAttribute('settingsSubtab')
-		console.log(pluginName)
-		render(pluginName)
+		focus = e.target.getAttribute('settingsSubtab')
+		render()
 	}
 
-	function getContext(lastClicked) {
-		var storage = tabHandler.storage[lastClicked]
+	function getContext() {
+
+		var storage
+		if(tabHandler.storage.getItem(focus) == 'undefined') storage = null
+		else storage = JSON.parse(tabHandler.storage.getItem(focus)) || null
+
 		return {
 			id: tab.id,
 			settings: storage,
@@ -43,8 +48,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	}
 
-	function render(lastClicked) {
-		var context = getContext(lastClicked)
+	function render() {
+		var context = getContext()
 		document.getElementById('TAB').innerHTML = view(context)
 		onClick('[settingsSubtab]', handleClick)
 	}

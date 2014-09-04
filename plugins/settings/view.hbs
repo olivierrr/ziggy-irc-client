@@ -10,14 +10,15 @@
 	</span>
 
 	{{#each settings}}
+		{{#each obj}} {{/each}}
 		<div class="row">
-			<input type="text" placeholder="nick" value ={{this}}>
+			<input type="text" placeholder="nick" value ="{{this}}">
 		</div>
 	{{/each}}
 
 	{{#if settings}}
 		<div class="row"> 
-			<span class="save">submit</span> 
+			<span class="save">save</span> 
 		</div>
 	{{/if}}
 
