@@ -7,7 +7,23 @@ var view = require('./view')
 	starts up a chatroom tab with form values
 */
 
-module.exports.name = 'form'
+var name = 'form'
+
+module.exports.name = name
+
+module.exports.background = function(tabHandler) {
+
+	if(tabHandler.storage[name]) return
+
+	// if its first launch ever
+	else {
+		tabHandler.storage[name] = JSON.stringify({
+			nick: 'ziggy_client',
+			server: 'irc.freenode.net',
+			channel: '#learnjavascript'
+		})
+	}
+}
 
 module.exports.src = function(tabHandler, tab) {
 

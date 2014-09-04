@@ -41,14 +41,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 		return {
 			id: tab.id,
 			settings: storage,
-			subTabs: tabHandler.pluginNames
+			subTabs: tabHandler.pluginNames,
 		}
 	}
 
 	function render() {
 		var context = getContext()
 		document.getElementById('TAB').innerHTML = view(context)
-		
+
 		onClick('[settingsSubtab]', function handleClick(e) {
 			focus = e.target.getAttribute('settingsSubtab')
 			render()

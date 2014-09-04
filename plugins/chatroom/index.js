@@ -5,7 +5,21 @@ var view = require('./view')
 	chatroom plugin
 */
 
-module.exports.name = 'chatroom'
+var name ='chatroom'
+
+module.exports.name = name
+
+module.exports.background = function(tabHandler) {
+
+	if(tabHandler.storage[name]) return
+
+	// if its first launch ever
+	else {
+		tabHandler.storage[name] = JSON.stringify({
+			'allow PM': true,
+		})
+	}
+}
 
 module.exports.src = function(tabHandler, tab, arg) {
 
@@ -234,6 +248,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 			open new room and pass object
 		*/
 		room.on('pm', function(user, text) {
+
+			if(tab.storage['allow PM'] === false) return // SETTINGS
+
 			if(ziggy.isPm(user.nick, server)) return
 			tabHandler.open('chatroom', {
 				mode: 2,

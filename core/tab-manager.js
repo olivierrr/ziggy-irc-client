@@ -54,9 +54,11 @@ tabManager.registerPlugins = function() {
 
 	var plugins = this.plugins
 	var pluginNames = this.pluginNames
+	var tabHandler = this
 
 	this.plugins.forEach(function(plugin) {
 		pluginNames.push(plugin.name)
+		if(plugin.background) plugin.background.call(null, tabHandler)
 		plugins[plugin.name] = plugin.src
 	})
 
