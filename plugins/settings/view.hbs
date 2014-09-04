@@ -1,14 +1,70 @@
-<div class="{{id}}">
-	awdadwd
-</div>
+<div id="{{id}}">
 
+	{{#each form}}
+		<div class="row">
+			<input type="text" placeholder="nick" value ={{nick}}>  
+		</div>
+	{{/each}}
+
+	{{#if form}}
+		<div class="row"> 
+			<span class="save">submit</span> 
+		</div>
+	{{/if}}
+
+	{{#unless form}}
+		<div class="row">
+			no settings.
+		</div>
+	{{/unless}}
+
+</div>
+	
 <style>
 
 /*
-	container
+	containers
 */
-.{{id}} {
-	background-color: red;
+#{{id}} {
+	text-align: center;
+	padding-top: 3%;
+}
+#{{id}} .row {
+	margin: 20px;
+}
+
+/*
+	inputs
+*/
+#{{id}} input {
+	font-size: 14px;
+	color: #7D7D7D;
+	background-color: white;
+	border: solid 1px #DCDCDC;
+	width: 400px;
+	height: 60px;
+	outline: none;
+	padding: 0 20px;
+}
+#{{id}} input:focus{
+	color: #6B6B6B;
+}
+
+/*
+	save buttom
+*/
+#{{id}} .save {
+	font-size: 20px;
+	color: white;
+	line-height: 60px;
+	display: inline-block;
+	width: 400px;
+	height: 60px;
+	background-color: #B7B7B7;
+	cursor: pointer;
+}
+#{{id}} .save:hover {
+	background-color: #A7A7A7;
 }
 
 </style>
