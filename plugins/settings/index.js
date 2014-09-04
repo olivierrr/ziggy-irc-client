@@ -28,12 +28,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	}
 
-	var focus = tabHandler.pluginNames[0] || null
+	//
 
-	function handleClick(e) {
-		focus = e.target.getAttribute('settingsSubtab')
-		render()
-	}
+	var focus = tabHandler.pluginNames[0] || null
 
 	function getContext() {
 
@@ -51,6 +48,10 @@ module.exports.src = function(tabHandler, tab, arg) {
 	function render() {
 		var context = getContext()
 		document.getElementById('TAB').innerHTML = view(context)
-		onClick('[settingsSubtab]', handleClick)
+		
+		onClick('[settingsSubtab]', function handleClick(e) {
+			focus = e.target.getAttribute('settingsSubtab')
+			render()
+		})
 	}
 }

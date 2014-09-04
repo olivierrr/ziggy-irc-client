@@ -10,9 +10,18 @@
 	</span>
 
 	{{#each settings}}
-		{{#each obj}} {{/each}}
 		<div class="row">
-			<input type="text" placeholder="nick" value ="{{this}}">
+
+			<span class="leftColumn"> 
+				<span class="key">{{@key}}</span> 
+			</span>
+
+			<span class="rightColumn"> 
+				<span class="input">
+					<input type="text" placeholder="nick" value ="{{this}}">
+				</span>
+			</span>
+
 		</div>
 	{{/each}}
 
@@ -31,18 +40,35 @@
 </div>
 	
 <style>
+#{{id}} .key {
+	float: right;
+	padding-right: 10px;
+}
+#{{id}} .input {
+	float: left;
+}
+#{{id}} .leftColumn {
+	float: left;
+    width: 40%;
+    line-height: 60px;
+}
+#{{id}} .rightColumn {
+	float: right;
+    width: 60%;
+    line-height: 60px;
+}
 
 /*
 	subTab
 */
-
 #{{id}} .subTabs {
 	display: inline-block;
 	text-align: center;
 	border: solid 1px #BDBDBD;
 }
 #{{id}} .subTab {
-	background-color: #D8D8D8;
+	border-left: solid 1px #BDBDBD;
+	background-color: white;
 	position: relative;
 	float: left;
 	color: #ABABAB;
@@ -53,6 +79,9 @@
 	font-size: 20px;
 	font-weight: 400;
 }
+#{{id}} .subTab:first-child {
+	border-left: 0;
+}
 #{{id}} .subTab:hover {
 	background-color: #FFFFFF;
 }
@@ -61,11 +90,13 @@
 	containers
 */
 #{{id}} {
+	color: #616161;
 	text-align: center;
 	padding-top: 3%;
 }
 #{{id}} .row {
 	margin: 20px;
+	clear: both;
 }
 
 /*
@@ -76,7 +107,7 @@
 	color: #7D7D7D;
 	background-color: white;
 	border: solid 1px #DCDCDC;
-	width: 400px;
+	width: 100%;
 	height: 60px;
 	outline: none;
 	padding: 0 20px;
@@ -89,6 +120,7 @@
 	save buttom
 */
 #{{id}} .save {
+	margin-top: 30px;
 	font-size: 20px;
 	color: white;
 	line-height: 60px;
