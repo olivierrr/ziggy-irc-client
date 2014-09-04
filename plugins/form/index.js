@@ -68,8 +68,11 @@ module.exports.src = function(tabHandler, tab) {
 		// set global nick
 		ziggy.setNick(nick)
 
+		// note: make sure to return storage!
 		tab.updateStorage(function(storage) {
 			storage.nick = nick
+			storage.server = server
+			storage.channel = channel
 			return storage
 		})
 

@@ -1,18 +1,27 @@
 <div id="{{id}}">
 
-	{{#each form}}
+	{{!-- subtabs --}}
+	<span class="subTabs">
+		{{#each subTabs}}
+			<span class="subTab" settingsSubtab="{{this}}">
+				{{this}}
+			</span>
+		{{/each}}
+	</span>
+
+	{{#each settings}}
 		<div class="row">
-			<input type="text" placeholder="nick" value ={{nick}}>  
+			<input type="text" placeholder="nick" value ={{this}}>
 		</div>
 	{{/each}}
 
-	{{#if form}}
+	{{#if settings}}
 		<div class="row"> 
 			<span class="save">submit</span> 
 		</div>
 	{{/if}}
 
-	{{#unless form}}
+	{{#unless settings}}
 		<div class="row">
 			no settings.
 		</div>
@@ -21,6 +30,31 @@
 </div>
 	
 <style>
+
+/*
+	subTab
+*/
+
+#{{id}} .subTabs {
+	display: inline-block;
+	text-align: center;
+	border: solid 1px #BDBDBD;
+}
+#{{id}} .subTab {
+	background-color: #D8D8D8;
+	position: relative;
+	float: left;
+	color: #ABABAB;
+	height: 40px;
+	padding: 0 10px;
+	line-height: 40px;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: 400;
+}
+#{{id}} .subTab:hover {
+	background-color: #FFFFFF;
+}
 
 /*
 	containers

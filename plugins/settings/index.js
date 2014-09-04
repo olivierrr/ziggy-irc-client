@@ -20,7 +20,32 @@ module.exports.src = function(tabHandler, tab, arg) {
 		document.getElementById('TAB').innerHTML = ''
 	})
 
-	function render() {
-		document.getElementById('TAB').innerHTML = view({id: tab.id})
+	// binds function to elems click event
+	function onClick(query, cb){
+		var elem = document.querySelectorAll(query)
+		for(var i=0; i<elem.length; i++){
+			elem[i].addEventListener('click', cb)
+		}
+	}
+
+	function handleClick(e) {
+		var pluginName = e.target.getAttribute('settingsSubtab')
+		console.log(pluginName)
+		render(pluginName)
+	}
+
+	function getContext(lastClicked) {
+		var storage = tabHandler.storage[lastClicked]
+		return {
+			id: tab.id,
+			settings: storage,
+			subTabs: tabHandler.pluginNames
+		}
+	}
+
+	function render(lastClicked) {
+		var context = getContext(lastClicked)
+		document.getElementById('TAB').innerHTML = view(context)
+		onClick('[settingsSubtab]', handleClick)
 	}
 }

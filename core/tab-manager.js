@@ -32,6 +32,9 @@ tabManager.init = function(settings) {
 	this.menu = menu
 	this.updateMenu()
 
+	// names of registered plugins
+	this.pluginNames = []
+
 	this.registerPlugins()
 }
 
@@ -50,8 +53,10 @@ tabManager.updateMenu = function() {
 tabManager.registerPlugins = function() {
 
 	var plugins = this.plugins
+	var pluginNames = this.pluginNames
 
 	this.plugins.forEach(function(plugin) {
+		pluginNames.push(plugin.name)
 		plugins[plugin.name] = plugin.src
 	})
 
