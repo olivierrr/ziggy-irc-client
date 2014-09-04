@@ -15,6 +15,8 @@ tabManager.init = function(settings) {
 	// events
 	this.ee = Object.create(EE.prototype)
 
+	this.storage = settings.localStorage || {}
+
 	// dom handle
 	this.dom = settings.dom
 
@@ -77,6 +79,12 @@ tabManager.open = function(pluginName, arg) {
 		focus: false,
 		id: id,
 		notifications: 0,
+		setStorage: function(data) {
+			tabHandler.storage.setItem(pluginName, JSON.stringify(data))
+		},
+		getStorage: function() {
+			return JSON.parse(tabHandler.storage.getItem(this.pluginName))
+		},
 		setName: function(name) {
 			this.name = name
 			tabHandler.updateMenu()

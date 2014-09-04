@@ -13,6 +13,9 @@ tabManager.init({
 	plugins: [chatroom, form, settings],
 
 	// dom handle
-	dom: document
+	dom: document,
+
+	// local storage reference
+	localStorage: localStorage
 
 })
