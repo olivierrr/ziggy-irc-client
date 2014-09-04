@@ -61,10 +61,10 @@ tabManager.registerPlugins = function() {
 /*
 	creates tab instance
 */
-tabManager.open = function(name, arg) {
+tabManager.open = function(pluginName, arg) {
 
 	// if plugin doesn't exist
-	if(!this.plugins[name]) return
+	if(!this.plugins[pluginName]) return
 
 	var id = getRandomString()
 
@@ -72,7 +72,8 @@ tabManager.open = function(name, arg) {
 
 	// assemble tab
 	var tab = {
-		name: name,
+		name: pluginName,
+		pluginName: pluginName,
 		focus: false,
 		id: id,
 		notifications: 0,
@@ -99,6 +100,7 @@ tabManager.open = function(name, arg) {
 
 			// start up new plugin
 			this.name = pluginName
+			this.pluginName = pluginName
 			this.src = tabHandler.plugins[pluginName].call(null, tabHandler, this, arg)
 		}
 	}
@@ -108,7 +110,7 @@ tabManager.open = function(name, arg) {
 		tab.clearNotifications()
 	})
 
-	tab.src = this.plugins[name].call(null, tabHandler, tab, arg) /*tabHandler, tabInstante, argument*/
+	tab.src = this.plugins[pluginName].call(null, tabHandler, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	// add instance to openTabs array
 	this.openTabs.push(tab)
