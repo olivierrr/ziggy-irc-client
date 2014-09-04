@@ -38,4 +38,13 @@ module.exports = function(tabHandler, document) {
 	onClick('[closeTab]', closeTab)
 	onClick('[tab]', focusTab)
 	onClick('[add]', newTab)
+
+	//
+
+	function openSettings() {
+		tabHandler.open('settings')
+		tabHandler.updateMenu()
+	}
+
+	onClick('[settings]', openSettings)
 }
