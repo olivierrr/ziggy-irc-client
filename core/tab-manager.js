@@ -43,8 +43,7 @@ tabManager.updateMenu = function() {
 
 /*
 	registerPlugins
-
-	bug: double objects?
+	note: second forEach = dirty fix!
 */
 tabManager.registerPlugins = function() {
 
@@ -52,6 +51,10 @@ tabManager.registerPlugins = function() {
 
 	this.plugins.forEach(function(plugin) {
 		plugins[plugin.name] = plugin.src
+	})
+
+	this.plugins.forEach(function(plugin) {
+		if(plugin.name) delete plugins[plugin]
 	})
 }
 
