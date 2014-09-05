@@ -13,16 +13,26 @@ module.exports.name = name
 
 module.exports.background = function(tabHandler) {
 
-	if(tabHandler.storage[name]) return
-
 	// if its first launch ever
-	else {
+	if(!tabHandler.storage[name]) {
 		tabHandler.storage[name] = JSON.stringify({
 			nick: 'ziggy_client',
 			server: 'irc.freenode.net',
-			channel: '#learnjavascript'
+			channel: '#learnjavascript',
+			'open on launch': ['#testingbot', 'irc.freenode.net']
 		})
 	}
+
+	var kk = tabHandler.storage[name]['open on launch']
+
+	for(var i=0; i<kk; i+=2) {
+
+		tabHandler.open('chatroom', {
+			mode: 1,
+			channel: kk[i],
+			server: kk[i+1]
+		})
+	}	
 }
 
 module.exports.src = function(tabHandler, tab) {

@@ -19,6 +19,8 @@ module.exports.background = function(tabHandler) {
 			'allow PM': true,
 		})
 	}
+
+	
 }
 
 module.exports.src = function(tabHandler, tab, arg) {
