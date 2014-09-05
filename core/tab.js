@@ -65,7 +65,7 @@ module.exports = function(pluginName, arg) {
 	tab.src = this.plugins[pluginName].call(null, tabHandler, tab, arg) /*tabHandler, tabInstante, argument*/
 
 	// add instance to openTabs array
-	this.openTabs.push(tab)
+	this.openTabs[tab.id] = tab
 
 	this.setFocus(tab.id)
 

@@ -2,6 +2,7 @@ var EE = require('events').EventEmitter
 var Ziggy_client = require('./ziggy-client')
 var menu = require('./gui/menu')
 var Tab = require('./tab')
+
 /*
 	tab manager
 	simple view manager
@@ -26,7 +27,7 @@ tabManager.init = function(settings) {
 	this.plugins = settings.plugins || {}
 
 	// instantiated tabs
-	this.openTabs = []
+	this.openTabs = {}
 
 	// menu is tabManagers 'view'
 	this.menu = menu
@@ -72,9 +73,9 @@ tabManager.registerPlugins = function() {
 */
 tabManager.open = function(pluginName, arg) {
 
-	// if plugin doesn't exist
 	if(!this.plugins[pluginName]) return
 
+	// tab constructor
 	return Tab.call(this, pluginName, arg)
 }
 
@@ -84,23 +85,12 @@ tabManager.open = function(pluginName, arg) {
 */
 tabManager.close = function(id) {
 
-	var tab = this.getById(id)
-	var index = this.openTabs.indexOf(tab)
+	if(!this.openTabs[id]) return
 
 	this.ee.emit('close', id)
 	this.ee.emit('close#'+id)
 
-	this.openTabs.splice(index, 1)
-}
-
-/*
-	get tab by @id
-*/
-tabManager.getById = function(id) {
-
-	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i].id == id) return this.openTabs[i]
-	}
+	delete this.openTabs[id]
 }
 
 /*
@@ -109,21 +99,21 @@ tabManager.getById = function(id) {
 */
 tabManager.setFocus = function(id) {
 
-	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i].focus === true && this.openTabs[i].id !== id) {
-			
-			this.openTabs[i].focus = false
-			this.ee.emit('blur', this.openTabs[i].id)
-			this.ee.emit('blur#'+this.openTabs[i].id)
+	var openTabs = this.openTabs
+
+	for(var tab in openTabs) {
+		if(openTabs[tab].focus === true && openTabs[tab].id !== id) {
+			openTabs[tab].focus = false
+			this.ee.emit('blur', openTabs[tab].id)
+			this.ee.emit('blur#'+openTabs[tab].id)
 		}
 	}
 
-	for(var i=0; i<this.openTabs.length; i++) {
-		if(this.openTabs[i].id === id && this.openTabs[i].focus !== true) {
-
-			this.openTabs[i].focus = true
-			this.ee.emit('focus', this.openTabs[i].id)
-			this.ee.emit('focus#'+this.openTabs[i].id)
+	for(var tab in openTabs) {
+		if(openTabs[tab].id === id && openTabs[tab].focus !== true) {
+			openTabs[tab].focus = true
+			this.ee.emit('focus', openTabs[tab].id)
+			this.ee.emit('focus#'+openTabs[tab].id)
 		}
 	}
 }
