@@ -33,7 +33,7 @@ tabManager.init = function(settings) {
 	}
 
 	// instantiated tabs
-	this.openTabs = {}
+	this.tabs = {}
 
 	// menu is tabManagers 'view'
 	this.menu = menu
@@ -65,12 +65,12 @@ tabManager.open = function(pluginName, arg) {
 */
 tabManager.close = function(id) {
 
-	if(!this.openTabs[id]) return
+	if(!this.tabs[id]) return
 
 	this.ee.emit('close', id)
 	this.ee.emit('close#'+id)
 
-	delete this.openTabs[id]
+	delete this.tabs[id]
 }
 
 /*
@@ -79,21 +79,19 @@ tabManager.close = function(id) {
 */
 tabManager.setFocus = function(id) {
 
-	var openTabs = this.openTabs
-
-	for(var tab in openTabs) {
-		if(openTabs[tab].focus === true && openTabs[tab].id !== id) {
-			openTabs[tab].focus = false
-			this.ee.emit('blur', openTabs[tab].id)
-			this.ee.emit('blur#'+openTabs[tab].id)
+	for(var tab in this.tabs) {
+		if(this.tabs[tab].focus === true && this.tabs[tab].id !== id) {
+			this.tabs[tab].focus = false
+			this.ee.emit('blur', this.tabs[tab].id)
+			this.ee.emit('blur#'+this.tabs[tab].id)
 		}
 	}
 
-	for(var tab in openTabs) {
-		if(openTabs[tab].id === id && openTabs[tab].focus !== true) {
-			openTabs[tab].focus = true
-			this.ee.emit('focus', openTabs[tab].id)
-			this.ee.emit('focus#'+openTabs[tab].id)
+	for(var tab in this.tabs) {
+		if(this.tabs[tab].id === id && this.tabs[tab].focus !== true) {
+			this.tabs[tab].focus = true
+			this.ee.emit('focus', this.tabs[tab].id)
+			this.ee.emit('focus#'+this.tabs[tab].id)
 		}
 	}
 }
