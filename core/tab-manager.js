@@ -13,7 +13,7 @@ tabManager = {}
 
 tabManager.init = function(settings) {
 
-	// events
+	// event emitter
 	this.ee = Object.create(EE.prototype)
 
 	this.storage = settings.localStorage || {}
@@ -24,7 +24,13 @@ tabManager.init = function(settings) {
 	this.ziggy = Object.create(Ziggy_client)
 	this.ziggy.init()
 
-	this.plugins = settings.plugins || {}
+	this.plugins = {}
+
+	// register plugins
+	for(var i=0; i<settings.plugins.length; i++) {
+		if(settings.plugins[i].background) settings.plugins[i].background.call(null, this)
+		this.plugins[settings.plugins[i].name] = settings.plugins[i].src
+	}
 
 	// instantiated tabs
 	this.openTabs = {}
@@ -32,11 +38,6 @@ tabManager.init = function(settings) {
 	// menu is tabManagers 'view'
 	this.menu = menu
 	this.updateMenu()
-
-	// names of registered plugins
-	this.pluginNames = []
-
-	this.registerPlugins()
 }
 
 /*
@@ -45,27 +46,6 @@ tabManager.init = function(settings) {
 */
 tabManager.updateMenu = function() {
 	this.menu(this, this.dom)
-}
-
-/*
-	registerPlugins
-	note: second forEach = dirty fix!
-*/
-tabManager.registerPlugins = function() {
-
-	var plugins = this.plugins
-	var pluginNames = this.pluginNames
-	var tabHandler = this
-
-	this.plugins.forEach(function(plugin) {
-		pluginNames.push(plugin.name)
-		if(plugin.background) plugin.background.call(null, tabHandler)
-		plugins[plugin.name] = plugin.src
-	})
-
-	this.plugins.forEach(function(plugin) {
-		if(plugin.name) delete plugins[plugin]
-	})
 }
 
 /*
