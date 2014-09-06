@@ -55,8 +55,13 @@ tabManager.open = function(pluginName, arg) {
 
 	if(!this.plugins[pluginName]) return
 
-	// tab constructor
-	return Tab.call(this, pluginName, arg)
+	var newTab = new Tab(pluginName, this, arg)
+
+	this.tabs[newTab.id] = newTab
+
+	this.setFocus(newTab.id)
+
+	return newTab
 }
 
 /*
