@@ -8,7 +8,7 @@ var view = require('./view')
 
 module.exports = function(tabHandler, document) {
 
-	document.getElementById('MENU').innerHTML = view({ openTabs: tabHandler.openTabs })
+	document.getElementById('MENU').innerHTML = view({ tabs: tabHandler.tabs })
 
 	// binds function to elems click event
 	function onClick(query, cb){
@@ -20,6 +20,9 @@ module.exports = function(tabHandler, document) {
 
 	function focusTab(e) {
 		var id = e.target.getAttribute('tab')
+		console.log('setting focus')
+		console.log('setting focus')
+		console.log('setting focus')
 		tabHandler.setFocus(id)
 		tabHandler.updateMenu()
 	}
