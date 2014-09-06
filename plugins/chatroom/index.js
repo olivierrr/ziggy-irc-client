@@ -216,8 +216,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 			}
-
-			else assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 		})
 
 		room.client.addListener('error', function(message) {
