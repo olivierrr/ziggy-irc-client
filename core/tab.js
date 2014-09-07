@@ -16,20 +16,15 @@ module.exports = Tab = function(plugin, tabHandler, arg) {
 }
 
 Tab.prototype.setStorage = function(data) {
-	this.tabHandler.storage.setItem(this.plugin, JSON.stringify(data))
+	this.tabHandler.storage.setStorage(this.plugin, data)
 }
 
 Tab.prototype.getStorage = function() {
-	var storage
-	if(this.tabHandler.storage.getItem(this.plugin) == 'undefined') storage = {}
-	else storage = JSON.parse(this.tabHandler.storage.getItem(this.plugin)) || {}
-	return storage
+	return this.tabHandler.storage.getStorage(this.plugin)
 }
 
 Tab.prototype.updateStorage = function(callback) {
-	var updatedStorage = callback(this.getStorage())
-	this.setStorage(updatedStorage)
-	this.storage = this.getStorage()
+	this.storage = this.tabHandler.storage.updateStorage(this.plugin, callback)
 }
 
 Tab.prototype.setName = function(name) {

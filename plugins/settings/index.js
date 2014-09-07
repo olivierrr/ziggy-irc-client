@@ -43,9 +43,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function getContext() {
 
-		var storage
-		if(tabHandler.storage.getItem(focus) == 'undefined') storage = null
-		else storage = JSON.parse(tabHandler.storage.getItem(focus)) || null
+		var storage = tabHandler.storage.getStorage(focus)
 
 		return {
 			id: tab.id,
@@ -64,7 +62,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		})
 
 		onClick('[settingsSave]', function handleSave(e) {
-			
+
 		})
 	}
 }
