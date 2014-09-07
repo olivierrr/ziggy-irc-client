@@ -25,7 +25,7 @@ module.exports = function(tabHandler, document) {
 	}
 
 	function newTab(e) {
-		tabHandler.open('form', {mode:0})
+		tabHandler.open(tabHandler.plugins['form'])
 		tabHandler.updateMenu()
 	}
 
@@ -42,7 +42,7 @@ module.exports = function(tabHandler, document) {
 	//
 
 	function openSettings() {
-		tabHandler.open('settings')
+		tabHandler.open(tabHandler.plugins['settings'])
 		tabHandler.updateMenu()
 	}
 

@@ -125,7 +125,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 				var message = words[2] ? words.splice(2, words.length).join(' ') : null
 
-				tabHandler.open('chatroom', {
+				tabHandler.open(tabHandler.plugins['chatroom'], {
 					mode: 2,
 					channel: words[1],
 					room: room,
@@ -148,7 +148,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 					return
 				}
 				else {
-					tabHandler.open('chatroom', {
+					tabHandler.open(tabHandler.plugins['chatroom'], {
 						mode: 1,
 						channel: words[1],
 						server: server,
@@ -252,7 +252,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if(tab.storage['allow PM'] === false) return // SETTINGS
 
 			if(ziggy.isPm(user.nick, server)) return
-			tabHandler.open('chatroom', {
+			tabHandler.open(tabHandler.plugins['chatroom'], {
 				mode: 2,
 				room: room,
 				channel: user.nick, // other users nick

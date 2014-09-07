@@ -62,5 +62,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 			focus = e.target.getAttribute('settingsSubtab')
 			render()
 		})
+
+		onClick('[settingsSave]', function handleSave(e) {
+			
+		})
 	}
 }

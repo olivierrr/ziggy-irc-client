@@ -29,7 +29,7 @@ tabManager.init = function(settings) {
 	// register plugins
 	for(var i=0; i<settings.plugins.length; i++) {
 		if(settings.plugins[i].background) settings.plugins[i].background.call(null, this)
-		this.plugins[settings.plugins[i].name] = settings.plugins[i].src
+		this.plugins[settings.plugins[i].name] = settings.plugins[i]
 	}
 
 	// instantiated tabs
@@ -51,11 +51,9 @@ tabManager.updateMenu = function() {
 /*
 	creates tab instance
 */
-tabManager.open = function(pluginName, arg) {
+tabManager.open = function(plugin, arg) {
 
-	if(!this.plugins[pluginName]) return
-
-	var newTab = new Tab(pluginName, this, arg)
+	var newTab = new Tab(plugin, this, arg)
 
 	this.tabs[newTab.id] = newTab
 

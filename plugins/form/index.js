@@ -27,7 +27,7 @@ module.exports.background = function(tabHandler) {
 
 	for(var i=0; i<kk; i+=2) {
 
-		tabHandler.open('chatroom', {
+		tabHandler.open(tabHandler.plugins['chatroom'], {
 			mode: 1,
 			channel: kk[i],
 			server: kk[i+1]
@@ -103,7 +103,7 @@ module.exports.src = function(tabHandler, tab) {
 		})
 
 		// start chatroom
-		tab.switchPlugin('chatroom', {
+		tab.switchPlugin(tabHandler.plugins['chatroom'], {
 			mode: 1,
 			server: server,
 			channel: channel

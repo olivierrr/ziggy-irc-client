@@ -1,15 +1,15 @@
-module.exports = Tab = function(pluginName, tabHandler, arg) {
+module.exports = Tab = function(plugin, tabHandler, arg) {
 
 	this.tabHandler = tabHandler
-	this.name = pluginName
-	this.plugin = pluginName
+	this.name = plugin.name
+	this.plugin = plugin.name
 	this.focus = false
 	this.storage = this.getStorage()
 	this.id = getRandomString()
 	this.notifications = 0
 
 	// exec plugin script
-	this.src = this.tabHandler.plugins[pluginName].call(null, this.tabHandler, this, arg) /*tabHandler, tabInstance, argument*/
+	this.src = plugin.src.call(null, this.tabHandler, this, arg) /*tabHandler, tabInstance, argument*/
 
 	// clear notifications on focus
 	this.tabHandler.ee.on('focus#'+this.id, this.clearNotifications.bind(this))
@@ -47,24 +47,21 @@ Tab.prototype.clearNotifications = function() {
 	this.tabHandler.updateMenu()
 }
 
-Tab.prototype.switchPlugin = function(pluginName, arg) {
-
-	// should probably close tab if plugin requested doesn't exist
-	if(!this.tabHandler.plugins[pluginName]) return
+Tab.prototype.switchPlugin = function(plugin, arg) {
 
 	// emit close events
 	this.tabHandler.ee.emit('close', this.id)
 	this.tabHandler.ee.emit('close#'+this.id)
 
 	// start up new plugin
-	this.name = pluginName
-	this.plugin = pluginName
+	this.name = plugin.name
+	this.plugin = plugin.name
 
 	// update storage namespace
 	this.storage = this.getStorage()
 
 	// execute new plugin script
-	this.src = this.tabHandler.plugins[pluginName].call(null, this.tabHandler, this, arg)
+	this.src = plugin.src.call(null, this.tabHandler, this, arg)
 }
 
 // Util
