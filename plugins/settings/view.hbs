@@ -3,8 +3,8 @@
 	{{!-- subtabs --}}
 	<span class="subTabs">
 		{{#each subTabs}}
-			<span class="subTab" settingsSubtab="{{this}}">
-				{{this}}
+			<span class="subTab {{#if this.focus}}focus{{/if}}" settingsSubtab="{{this.name}}">
+				{{this.name}}
 			</span>
 		{{/each}}
 	</span>
@@ -79,11 +79,18 @@
 	font-size: 20px;
 	font-weight: 400;
 }
+#{{id}} .subTab.focus {
+	background-color: #EFEFEF;
+	color: #929292;
+}
+#{{id}} .subTab.focus :hover{
+	background-color: #DEDEDE;
+}
 #{{id}} .subTab:first-child {
 	border-left: 0;
 }
 #{{id}} .subTab:hover {
-	background-color: #FFFFFF;
+	background-color: #F7F7F7;
 }
 
 /*

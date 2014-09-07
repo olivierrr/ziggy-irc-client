@@ -30,7 +30,16 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	//
 
-	var focus = Object.keys(tabHandler.plugins)[0] || null
+	var subTabs = function(focus) {
+		return Object.keys(tabHandler.plugins).map(function(name, i) {
+			return {
+				name: name,
+				focus: focus === name ? true:false
+			}
+		})
+	}
+
+	var focus = Object.keys(tabHandler.plugins)[0]
 
 	function getContext() {
 
@@ -41,7 +50,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		return {
 			id: tab.id,
 			settings: storage,
-			subTabs: Object.keys(tabHandler.plugins),
+			subTabs: subTabs(focus)
 		}
 	}
 
