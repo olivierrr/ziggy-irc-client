@@ -62,7 +62,15 @@ module.exports.src = function(tabHandler, tab, arg) {
 		})
 
 		onClick('[settingsSave]', function handleSave(e) {
+			var updated = {}
+			var inputs = document.querySelectorAll('[setting]')
 
+			Array.prototype.forEach.call(inputs, function(x) {
+				updated[x.getAttribute('setting')] = x.value
+			})
+
+			tabHandler.storage.setStorage(focus, updated)
+			render()
 		})
 	}
 }
