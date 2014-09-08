@@ -22,8 +22,8 @@ tabManager.init = function(settings) {
 		}
 		getStorage = function(plugin) {
 			var st
-			if(storage.getItem(plugin) == 'undefined') st = {}
-			else st = JSON.parse(storage.getItem(plugin)) || {}
+			if(storage.getItem(plugin) == 'undefined') st = null
+			else st = JSON.parse(storage.getItem(plugin)) || null
 			return st
 		}
 		updateStorage = function(plugin, callback) {

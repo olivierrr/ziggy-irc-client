@@ -11,16 +11,11 @@ module.exports.name = name
 
 module.exports.background = function(tabHandler) {
 
-	if(tabHandler.storage[name]) return
-
-	// if its first launch ever
-	else {
-		tabHandler.storage[name] = JSON.stringify({
-			'allow PM': true,
+	if(!tabHandler.storage.getStorage(name)) {
+		tabHandler.storage.setStorage(name, {
+			'allow PM': true
 		})
 	}
-
-	
 }
 
 module.exports.src = function(tabHandler, tab, arg) {

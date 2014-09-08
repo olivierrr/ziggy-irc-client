@@ -10,7 +10,6 @@ module.exports.name = 'settings'
 module.exports.src = function(tabHandler, tab, arg) {
 
 	var document = tabHandler.dom
-	var ziggy = tabHandler.ziggy
 
 	tabHandler.ee.on('focus#'+tab.id, render)
 	tabHandler.ee.on('close#'+tab.id, function() {
