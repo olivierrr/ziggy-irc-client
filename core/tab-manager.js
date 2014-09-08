@@ -27,7 +27,7 @@ tabManager.init = function(settings) {
 			return st
 		}
 		updateStorage = function(plugin, callback) {
-			var updatedStorage = callback(this.getStorage())
+			var updatedStorage = callback(this.getStorage(plugin))
 			this.setStorage(plugin, updatedStorage)
 			return updatedStorage
 		}
