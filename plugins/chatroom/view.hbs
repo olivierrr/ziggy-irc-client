@@ -1,26 +1,59 @@
 <div id="{{id}}">
 	
-	<div class="messageContainer">
-		{{#each messages}}
-			<div class="msg">
-				<span class="leftColumn">
-					<span class="username message {{this.flag}}">{{this.nick}}</span>
-				</span> 
-				<span class="rightColumn">
-					<span class="text message {{this.flag}}">{{this.text}}</span>
-				</span>
-			</div>
-		{{/each}}
+	<div class="chatSpaceContainer">
+
+		<div class="messageContainer">
+			{{#each messages}}
+				<div class="msg">
+					<span class="leftColumn">
+						<span class="username message {{this.flag}}">{{this.nick}}</span>
+					</span> 
+					<span class="rightColumn">
+						<span class="text message {{this.flag}}">{{this.text}}</span>
+					</span>
+				</div>
+			{{/each}}
+		</div>
+
+		<div class="footer">
+			<span user={{nick}} class="userID">{{nick}}</span>
+			<input class="chat_input"></input>
+		</div>
+
 	</div>
 
-	<div class="footer">
-		<span user={{nick}} class="userID">{{nick}}</span>
-		<input class="chat_input"></input>
+	<div class="userList">
+		{{#each users}} <div class="user"> {{@key}} </div> {{/each}}
 	</div>
 
 </div>
 
 <style>
+
+/*
+	chat container
+*/
+#{{id}} .chatSpaceContainer {
+	float: left;
+	width: calc(100% - 200px);
+}
+
+/*
+	user list
+*/
+#{{id}} .userList {
+	border-left: solid 1px #CECECE;
+	height: calc(100% - 40px);
+	box-sizing: border-box;
+	float: right;
+	width: 200px;
+	overflow-y: auto;
+	overflow-x: hidden; 
+}
+#{{id}} .userList .user {
+	padding: 5px;
+	color: #989898;
+}
 
 /*
 	footer

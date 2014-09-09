@@ -46,7 +46,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function renderChatRoom() {
 
-		document.getElementById('TAB').innerHTML = view({messages: messages, id: tab.id, nick: ziggy.getRealNick(server)})
+		document.getElementById('TAB').innerHTML = view({
+			messages: messages, 
+			users: room.client&&room.client.chans[channel] ? room.client.chans[channel].users : null,
+			id: tab.id, 
+			nick: ziggy.getRealNick(server)})
 
 		if(input) inputVal = input.value
 		input = document.querySelector('.chat_input')
