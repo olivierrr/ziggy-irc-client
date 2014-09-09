@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="userList">
-		{{#each users}} <div class="user"> {{@key}} </div> {{/each}}
+		{{#each users}} <div class="user"> <span class="status">{{this}}</span> {{@key}} </div> {{/each}}
 	</div>
 
 </div>
@@ -53,6 +53,13 @@
 #{{id}} .userList .user {
 	padding: 5px;
 	color: #989898;
+}
+#{{id}} .userList .user:hover {
+	background-color: #EBEBEB;
+}
+#{{id}} .userList .user .status {
+	font-weight: 600;
+	color: #828282;
 }
 
 /*
