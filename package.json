@@ -1,8 +1,8 @@
 {
-  "name": "irc",
+  "name": "zirc",
   "main": "index.html",
-  "version": "0.2.0",
-  "description": "",
+  "version": "0.3.0",
+  "description": "IRC client built on node webkit",
   "preferGlobal": true,
   "bin": {
     "zirc": "./scripts/launch.js"
@@ -12,6 +12,15 @@
     "launch": "node scripts/launch.js"
   },
   "author": "olivierrr",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olivierrr/ziggy-irc-client.git"
+  },
+  "bugs": "https://github.com/olivierrr/ziggy-irc-client/issues",
+  "keywords": [
+    "irc",
+    "client"
+  ],
   "license": "MIT",
   "dependencies": {
     "handlebars": "^2.0.0-alpha.4",
@@ -25,7 +34,7 @@
     "node-bourbon": "^1.2.3"
   },
   "window": {
-    "title": "ziggy-IRC-client",
+    "title": "zirc",
     "icon": "icon.png",
     "toolbar": true,
     "width": 900,
