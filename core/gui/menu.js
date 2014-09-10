@@ -9,7 +9,7 @@ var fs = require('fs')
 
 module.exports = function(tabHandler, document) {
 
-	fs.readFile(path.join(__dirname, 'test.html'), 'utf8', function(err, html) {
+	fs.readFile(path.join(__dirname, 'view.html'), 'utf8', function(err, html) {
 		if(err) throw err
 		else render(html)
 	})

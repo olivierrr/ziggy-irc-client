@@ -1,7 +1,10 @@
 <div class="menu" id="menu">
 
-	<span class="tab" rv-each-tab="model.tabs" rv-class-focus="tab.focus" rv-on-click="controller.focusTab" >
-		<span>{ tab.name }</span>
+	<span class="tab" rv-each-tab="model.tabs" rv-on-click="controller.focusTab" >
+
+		<span rv-show="tab.focus" class="focus"> {tab.name} </span>
+		<span rv-hide="tab.focus"> {tab.name} </span>
+
 		<span class="subbutton close" rv-show="tab.focus" rv-on-click="controller.closeTab"> x </span>
 		<span class="subbutton alert" rv-show="tab.notifications"> {tab.notifications} </span>
 	</span>
@@ -17,6 +20,10 @@
 </div>
 
 <style>
+
+.tab .focus {
+	color: #737373;
+}
 
 /*
 	container
@@ -63,14 +70,17 @@
 	border-bottom: solid 1px #BDBDBD;
 	border-right: solid 1px #BDBDBD;
 }
-.menu .tab:hover {
+/*.menu .tab:hover {
 	color: #969696;
 }
+*/
 
 .menu .tab.focus {
-	color: #717171;
-	border-bottom: solid 1px white;
+	background-color: red;
+/*	color: #717171;
+	border-bottom: solid 1px white;*/
 }
+
 .menu .tab.focus:hover {
 	color: #373737;
 }
