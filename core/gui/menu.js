@@ -1,6 +1,7 @@
-var Handlebars = require('handlebars')
+var rivets = window.rivets
 
-var view = require('./view')
+var fs = require('fs')
+,	path = require("path")
 
 /*
 	tab handler view
@@ -8,43 +9,51 @@ var view = require('./view')
 
 module.exports = function(tabHandler, document) {
 
-	document.getElementById('MENU').innerHTML = view({ tabs: tabHandler.tabs })
+	//temp
+	function ooo() {
+		var arr = []
+		for(var i in tabHandler.tabs) {
+			arr.push(tabHandler.tabs[i])
+		}
+		return arr
+	}
 
-	// binds function to elems click event
-	function onClick(query, cb){
-		var elem = document.querySelectorAll(query)
-		for(var i=0; i<elem.length; i++){
-			elem[i].addEventListener('click', cb)
+	var tabs = ooo()
+
+	fs.readFile(path.join(__dirname, 'test.html'), 'utf8', function(err, html) {
+		if(err) throw err
+		else render(html)
+	})
+
+	function render(html) {
+
+		document.getElementById('MENU').innerHTML = html
+
+		var o = rivets.bind(document.getElementById('menu'), {
+			tabs: tabs,
+			controller: {
+				newTab: newTab,
+				focusTab: focusTab,
+				closeTab: closeTab,
+				openSettings: openSettings
+			}
+		})
+
+		function focusTab(event, obj) {
+			tabHandler.setFocus(obj.tab.id)
+			tabHandler.updateMenu()
+		}
+		function newTab() {
+			tabHandler.open(tabHandler.plugins['form'])
+			tabHandler.updateMenu()
+		}
+		function closeTab(event, obj) {
+			tabHandler.close(obj.tab.id)
+			tabHandler.updateMenu()
+		}
+		function openSettings() {
+			tabHandler.open(tabHandler.plugins['settings'])
+			tabHandler.updateMenu()
 		}
 	}
-
-	function focusTab(e) {
-		var id = e.target.getAttribute('tab')
-		tabHandler.setFocus(id)
-		tabHandler.updateMenu()
-	}
-
-	function newTab(e) {
-		tabHandler.open(tabHandler.plugins['form'])
-		tabHandler.updateMenu()
-	}
-
-	function closeTab(e) {
-		var id = e.target.getAttribute('closeTab')
-		tabHandler.close(id)
-		tabHandler.updateMenu()
-	}
-
-	onClick('[closeTab]', closeTab)
-	onClick('[tab]', focusTab)
-	onClick('[add]', newTab)
-
-	//
-
-	function openSettings() {
-		tabHandler.open(tabHandler.plugins['settings'])
-		tabHandler.updateMenu()
-	}
-
-	onClick('[settings]', openSettings)
 }
