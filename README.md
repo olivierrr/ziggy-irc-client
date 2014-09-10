@@ -24,6 +24,9 @@ note: consider any version bellow 1.0.0 unstable
 * pm chatting
 * global nicks
 
+#### 0.3
+* some user commands
+* user list on chatroom
 
 ## license
 
