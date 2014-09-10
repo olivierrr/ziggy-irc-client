@@ -56,8 +56,7 @@ tabManager.init = function(settings) {
 	this.tabs = {}
 
 	// menu is tabManagers 'view'
-	this.menu = menu
-	this.updateMenu()
+	this.menu = menu(this,this.dom)
 }
 
 /*
@@ -65,7 +64,7 @@ tabManager.init = function(settings) {
 	renders view
 */
 tabManager.updateMenu = function() {
-	this.menu(this, this.dom)
+	this.menu()
 }
 
 /*

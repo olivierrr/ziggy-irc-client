@@ -9,8 +9,12 @@ var fs = require('fs')
 
 module.exports = function(tabHandler, document) {
 
-	//temp
-	function ooo() {
+	fs.readFile(path.join(__dirname, 'test.html'), 'utf8', function(err, html) {
+		if(err) throw err
+		else render(html)
+	})
+
+	function genTabsArray() {
 		var arr = []
 		for(var i in tabHandler.tabs) {
 			arr.push(tabHandler.tabs[i])
@@ -18,27 +22,9 @@ module.exports = function(tabHandler, document) {
 		return arr
 	}
 
-	var tabs = ooo()
+	var model = {tabs: genTabsArray()}
 
-	fs.readFile(path.join(__dirname, 'test.html'), 'utf8', function(err, html) {
-		if(err) throw err
-		else render(html)
-	})
-
-	function render(html) {
-
-		document.getElementById('MENU').innerHTML = html
-
-		var o = rivets.bind(document.getElementById('menu'), {
-			tabs: tabs,
-			controller: {
-				newTab: newTab,
-				focusTab: focusTab,
-				closeTab: closeTab,
-				openSettings: openSettings
-			}
-		})
-
+	var controller = function() {
 		function focusTab(event, obj) {
 			tabHandler.setFocus(obj.tab.id)
 			tabHandler.updateMenu()
@@ -55,5 +41,23 @@ module.exports = function(tabHandler, document) {
 			tabHandler.open(tabHandler.plugins['settings'])
 			tabHandler.updateMenu()
 		}
+		return {
+			newTab: newTab,
+			focusTab: focusTab,
+			closeTab: closeTab,
+			openSettings: openSettings
+		}
+	}
+
+	function render(html) {
+		document.getElementById('MENU').innerHTML = html
+		var menu = rivets.bind(document.getElementById('menu'), {
+			model: model,
+			controller: controller()
+		})
+	}
+
+	return function() {
+		model.tabs = genTabsArray()
 	}
 }

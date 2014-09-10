@@ -1,6 +1,6 @@
 <div class="menu" id="menu">
 
-	<span class="tab" rv-each-tab="tabs" rv-on-click="controller.focusTab" rv-class-focus="tab.focus">
+	<span class="tab" rv-each-tab="model.tabs" rv-class-focus="tab.focus" rv-on-click="controller.focusTab" >
 		<span>{ tab.name }</span>
 		<span class="subbutton close" rv-show="tab.focus" rv-on-click="controller.closeTab"> x </span>
 		<span class="subbutton alert" rv-show="tab.notifications"> {tab.notifications} </span>
