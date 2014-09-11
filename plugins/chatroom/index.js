@@ -102,7 +102,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 		{name:'/msg',help:'start a private chat'}, 
 		{name:'/nick',help:'change your nickname'}, 
 		{name:'/join',help:'join a channel'}, 
-		{name:'/topic',help:'...'}
+		{name:'/topic',help:'...'},
+		{name:'/whois',help:'see more info about an user'}
 	]
 
 	function parseInput(string) {
@@ -183,6 +184,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 						assembleMessage('', key + ': ' + obj.info.whois[key])
 					})
 				})
+				return
+			}
+
+			if(words[0] === '/invite' && words[1] && words[2]) {
+				room.client.send('INVITE', words[1], words[2])
 				return
 			}
 
@@ -318,6 +324,18 @@ module.exports.src = function(tabHandler, tab, arg) {
 			if(chan !== channel) return
 			assembleMessage('topic', topic, 'topic')
 		})
+
+		room.on('invite', function(chan, user) {
+			assembleMessage('', 'You have been invited to ' + chan + ' by ' + user.nick)
+		})
+
+		// room.on('server', function(text) {
+		// 	//todo
+		// })
+
+		// room.on('notice', function(user, to, text) {
+		// 	//todo
+		// })
 
 		room.client.addListener('error', function(message) {
 			assembleMessage('ERROR', JSON.stringify(message), 'error')
