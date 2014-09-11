@@ -7,7 +7,7 @@ a (soon to be) themeable and extendible irc client
 note: consider any version bellow 1.0.0 unstable
 
 ##install
-`npm install -g ziggy-irc-client`
+`npm install -g zirc`
 
 ##launch
 `zirc`
@@ -27,6 +27,10 @@ note: consider any version bellow 1.0.0 unstable
 #### 0.3
 * some user commands
 * user list on chatroom
+
+### 0.4
+* persistent storage 
+* more user commands
 
 ## license
 
