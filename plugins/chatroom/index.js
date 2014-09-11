@@ -97,6 +97,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 		}
 	}
 
+	var commands = [
+		{name:'/me',help:'action message'},
+		{name:'/msg',help:'start a private chat'}, 
+		{name:'/nick',help:'change your nickname'}, 
+		{name:'/join',help:'join a channel'}, 
+		{name:'/topic',help:'...'}
+	]
+
 	function parseInput(string) {
 
 		if(string.length === 0) return
@@ -114,7 +122,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
-			// '/pm [recipient]'
+			// '/pm [recipient] [message(optional)]'
 			if(words[0] === '/pm' && words[1]) {
 
 				if(ziggy.isPm(words[1], server)) {
@@ -165,6 +173,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 				else {
 					assembleMessage('', 'no topic set', 'topic')
 				}
+				return
+			}
+
+			// '/help'
+			if(words[0] === '/help') {
+				commands.forEach(function(c) { assembleMessage(c.name, c.help) })
 				return
 			}
 		}
