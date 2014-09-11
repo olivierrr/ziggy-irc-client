@@ -150,6 +150,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			// '/join [channel]'
 			if(words[0] === '/join' && words[1]) {
+
 				if(ziggy.isConnectedToChannel(server, words[1])) {
 					assembleMessage('', 'you are already connected to ' + words[1], 'warning')
 					return
@@ -173,6 +174,15 @@ module.exports.src = function(tabHandler, tab, arg) {
 				else {
 					assembleMessage('', 'no topic set', 'topic')
 				}
+				return
+			}
+
+			if(words[0] === '/whois' && words[1]) {
+				room.whois(words[1], function(obj) {
+					Object.keys(obj.info.whois).forEach(function(key) {
+						assembleMessage('', key + ': ' + obj.info.whois[key])
+					})
+				})
 				return
 			}
 
