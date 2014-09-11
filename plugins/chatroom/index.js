@@ -103,7 +103,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 		{name:'/nick',help:'change your nickname'}, 
 		{name:'/join',help:'join a channel'}, 
 		{name:'/topic',help:'...'},
-		{name:'/whois',help:'see more info about an user'}
+		{name:'/whois',help:'see more info about an user'},
+		{name:'/invite', help: 'invite an user to a room'},
+		{name:'/help', help: 'get a list of available commands'}
 	]
 
 	function parseInput(string) {
@@ -114,7 +116,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			var words = string.split(/\s+/)
 
-			// '/me [string(s)]'
+			// '/me [message]'
 			if(words[0] === '/me' && words[1]) {
 
 				var message = words.splice(1, words.length).join(' ')
@@ -123,7 +125,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
-			// '/pm [recipient] [message(optional)]'
+			// '/pm <recipient> [message(optional)]'
 			if(words[0] === '/pm' && words[1]) {
 
 				if(ziggy.isPm(words[1], server)) {
@@ -143,13 +145,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
-			// '/nick [newNick]'
+			// '/nick <newNick>'
 			if(words[0] === '/nick' && words[1]) {
 				ziggy.setNick(words[1])
 				return
 			}
 
-			// '/join [channel]'
+			// '/join <channel>'
 			if(words[0] === '/join' && words[1]) {
 
 				if(ziggy.isConnectedToChannel(server, words[1])) {
@@ -178,6 +180,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
+			// '/whois <user>'
 			if(words[0] === '/whois' && words[1]) {
 				room.whois(words[1], function(obj) {
 					Object.keys(obj.info.whois).forEach(function(key) {
@@ -187,6 +190,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
+			// '/invite <user> <room>'
 			if(words[0] === '/invite' && words[1] && words[2]) {
 				room.client.send('INVITE', words[1], words[2])
 				return
@@ -329,13 +333,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage('', 'You have been invited to ' + chan + ' by ' + user.nick)
 		})
 
-		// room.on('server', function(text) {
-		// 	//todo
-		// })
+		room.on('server', function(text) {
+			assembleMessage('server', text)
+		})
 
-		// room.on('notice', function(user, to, text) {
-		// 	//todo
-		// })
+		room.on('notice', function(user, to, text) {
+			assembleMessage('NOTICE', to + ': ' + text)
+		})
 
 		room.client.addListener('error', function(message) {
 			assembleMessage('ERROR', JSON.stringify(message), 'error')
