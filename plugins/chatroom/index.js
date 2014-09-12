@@ -104,8 +104,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 		{name:'/join',help:'join a channel'}, 
 		{name:'/topic',help:'...'},
 		{name:'/whois',help:'see more info about an user'},
-		{name:'/invite', help: 'invite an user to a room'},
-		{name:'/help', help: 'get a list of available commands'}
+		{name:'/invite',help: 'invite an user to a room'},
+		{name:'/help',help: 'get a list of available commands'},
+		{name:'/notice',help: 'send a notice to a channel or user'}
 	]
 
 	function parseInput(string) {
@@ -133,7 +134,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 					return
 				}
 
-				var message = words[2] ? words.splice(2, words.length).join(' ') : null
+				var message = words[2] ? words.splice(2).join(' ') : null
 
 				tabHandler.open(tabHandler.plugins['chatroom'], {
 					mode: 2,
@@ -193,6 +194,13 @@ module.exports.src = function(tabHandler, tab, arg) {
 			// '/invite <user> <room>'
 			if(words[0] === '/invite' && words[1] && words[2]) {
 				room.client.send('INVITE', words[1], words[2])
+				return
+			}
+
+			// '/notice <target> [message]' 
+			if(words[0] === '/notice' && words[1] && words[2]) {
+				var message = words.splice(2).join(' ')
+				room.notice(words[1], message)
 				return
 			}
 
