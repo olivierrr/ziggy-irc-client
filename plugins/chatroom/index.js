@@ -2,6 +2,10 @@ var Handlebars = require('handlebars')
 Handlebars.registerPartial('userlist', require('./view/partials/userlist'))
 Handlebars.registerPartial('messages', require('./view/partials/messages'))
 
+Handlebars.registerHelper("sortUsers", function(str) {
+
+})
+
 var view = require('./view/view')
 
 /*
@@ -47,11 +51,19 @@ module.exports.src = function(tabHandler, tab, arg) {
 	}
 	else return //error
 
+	// sorts userlist
+	function getUsersList() {
+		if(room.client && room.client.chans[channel]) {
+			var list = room.client.chans[channel].users
+			return Object.keys(list).map(function(key){ return list[key]+key }).sort()
+		} else return null
+	}
+
 	function renderChatRoom() {
 
 		document.getElementById('TAB').innerHTML = view({
 			messages: messages, 
-			users: room.client&&room.client.chans[channel] ? room.client.chans[channel].users : null,
+			users: getUsersList(),
 			id: tab.id, 
 			nick: ziggy.getRealNick(server)})
 

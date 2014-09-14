@@ -1,5 +1,5 @@
 <div class="userList">
-		{{#each users}} <div class="user"> <span class="status">{{this}}</span> {{@key}} </div> {{/each}}
+		{{#each users}} <div class="user"> {{this}} </div> {{/each}}
 </div>
 
 <style>
@@ -22,9 +22,5 @@
 }
 #{{id}} .userList .user:hover {
 	background-color: #EBEBEB;
-}
-#{{id}} .userList .user .status {
-	font-weight: 600;
-	color: #828282;
 }
 </style>
