@@ -1,6 +1,5 @@
 ziggy-IRC-client
 ===================
-0.4.0
 
 a (soon to be) themeable and extendible irc client
 
@@ -14,7 +13,19 @@ note: consider any version bellow 1.0.0 unstable
 
 ![alt tag](http://i.imgur.com/N9LOqjX.png)
 
-##chanelog
+## available commands
+
+* `/help`
+* `/me`
+* `/msg`
+* `/nick`
+* `/join`
+* `/topic`
+* `/whois`
+* `/invite`
+* `/notice`
+
+##change log
 
 #### 0.1
 * tab handler core

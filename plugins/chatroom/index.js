@@ -126,8 +126,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 				return
 			}
 
-			// '/pm <recipient> [message(optional)]'
-			if(words[0] === '/pm' && words[1]) {
+			// '/msg <recipient> [message(optional)]'
+			if(words[0] === '/msg' && words[1]) {
 
 				if(ziggy.isPm(words[1], server)) {
 					assembleMessage('', 'you are already in session with ' + words[1], 'warning')

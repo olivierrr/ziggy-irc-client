@@ -19,7 +19,8 @@
   "bugs": "https://github.com/olivierrr/ziggy-irc-client/issues",
   "keywords": [
     "irc",
-    "client"
+    "client",
+    "ziggy"
   ],
   "license": "MIT",
   "dependencies": {
