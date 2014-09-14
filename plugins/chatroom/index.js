@@ -390,7 +390,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		//http
 		var str = str.split(/\s+/).map(function(x,i){
-			if(str[i]=='h' && str[i+1]=='t' && str[i+2]=='t' && str[i+3]=='p') {
+			if(x[0]=='h' && x[1]=='t' && x[2]=='t' && x[3]=='p') {
 				return '<a class="bold" href="#" link="'+x+'">'+x+'</a>'
 			} else return x
 		}).join(' ')
