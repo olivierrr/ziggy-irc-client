@@ -2,10 +2,6 @@ var Handlebars = require('handlebars')
 Handlebars.registerPartial('userlist', require('./view/partials/userlist'))
 Handlebars.registerPartial('messages', require('./view/partials/messages'))
 
-Handlebars.registerHelper("sortUsers", function(str) {
-
-})
-
 var view = require('./view/view')
 
 /*
@@ -61,6 +57,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function renderChatRoom() {
 
+		var userListScroll = document.querySelector('.userList') ? document.querySelector('.userList').scrollTop : 0
+
 		document.getElementById('TAB').innerHTML = view({
 			messages: messages, 
 			users: getUsersList(),
@@ -76,6 +74,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		var chatbox = document.querySelector('.messageContainer')
 		chatbox.scrollTop = chatbox.scrollHeight
+
+		document.querySelector('.userList').scrollTop = userListScroll
 
 		var links = document.querySelectorAll('[link]')
 		for(var i=0; i<links.length; i++) {
