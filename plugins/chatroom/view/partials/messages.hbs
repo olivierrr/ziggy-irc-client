@@ -1,0 +1,107 @@
+<div class="messageContainer">
+	{{#each messages}}
+	<div class="msg">
+		<span class="leftColumn">
+		<span class="username message {{this.flag}}">{{this.nick}}</span>
+		</span>
+		<span class="rightColumn">
+		<span class="text message {{this.flag}}">{{{this.text}}}</span>
+		</span>
+	</div>
+	{{/each}}
+</div>
+
+<style>
+
+/**/
+#{{id}} .bold {
+	color: #161616;
+}
+	
+/*
+	messages container
+*/
+#{{id}} .messageContainer {
+	box-sizing: border-box;
+	width: 100%;
+	top: 40px;
+	overflow-y: auto;
+	height: calc(100% - 80px);
+	padding-top: 50px;
+}
+
+
+/*
+	messages
+*/
+#{{id}} .msg {
+	word-wrap: break-word;
+	max-width: 100%;
+	float: left;
+	clear: both;
+}
+#{{id}} .leftColumn {
+	float: left;
+    width: 150px;
+}
+#{{id}} .rightColumn {
+	float: right;
+    width: calc(100% - 150px);
+}
+#{{id}} .message.username {
+	float: right;
+	clear: both;
+	color: #9A9A9A;
+}
+#{{id}} .message.text {
+	float: left;
+	clear: both;
+	width: calc(100% - 20px);
+}
+#{{id}} .message {
+	padding: 6px 10px;
+	color: #505050;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+/* 
+	messages flags 
+*/
+#{{id}} .message.error {
+	color: #FF3A40;
+}
+#{{id}} .message.topic {
+	color: #272727;
+}
+#{{id}} .message.warning {
+	color: #FF4A4A;
+}
+#{{id}} .username.isUser {
+	color: #5C5C5C;
+}
+#{{id}} .message.userNickChange {
+	color: #D0D0D0;
+}
+#{{id}} .message.userQuit {
+	color: #D0D0D0;
+}
+#{{id}} .message.userLeft {
+	color: #D0D0D0;
+}
+#{{id}} .message.ziggyJoined {
+	color: #D0D0D0;
+}
+#{{id}} .message.userJoined {
+	color: #D0D0D0;
+}
+#{{id}} .message.messageConnecting {
+	color: #D0D0D0;
+}
+#{{id}} .message.action {
+	font-weight: 600;
+	color: #656565;
+}
+
+
+</style>

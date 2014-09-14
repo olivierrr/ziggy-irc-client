@@ -3,6 +3,8 @@ var chatroom = require('./plugins/chatroom/index')
 var form = require('./plugins/form/index')
 var settings = require('./plugins/settings/index')
 
+var shell = require('nw.gui')
+
 // instance
 var tabManager = Object.create(require('./core/tab-manager'))
 
@@ -16,6 +18,9 @@ tabManager.init({
 	dom: document,
 
 	// local storage reference
-	localStorage: localStorage
+	localStorage: localStorage,
+
+	// shell API reference
+	shell: shell
 
 })

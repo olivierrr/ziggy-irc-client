@@ -41,6 +41,8 @@ tabManager.init = function(settings) {
 	// dom handle
 	this.dom = settings.dom
 
+	this.shell = settings.shell
+
 	this.ziggy = Object.create(Ziggy_client)
 	this.ziggy.init()
 

@@ -1,5 +1,8 @@
 var Handlebars = require('handlebars')
-var view = require('./view')
+Handlebars.registerPartial('userlist', require('./view/partials/userlist'))
+Handlebars.registerPartial('messages', require('./view/partials/messages'))
+
+var view = require('./view/view')
 
 /*
 	chatroom plugin
@@ -61,6 +64,11 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		var chatbox = document.querySelector('.messageContainer')
 		chatbox.scrollTop = chatbox.scrollHeight
+
+		var links = document.querySelectorAll('[link]')
+		for(var i=0; i<links.length; i++) {
+			links[i].addEventListener('click', function(e) { tabHandler.shell.Shell.openExternal(this.getAttribute('link')) })
+		}
 
 		/*
 			keyCode 13 = 'ENTER'
@@ -314,6 +322,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
+			console.log('ASDASD')
 			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
@@ -364,7 +373,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		var message = {
 			nick: nick,
-			text: text,
+			text: parseMessage(text),
 			flag: flag
 		}
 		messages.push(message)
@@ -375,5 +384,23 @@ module.exports.src = function(tabHandler, tab, arg) {
 		if(tab.focus === false) {
 			tab.setNotification()
 		}
+	}
+
+	function parseMessage(str) {
+
+		//http
+		var str = str.split(/\s+/).map(function(x,i){
+			if(str[i]=='h' && str[i+1]=='t' && str[i+2]=='t' && str[i+3]=='p') {
+				return '<a class="bold" href="#" link="'+x+'">'+x+'</a>'
+			} else return x
+		}).join(' ')
+
+		//mentions
+		var str = str.split(/\s+/).map(function(x,i){
+			if(x === ziggy.getRealNick(server)) return '<b class="bold">'+x+'</b>'
+			else return x
+		}).join(' ')
+
+		return str
 	}
 }

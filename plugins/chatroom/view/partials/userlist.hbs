@@ -1,0 +1,30 @@
+<div class="userList">
+		{{#each users}} <div class="user"> <span class="status">{{this}}</span> {{@key}} </div> {{/each}}
+</div>
+
+<style>
+
+/*
+	user list
+*/
+#{{id}} .userList {
+	border-left: solid 1px #CECECE;
+	height: calc(100% - 40px);
+	box-sizing: border-box;
+	float: right;
+	width: 200px;
+	overflow-y: auto;
+	overflow-x: hidden; 
+}
+#{{id}} .userList .user {
+	padding: 5px;
+	color: #989898;
+}
+#{{id}} .userList .user:hover {
+	background-color: #EBEBEB;
+}
+#{{id}} .userList .user .status {
+	font-weight: 600;
+	color: #828282;
+}
+</style>

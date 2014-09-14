@@ -1,0 +1,53 @@
+<div id="{{id}}">
+	
+	<div class="chatSpaceContainer">
+		
+		{{> messages}}
+
+		<div class="footer">
+			<span user={{nick}} class="userID">{{nick}}</span>
+			<input class="chat_input"></input>
+		</div>
+
+	</div>
+
+	{{> userlist}}
+
+</div>
+
+<style>
+/*
+	chat container
+*/
+#{{id}} .chatSpaceContainer {
+	float: left;
+	width: calc(100% - 200px);
+}
+
+/*
+	footer
+*/
+#{{id}} .footer {
+	height: 39px;
+	border-top: solid 1px #D4D4D4;
+}
+#{{id}} .chat_input {
+	box-sizing: border-box;
+	float: right;
+	width: calc(100% - 141px);
+	height: 39px;
+	padding: 0 20px;
+	border: 0;
+	outline: none;
+}
+#{{id}} .userID {
+	float: left;
+	width: 138px;
+	height: 39px;
+	line-height: 39px;
+	text-align: right;
+	color: #4A4A4A;
+	cursor: pointer;
+}
+
+</style>
