@@ -81,6 +81,21 @@ module.exports.src = function(tabHandler, tab, arg) {
 		for(var i=0; i<links.length; i++) {
 			links[i].addEventListener('click', function(e) { tabHandler.shell.Shell.openExternal(this.getAttribute('link')) })
 		}
+		var rooms = document.querySelectorAll('[room]')
+		for(var i=0; i<rooms.length; i++) {
+			rooms[i].addEventListener('click', function(e) {
+				if(ziggy.isConnectedToChannel(server, this.getAttribute('room'))) {
+					assembleMessage('', 'you are already on that channel', 'warning')
+					return
+				} else {
+					tabHandler.open(tabHandler.plugins['chatroom'], {
+						mode: 1,
+						channel: this.getAttribute('room'),
+						server: server
+					})
+				}
+			})
+		}
 
 		/*
 			keyCode 13 = 'ENTER'
@@ -334,7 +349,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 		room.on('ziggyjoin', function(chan, user) {
 			if(chan !== channel) return
-			console.log('ASDASD')
 			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
@@ -414,6 +428,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 		// mentions
 		.map(function(x,i) {
 			if(x === ziggy.getRealNick(server)) return '<b class="bold">'+x+'</b>'
+			else return x
+		})
+
+		// channel
+		.map(function(x,i) {
+			if(x[0]==='#') return '<a class="bold" href="#" room="'+x+'">'+x+'</a>'
 			else return x
 		})
 
