@@ -400,19 +400,23 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function parseMessage(str) {
 
-		//http
-		var str = str.split(/\s+/).map(function(x,i){
-			if(x[0]=='h' && x[1]=='t' && x[2]=='t' && x[3]=='p') {
-				return '<a class="bold" href="#" link="'+x+'">'+x+'</a>'
-			} else return x
-		}).join(' ')
+		var str = str.split(' ')
 
-		//mentions
-		var str = str.split(/\s+/).map(function(x,i){
+		// http
+		.map(function(x,i) {
+			if(x[0]=='h' && x[1]=='t' && x[2]=='t' && x[3]=='p') {
+				var img
+				if(x.split('.').some(function(s){return s==='gif'||s==='png'||s==='jpeg'||s==='jpg'})) {img = '<img src="'+x+'"  >'}
+				return '<a class="bold" href="#" link="'+x+'">'+ (img||x) +'</a>'
+			} else return x
+		})
+
+		// mentions
+		.map(function(x,i) {
 			if(x === ziggy.getRealNick(server)) return '<b class="bold">'+x+'</b>'
 			else return x
-		}).join(' ')
+		})
 
-		return str
+		return str.join(' ')
 	}
 }
