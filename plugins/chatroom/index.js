@@ -35,17 +35,20 @@ module.exports.src = function(tabHandler, tab, arg) {
 	var messages = [], 
 		room = arg.room || {}
 
+	// channel
 	if(arg.mode===1) {
 		tab.setName(channel)
 		assembleMessage('', 'connecting...', 'messageConnecting')
-		joinChannel(ziggy.getNick(), server, channel)
+		room = ziggy.joinChannel(server, channel)
+		channelEvents()
 	}
+	// pm
 	else if(arg.mode===2) {
 		tab.setName('@' + channel)
 		if(arg.message) assembleMessage(channel, arg.message)
-		joinPM()
+		pmEvents()
 	}
-	else return //error
+	else return
 
 	// sorts userlist
 	function getUsersList() {
@@ -84,16 +87,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 		var rooms = document.querySelectorAll('[room]')
 		for(var i=0; i<rooms.length; i++) {
 			rooms[i].addEventListener('click', function(e) {
-				if(ziggy.isConnectedToChannel(server, this.getAttribute('room'))) {
-					assembleMessage('', 'you are already on that channel', 'warning')
-					return
-				} else {
-					tabHandler.open(tabHandler.plugins['chatroom'], {
-						mode: 1,
-						channel: this.getAttribute('room'),
-						server: server
-					})
-				}
+				var chan = this.getAttribute('room')
+				openNewChannel(server, chan)
 			})
 		}
 		var zirc = document.querySelectorAll('[zirc]')
@@ -159,6 +154,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 	function parseInput(string) {
 
+		console.log(string)
+
 		if(string.length === 0) return
 
 		if(string[0] === '/') {
@@ -176,21 +173,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			// '/msg <recipient> [message(optional)]'
 			if(words[0] === '/msg' && words[1]) {
-
-				if(ziggy.isPm(words[1], server)) {
-					assembleMessage('', 'you are already in session with ' + words[1], 'warning')
-					return
-				}
-
 				var message = words[2] ? words.splice(2).join(' ') : null
-
-				tabHandler.open(tabHandler.plugins['chatroom'], {
-					mode: 2,
-					channel: words[1],
-					room: room,
-					server: server,
-					message: message
-				})
+				var chan = words[1]
+				openNewPm(room, server, chan, message)
 				return
 			}
 
@@ -203,17 +188,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 			// '/join <channel>'
 			if(words[0] === '/join' && words[1]) {
 
-				if(ziggy.isConnectedToChannel(server, words[1])) {
-					assembleMessage('', 'you are already connected to ' + words[1], 'warning')
-					return
-				}
-				else {
-					tabHandler.open(tabHandler.plugins['chatroom'], {
-						mode: 1,
-						channel: words[1],
-						server: server,
-					})
-				}
+				var chan = words[1]
+				openNewChannel(server, chan)
 				return
 			}
 
@@ -272,7 +248,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		document.getElementById('TAB').innerHTML = ''
 	})
 
-	function joinPM() {
+	function pmEvents() {
 
 		room.on('pm', function(user, text) {
 			if(user.nick === channel) {
@@ -318,9 +294,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 		})
 	}
 
-	function joinChannel(nick, server, channel) {
-
-		room = ziggy.joinChannel(server, channel, nick)
+	function channelEvents() {
 
 		room.on('message', function(user, chan, text) {
 			if(chan !== channel) return
@@ -340,14 +314,7 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			if(tab.storage['allow PM'] === false) return // SETTINGS
 
-			if(ziggy.isPm(user.nick, server)) return
-			tabHandler.open(tabHandler.plugins['chatroom'], {
-				mode: 2,
-				room: room,
-				channel: user.nick, // other users nick
-				server: server,
-				message: text
-			})
+			openNewPm(room, server, user.nick, text)
 		})
 
 		room.on('nick', function(oldNick, user, channels) {
@@ -406,6 +373,38 @@ module.exports.src = function(tabHandler, tab, arg) {
 		tabHandler.ee.on('close#'+tab.id, function() {
 			ziggy.leaveChannel(room, channel)
 		})
+	}
+
+	function openNewChannel(server, channel) {
+		if(ziggy.isConnectedToChannel(server, channel)) {
+			assembleMessage('', 'you are already on that channel', 'warning')
+		} else {
+
+			if(!server||!channel) return
+
+			tabHandler.open(tabHandler.plugins['chatroom'], {
+				mode: 1,
+				channel: channel,
+				server: server
+			})
+		}
+	}
+
+	function openNewPm(room, server, channel, message) {
+		if(ziggy.isPm(channel, server)) {
+			assembleMessage('', 'you are already in session with that user', 'warning' )
+		} else {
+
+			if(!room||!server||!channel) return
+
+			tabHandler.open(tabHandler.plugins['chatroom'], {
+				mode: 2,
+				room: room,
+				channel: channel,
+				server: server,
+				message: message || null
+			})
+		}
 	}
 
 	function assembleMessage(nick, text, flag) {
