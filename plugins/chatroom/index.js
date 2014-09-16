@@ -40,12 +40,14 @@ module.exports.src = function(tabHandler, tab, arg) {
 		tab.setName(channel)
 		assembleMessage('', 'connecting...', 'messageConnecting')
 		room = ziggy.joinChannel(server, channel)
+		commonEvents()
 		channelEvents()
 	}
 	// pm
 	else if(arg.mode===2) {
 		tab.setName('@' + channel)
 		if(arg.message) assembleMessage(channel, arg.message)
+		commonEvents()
 		pmEvents()
 	}
 	else return
@@ -164,11 +166,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			// '/me [message]'
 			if(words[0] === '/me' && words[1]) {
-
 				var message = words.splice(1, words.length).join(' ')
 				room.action(channel, message)
 				assembleMessage('', ziggy.getRealNick(server) + ' ' + message, 'action')
-				return
 			}
 
 			// '/msg <recipient> [message(optional)]'
@@ -176,21 +176,17 @@ module.exports.src = function(tabHandler, tab, arg) {
 				var message = words[2] ? words.splice(2).join(' ') : null
 				var chan = words[1]
 				openNewPm(room, server, chan, message)
-				return
 			}
 
 			// '/nick <newNick>'
 			if(words[0] === '/nick' && words[1]) {
 				ziggy.setNick(words[1])
-				return
 			}
 
 			// '/join <channel>'
 			if(words[0] === '/join' && words[1]) {
-
 				var chan = words[1]
 				openNewChannel(server, chan)
-				return
 			}
 
 			// '/topic'
@@ -198,11 +194,9 @@ module.exports.src = function(tabHandler, tab, arg) {
 				if(room.client.chans[channel] && room.client.chans[channel].topic) {
 					var topic = room.client.chans[channel].topic
 					assembleMessage('topic', topic, 'topic')
-				}
-				else {
+				} else {
 					assembleMessage('', 'no topic set', 'topic')
 				}
-				return
 			}
 
 			// '/whois <user>'
@@ -212,31 +206,29 @@ module.exports.src = function(tabHandler, tab, arg) {
 						assembleMessage('', key + ': ' + obj.info.whois[key])
 					})
 				})
-				return
 			}
 
 			// '/invite <user> <room>'
 			if(words[0] === '/invite' && words[1] && words[2]) {
 				room.client.send('INVITE', words[1], words[2])
-				return
 			}
 
 			// '/notice <target> [message]' 
 			if(words[0] === '/notice' && words[1] && words[2]) {
 				var message = words.splice(2).join(' ')
 				room.notice(words[1], message)
-				return
 			}
 
 			// '/help'
 			if(words[0] === '/help') {
 				commands.forEach(function(c) { assembleMessage(c.name, c.help) })
-				return
 			}
 		}
 
-		room.say(channel, string)
-		assembleMessage(ziggy.getRealNick(server), string, 'isUser')
+		else {
+			room.say(channel, string)
+			assembleMessage(ziggy.getRealNick(server), string, 'isUser')
+		}
 	}
 
 	tabHandler.ee.on('focus#'+tab.id, renderChatRoom)
@@ -251,19 +243,27 @@ module.exports.src = function(tabHandler, tab, arg) {
 	function pmEvents() {
 
 		room.on('pm', function(user, text) {
-			if(user.nick === channel) {
-				assembleMessage(user.nick, text)
-			}
-		})
-
-		room.on('action', function(user, chan, text){
-			if(user.nick !== channel) return
-			assembleMessage('', user.nick + ' ' + text, 'action')
+			if(user.nick === channel) assembleMessage(user.nick, text)
 		})
 
 		room.on('part', function(user, chan, reason) {
-			if(chan !== channel) return
+			if(user.nick !== channel) return
 			assembleMessage('', user.nick + ' has left', 'userLeft')
+		})
+
+		room.on('quit', function(user, reason, channels) {
+			if(user.nick !== channel) return
+			assembleMessage('', user.nick + ' has disconnected ' + reason, 'userQuit')
+		})
+
+		room.on('join', function(chan, user) {
+			if(user.nick !== channel) return
+			assembleMessage('', user.nick + ' has joined', 'userJoined')
+		})
+
+		room.on('notice', function(user, to, text) {
+			if(user.nick !== channel) return
+			assembleMessage('NOTICE', to + ': ' + text)
 		})
 
 		/*
@@ -274,23 +274,27 @@ module.exports.src = function(tabHandler, tab, arg) {
 
 			// channel = user you are in pm session with
 			if(oldNick === channel) {
-
 				ziggy.updatePm(oldNick, server, user.nick)
-
 				channel = user.nick // nope
-
 				assembleMessage('', oldNick + ' is now ' + user.nick, 'userNickChange')
 			}
-		})
-
-		room.client.addListener('error', function(message) {
-			assembleMessage('ERROR', JSON.stringify(message), 'error')
-			console.log(JSON.stringify(message))
 		})
 
 		// disconnect from PM session on close event
 		tabHandler.ee.on('close#'+tab.id, function() {
 			ziggy.leavePm(channel, server)
+		})
+	}
+
+	function commonEvents() {
+
+		room.on('server', function(text) {
+			assembleMessage('server', text)
+		})
+
+		room.client.addListener('error', function(message) {
+			assembleMessage('ERROR', JSON.stringify(message), 'error')
+			console.log(JSON.stringify(message))
 		})
 	}
 
@@ -313,8 +317,17 @@ module.exports.src = function(tabHandler, tab, arg) {
 		room.on('pm', function(user, text) {
 
 			if(tab.storage['allow PM'] === false) return // SETTINGS
-
 			openNewPm(room, server, user.nick, text)
+		})
+
+		room.on('part', function(user, chan, reason) {
+			if(chan !== channel) return
+			assembleMessage('', user.nick + ' has left', 'userLeft')
+		})
+
+		room.on('quit', function(user, reason, channels) {
+			if(channels.indexOf(channel) === -1) return
+			assembleMessage('', user.nick + ' has disconnected ' + reason, 'userQuit')
 		})
 
 		room.on('nick', function(oldNick, user, channels) {
@@ -332,16 +345,6 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage('', 'connected', 'ziggyJoined')
 		})
 
-		room.on('part', function(user, chan, reason) {
-			if(chan !== channel) return
-			assembleMessage('', user.nick + ' has left', 'userLeft')
-		})
-
-		room.on('quit', function(user, reason, channels) {
-			if(channels.indexOf(channel) === -1) return
-			assembleMessage('', user.nick + ' has disconnected ' + reason, 'userQuit')
-		})
-
 		room.on('kick', function(kicked, kickedBy, chan, reason) {
 			if(chan !== channel) return
 			assembleMessage('', kicked.nick + ' has been kicked by ' + kickedBy.nick + 'for ' + reason, 'userKicked')
@@ -356,17 +359,8 @@ module.exports.src = function(tabHandler, tab, arg) {
 			assembleMessage('', 'You have been invited to ' + chan + ' by ' + user.nick)
 		})
 
-		room.on('server', function(text) {
-			assembleMessage('server', text)
-		})
-
 		room.on('notice', function(user, to, text) {
 			assembleMessage('NOTICE', to + ': ' + text)
-		})
-
-		room.client.addListener('error', function(message) {
-			assembleMessage('ERROR', JSON.stringify(message), 'error')
-			console.log(JSON.stringify(message))
 		})
 
 		// disconnect from channel on close event
