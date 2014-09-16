@@ -96,6 +96,19 @@ module.exports.src = function(tabHandler, tab, arg) {
 				}
 			})
 		}
+		var zirc = document.querySelectorAll('[zirc]')
+		for(var i=0; i<zirc.length; i++) {
+			zirc[i].addEventListener('click', function(e) {
+				var words = this.innerText.split('.')
+				if(!tabHandler.plugins[words[1]]) {
+					assembleMessage('', 'plugin not installed', 'warning')
+					return
+				}
+				var arg = words[2] ? {key:words.slice(2).join('.')} : {key:null}
+				console.log(arg)
+				tabHandler.open(tabHandler.plugins[words[1]], arg)
+			})
+		}
 
 		/*
 			keyCode 13 = 'ENTER'
@@ -434,6 +447,12 @@ module.exports.src = function(tabHandler, tab, arg) {
 		// channel
 		.map(function(x,i) {
 			if(x[0]==='#') return '<a class="bold" href="#" room="'+x+'">'+x+'</a>'
+			else return x
+		})
+
+		// key
+		.map(function(x,i) {
+			if(x[0]==='z'&&x[1]==='i'&&x[2]==='r'&&x[3]==='c') return '<a class="bold" href="#" zirc="'+x+'">'+x+'</a>' 
 			else return x
 		})
 
