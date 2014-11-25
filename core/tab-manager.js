@@ -2,6 +2,7 @@ var EE = require('events').EventEmitter
 var Ziggy_client = require('./ziggy-client')
 var menu = require('./gui/menu')
 var Tab = require('./tab')
+var storageHandler = require('./storage-handler')
 
 /*
 	tab manager
@@ -16,27 +17,7 @@ tabManager.init = function(settings) {
 	// event emitter
 	this.ee = Object.create(EE.prototype)
 
-	this.storage = (function(storage, tabHandler){
-		setStorage = function(plugin, data) {
-			storage.setItem(plugin, JSON.stringify(data))
-		}
-		getStorage = function(plugin) {
-			var st
-			if(storage.getItem(plugin) == 'undefined') st = null
-			else st = JSON.parse(storage.getItem(plugin)) || null
-			return st
-		}
-		updateStorage = function(plugin, callback) {
-			var updatedStorage = callback(this.getStorage(plugin))
-			this.setStorage(plugin, updatedStorage)
-			return updatedStorage
-		}
-		return {
-			setStorage: setStorage,
-			getStorage: getStorage,
-			updateStorage: updateStorage
-		}
-	})(settings.localStorage || {}, this)
+	this.storage = storageHandler(settings.localStorage)
 
 	// dom handle
 	this.dom = settings.dom
