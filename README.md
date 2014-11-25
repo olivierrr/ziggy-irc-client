@@ -1,10 +1,6 @@
 ziggy-IRC-client
 ===================
 
-a (soon to be) themeable and extendible irc client
-
-note: consider any version bellow 1.0.0 unstable
-
 ##install
 `npm install -g zirc`
 
